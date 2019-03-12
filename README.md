@@ -1,4 +1,4 @@
-# Test Device Booking
+# Test Device Booking ![Travis (.com)](https://img.shields.io/travis/com/alexweininger/Test-Device-Booking.svg)
 
 ## Installing
 
