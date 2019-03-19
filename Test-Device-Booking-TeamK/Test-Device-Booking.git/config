@@ -1,0 +1,12 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "private"]
+	url = https://github.com/MomoChimes/DeviceBooking.git
+	fetch = +refs/heads/*:refs/remotes/private/*
+[remote "Private"]
+	url = https://github.com/MomoChimes/DeviceBooking.git
+	fetch = +refs/heads/*:refs/remotes/Private/*
