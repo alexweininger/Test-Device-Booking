@@ -12,9 +12,10 @@ import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import App from "../App";
 import SvgIcon from '@material-ui/core/SvgIcon';
 import img2 from './Data/devlogo.png';
-
+import ReactDOM from "react-dom";
 
 const styles = theme => ({
   root: {
@@ -108,7 +109,9 @@ class PrimarySearchAppBar extends React.Component {
   handleMobileMenuClose = () => {
     this.setState({ mobileMoreAnchorEl: null });
   };
-
+  ReturnBack() {
+    ReactDOM.render(<App />, document.getElementById("root"));
+  }
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -144,7 +147,6 @@ class PrimarySearchAppBar extends React.Component {
         </MenuItem>
       </Menu>
     );
-
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -159,7 +161,7 @@ class PrimarySearchAppBar extends React.Component {
               
             >
             
-            < img height="50" width="200" src={require("./Data/devlogo.png")} />
+            < img onClick={this.ReturnBack} height="50" width="200" src={require("./Data/devlogo.png")} />
 
             </Typography>
             
