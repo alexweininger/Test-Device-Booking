@@ -35,13 +35,36 @@ class Profile extends React.Component {
         const users = mockUserInfo();
 
         this.state= {
-            users : user,
+            users : users,
 
             userShown : null,
         }
     }
 
-    renderUser(user);
+    renderUser(user) {
+        return (
+            <UserData user= {user} onClick={() => this.showUser(user)}/>
+        );
+    }
 
-    
+    render() {
+        if(!this.state.userShown) {
+            return this.renderUserList();
+        }
+
+        return (
+            
+        );
+    }
+
+    showUser(user) {
+        const newState= {
+            users: this.state.users,
+            userShown: user
+        }
+
+        this.setState(newState);
+    }
 }
+
+export default Profile;
