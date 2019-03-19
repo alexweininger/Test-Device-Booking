@@ -6,26 +6,25 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import SwipeableViews from "react-swipeable-views";
-
-function TabContainer({ children, dir }) {
-  return (
-    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
-      {children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired
-};
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Reports from './Reports';
+import NewDevice from "./NewDevice";
+import Grid from "./Grid";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from '@material-ui/icons/Add';
+import ReactDOM from 'react-dom';
 
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500
+    width: 1500
   }
 });
+
+function LinkTab(props) {
+  return <Tab component="a" onClick={event => event.preventDefault()} {...props} />;
+}
+
 
 class FullWidthTabs extends React.Component {
   state = {
@@ -40,29 +39,47 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
+    NewDevice() {
+      ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+      ReactDOM.render(<NewDevice />, document.getElementById("root"));
+    }
+
   render() {
     const { classes, theme } = this.props;
+    const { value } = this.state;
 
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
-          <Tabs
+          <Tabs 
             value={this.state.value}
             onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="secondary"
             variant="fullWidth"
           >
-            <Tab label="DEVICE BOOKING" />
-            <Tab label="OFFICES" disabled />
-            <Tab label="REPORTS" disabled />
+            <LinkTab label="DEVICE BOOKING" >
+            </LinkTab>
+            <LinkTab label="OFFICES"></LinkTab>
+            <LinkTab label="REPORTS" >
+              <Reports/>
+            </LinkTab>
           </Tabs>
         </AppBar>
+
         <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
-        />
+        >        
+        {this.state.value === 0 &&           
+        <div><Fab className={classes.fab} color="primary" aria-label="Add" onClick={this.NewDevice}>
+            <AddIcon />
+          </Fab>
+          <Grid /> 
+          </div>}
+          {this.state.value === 1}
+        {this.state.value === 2 && <Reports/>}
+        </SwipeableViews>
       </div>
     );
   }

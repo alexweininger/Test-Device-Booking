@@ -21,9 +21,11 @@
     "classnames": "^2.2.6",
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
+    "material-ui-image": "^3.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-router-dom": "^5.0.0",
     "react-swipeable-views": "^0.13.1"
   }
 }

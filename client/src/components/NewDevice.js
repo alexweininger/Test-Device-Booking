@@ -7,8 +7,21 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputFile from "@material-ui/core/Input/Input";
 import BackArrow from "@material-ui/icons/ArrowBack";
+import Header from './Header';
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
+  layout: {
+    width: 'auto',
+    marginTop: theme.spacing.unit * 8,
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
   container: {
     display: "flex",
     flexWrap: "wrap"
@@ -103,8 +116,9 @@ class NewDevice extends Component {
     const { classes } = this.props;
     return (
       <form>
-        <div>
-          <TextField
+          <Header/>
+          <Paper className={classes.layout}>
+            <TextField
             id="standard-select-Active"
             select
             label="Select Device Activity"
@@ -167,7 +181,6 @@ class NewDevice extends Component {
             value={this.state.value}
             onChange={this.handleChange}
           />
-        </div>
         <TextField
           label="OS"
           className={classes.textField}
@@ -246,7 +259,8 @@ class NewDevice extends Component {
           <Button variant="contained" color="primary" onClick={this.AddDevice}>
             Submit
           </Button>
-        </div>
+         </div>
+        </Paper>
       </form>
     );
   }

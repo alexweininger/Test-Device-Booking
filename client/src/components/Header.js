@@ -12,6 +12,9 @@ import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import SvgIcon from '@material-ui/core/SvgIcon';
+import img2 from './Data/devlogo.png';
+
 
 const styles = theme => ({
   root: {
@@ -145,23 +148,29 @@ class PrimarySearchAppBar extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar style={{backgroundColor: '#e0e0e0'}}
+         
+          >
+            
             <Typography
               className={classes.title}
               variant="h6"
-              color="inherit"
               noWrap
+              
             >
-              DEVBRIDGE GROUP
+            
+            < img height="50" width="200" src={require("./Data/devlogo.png")} />
+
             </Typography>
-
-            <div className={classes.grow} />
-
+            
+            <div className={classes.grow}/>
+             
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
+                style={{color: "black"}}
                 placeholder="Search for device"
                 classes={{
                   root: classes.inputRoot,
