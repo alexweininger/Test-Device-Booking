@@ -10,7 +10,7 @@ class EditOffice extends React.Component {
       <div>
 		<Button onClick= {() => this.props.returnToList()}>
 			<ArrowBack />
-			Back to the Device Info
+			Back to Office Info
 		</Button>
 		<h3>Edit Device Information</h3>
 		<form>

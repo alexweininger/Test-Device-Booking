@@ -53,7 +53,7 @@ class OfficeInfo extends React.Component{
 					</tbody>
 				</table>
 				<Button onClick={this.showEditOffice}>
-					Edit Device
+					Edit Office
 				</Button>
 			</div>
 		);
