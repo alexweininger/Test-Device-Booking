@@ -8,7 +8,7 @@ class EditOffice extends React.Component {
   render() {
     return (
       <div>
-		<Button onClick= {() => this.props.returnToList()}>
+		<Button onClick>
 			<ArrowBack />
 			Back to Office Info
 		</Button>
