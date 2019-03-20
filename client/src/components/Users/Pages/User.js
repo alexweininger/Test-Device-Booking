@@ -40,7 +40,7 @@ function createData(first_name, last_name, email, location, slack_name) {
     return { first_name, last_name, email, location, slack_name };
 }
 
-const rows = createData('John', 'Snow', 'knows.nothing@north.got', 'the wall', 'LordCommander2');
+const rows = createData('John', 'Snow', 'knows.nothing@north.got', 'Portland, Oregon', 'LordCommander2');
 
 function CustomizedTable(props) {
     const { classes } = props;

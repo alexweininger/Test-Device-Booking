@@ -41,7 +41,7 @@ function createData(first_name, last_name, email, location, slack_name) {
 }
 
 const rows = [
-  createData('John', 'Snow', "knows.nothing@north.got", "the wall", "LordCommander2"),
+  createData('John', 'Snow', "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"),
   createData('Bronius', null, null, null, null),
 ];
 
