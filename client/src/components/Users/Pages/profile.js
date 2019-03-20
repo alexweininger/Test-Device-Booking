@@ -1,93 +1,83 @@
 import React from 'react';
-import './profile.css';
-
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Table from '@material-ui/core/Table';
+import Paper from '@material-ui/core/Paper';
 
-function mockUserInfo() {
-    switch(pos) {
-        case 1:
-            return {
-                first_name: "John",
-                last_name: "Snow",
-                email: "knows.nothing@north.got",
-                location: "the wall",
-                slack_name: "LordCommander2"
-            };
-        case 2:
-            return {
-                first_name: "Bronius",
-                last_name: null,
-                email: null,
-                location: null,
-                slack_name: null
-            };
-    }
+const CustomTableCell = withStyles(theme => ({
+    head: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
+
+const styles = theme => ({
+root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
+});
+
+let id = 0;
+function createData(first_name, last_name, email, location, slack_name) {
+//   id += 1;
+  return { first_name, last_name, email, location, slack_name };
 }
 
-function UserItem(mock) {
+const rows = [
+    createData('John', 'Snow', "knows.nothing@north.got", "the wall", "LordCommander2"),
+    createData('Bronius', null, null, null, null),
+  ];
+
+  function CustomizedTable(props) {
+    const { classes } = props;
+  
     return (
-        <TableRow className="UserData" onClick= {() => mock.onClick()}>
-            <TableCell className= "userInfo"> {mock.user.first_name} </TableCell>
-            <TableCell className= "userInfo"> {mock.user.last_name} </TableCell>
-            <TableCell className= "userInfo"> {mock.user.email} </TableCell>
-            <TableCell className= "userInfo"> {mock.user.location} </TableCell>
-            <TableCell className= "userInfo"> {mock.user.slack_name} </TableCell>
-        </TableRow>
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <CustomTableCell align="center">First Name</CustomTableCell>
+              <CustomTableCell align="center">Last Name</CustomTableCell>
+              <CustomTableCell align="center">Email</CustomTableCell>
+              <CustomTableCell align="center">Location</CustomTableCell>
+              <CustomTableCell align="center">Slack Name</CustomTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow className={classes.row} key={row.id}>
+                <CustomTableCell align="center">{row.first_name}</CustomTableCell> {/*component="th" scope="row"*/}
+                <CustomTableCell align="center">{row.last_name}</CustomTableCell>
+                <CustomTableCell align="center">{row.email}</CustomTableCell>
+                <CustomTableCell align="center">{row.location}</CustomTableCell>
+                <CustomTableCell align="center">{row.slack_name}</CustomTableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     );
-}
+  }
 
-class Profile extends React.Component {
-    constructor(props) {
-        super(props);
-
-        const users = [mockUserInfo(1), mockUserInfo(2)];
-
-        this.state= {
-            users : users,
-
-            userShown : null,
-        }
-    }
-
-    renderUser(user, pos) {
-        return (
-            <UserData user= {user} 
-            key = {pos}
-            onClick={() => this.showUser(user)}/>
-        );
-    }
-
-    renderUserList() {
-        let index = 0;
-        return (
-            <div>
-                <Table>
-                    <TableBody>
-                        {this.state.users.map(user => this.renderUser(user, index))}
-                    </TableBody>
-                </Table>
-            </div>
-        );
-    }
-
-    render() {
-        if(!this.state.userShown) {
-            return this.renderUserList();
-        }
-        return null;
-    }
-
-    displayUser(user) {
-        const newState= {
-            users: this.state.users,
-            userShown: user
-        }
-
-        this.setState(newState);
-    }
-}
-
-export default Profile;
+  CustomizedTable.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+  
+  export default withStyles(styles)(CustomizedTable);
