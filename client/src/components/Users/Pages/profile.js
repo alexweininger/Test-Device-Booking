@@ -41,7 +41,7 @@ function createData(first_name, last_name, email, location, slack_name) {
 }
 
 const rows = [
-  createData('John', 'Snow', "knows.nothing@north.got", "the wall", "LordCommander2"),
+  createData('John', 'Snow', "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"),
   createData('Bronius', null, null, null, null),
 ];
 
@@ -62,7 +62,7 @@ function CustomizedTable(props) {
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow className={classes.row} key={row.id}>
+            <TableRow className={classes.row} key={row.id} >
               <CustomTableCell align="center">{row.first_name}</CustomTableCell> {/*component="th" scope="row"*/}
               <CustomTableCell align="center">{row.last_name}</CustomTableCell>
               <CustomTableCell align="center">{row.email}</CustomTableCell>
