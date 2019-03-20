@@ -126,7 +126,7 @@ class Offices extends React.Component {
 				//returnToList= {() => this.setPageToShow('list')}
 			case 'new':
 				return (
-					<NewOffice returnToList= {() => this.setPageToShow('list')}/>
+					<NewOffice returnToList= {() => this.setPageToShow('list')} />
 				);
 		}
 	}
@@ -158,18 +158,6 @@ class Offices extends React.Component {
 		 const newState= {
 			 offices : this.state.offices,
 			 pageToShow : page,
-			 officeToShow : this.state.office
-		 }
-		 
-		 this.setState(newState);
-	 }
-	 
-	 /* add a new office to the list
-	  */
-	 addOffice(office){
-		 const newState= {
-			 offices : this.state.offices.append(office),
-			 pageToShow : this.state.pageToShow,
 			 officeToShow : this.state.office
 		 }
 		 
