@@ -1,15 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import './Office.css';
 
 import OfficeInfo from './OfficeInfo.js';
 
 //material UI imports
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';

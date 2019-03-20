@@ -1,5 +1,4 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -22,7 +21,7 @@ TabContainer.propTypes = {
 
 class MyTabs extends React.Component{
 	state = {
-		value: 0,
+		value: 0
 	};
 
 	
