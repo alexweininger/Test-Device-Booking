@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import Office from './Offices/Pages/Office';
 import Devices from './Devices/Devices';
-import Users from './Users/Pages/Login';
+import Login from './Users/Pages/Login';
 
 function TabContainer(props) {
 	return (
@@ -47,7 +47,7 @@ class MyTabs extends React.Component {
 				{value === 0 && <TabContainer><Devices /></TabContainer>}
 				{value === 1 && <TabContainer><Office /></TabContainer>}
 				{value === 2 && <TabContainer>Item Three</TabContainer>}
-				{value === 3 && <TabContainer><Users /></TabContainer>}
+				{value === 3 && <TabContainer><Login /></TabContainer>}
 			</div>
 		);
 	}
