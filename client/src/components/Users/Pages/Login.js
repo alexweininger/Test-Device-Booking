@@ -151,6 +151,10 @@ class FullWidthTabs extends React.Component {
                                         <Input id="employID" name="employID" autoComplete="employID" />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="officeID">Office ID</InputLabel>
+                                        <Input id="officeID" name="officeID" autoComplete="officeID" />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="username">Username</InputLabel>
                                         <Input id="username" name="username" autoComplete="username" />
                                     </FormControl>
