@@ -10,6 +10,7 @@ import Devices from './Devices/Devices';
 import EditUser from './Users/Pages/EditUser';
 import Login from './Users/Pages/Login';
 import Profile from './Users/Pages/profile';
+import User from './Users/Pages/User';
 
 function TabContainer(props) {
 	return (
@@ -46,6 +47,7 @@ class MyTabs extends React.Component {
 						<Tab label="Reports" />
 						<Tab label="Login" />
 						<Tab label="Profile" />
+						<Tab label="User"/>
 						<Tab label="EditUser"/>
 					</Tabs>
 				</AppBar>
@@ -54,7 +56,8 @@ class MyTabs extends React.Component {
 				{value === 2 && <TabContainer>Item Three</TabContainer>}
 				{value === 3 && <TabContainer><Login /></TabContainer>}
 				{value === 4 && <TabContainer><Profile /></TabContainer>}
-				{value === 5 && <TabContainer><EditUser/></TabContainer>}
+				{value === 5 && <TabContainer><User /></TabContainer>}
+				{value === 6 && <TabContainer><EditUser/></TabContainer>}
 			</div>
 		);
 	}

@@ -86,19 +86,7 @@ class EditUser extends React.Component {
         return this.renderCurrentUser();
     }
 
-	/* set the office to display details for
-	 * @param office the office object for which the details page
-	 *					should be displayed. null if the office list
-	 *					should be shown
-	 */
-    setOfficeToShow(office) {
-        const newState = {
-            offices: this.state.offices,
-            officeToShow: office
-        }
 
-        this.setState(newState);
-    }
 }
 
 // ========================================

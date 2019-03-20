@@ -62,7 +62,7 @@ function CustomizedTable(props) {
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow className={classes.row} key={row.id}>
+            <TableRow className={classes.row} key={row.id} >
               <CustomTableCell align="center">{row.first_name}</CustomTableCell> {/*component="th" scope="row"*/}
               <CustomTableCell align="center">{row.last_name}</CustomTableCell>
               <CustomTableCell align="center">{row.email}</CustomTableCell>
