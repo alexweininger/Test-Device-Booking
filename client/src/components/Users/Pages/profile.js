@@ -1,29 +1,40 @@
 import React from 'react';
 import './profile.css';
 
-import Button from '@material-ui/core/Button';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table';
 
 function mockUserInfo() {
-    return {
-        first_name : "John",
-        last_name : "Snow",
-        email : "knows.nothing@north.got",
-        location : "the wall",
-        slack_name : "LordCommander2"
-    };
+    switch(pos) {
+        case 1:
+            return {
+                first_name: "John",
+                last_name: "Snow",
+                email: "knows.nothing@north.got",
+                location: "the wall",
+                slack_name: "LordCommander2"
+            };
+        case 2:
+            return {
+                first_name: "Bronius",
+                last_name: null,
+                email: null,
+                location: null,
+                slack_name: null
+            };
+    }
 }
 
 function UserItem(mock) {
     return (
         <TableRow className="UserData" onClick= {() => mock.onClick()}>
-            <TableCell className= "userInfo"> {mock.first_name} </TableCell>
-            <TableCell className= "userInfo"> {mock.last_name} </TableCell>
-            <TableCell className= "userInfo"> {mock.email} </TableCell>
-            <TableCell className= "userInfo"> {mock.location} </TableCell>
-            <TableCell className= "userInfo"> {mock.slack_name} </TableCell>
+            <TableCell className= "userInfo"> {mock.user.first_name} </TableCell>
+            <TableCell className= "userInfo"> {mock.user.last_name} </TableCell>
+            <TableCell className= "userInfo"> {mock.user.email} </TableCell>
+            <TableCell className= "userInfo"> {mock.user.location} </TableCell>
+            <TableCell className= "userInfo"> {mock.user.slack_name} </TableCell>
         </TableRow>
     );
 }
@@ -32,7 +43,7 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
 
-        const users = mockUserInfo();
+        const users = [mockUserInfo(1), mockUserInfo(2)];
 
         this.state= {
             users : users,
@@ -41,9 +52,24 @@ class Profile extends React.Component {
         }
     }
 
-    renderUser(user) {
+    renderUser(user, pos) {
         return (
-            <UserData user= {user} onClick={() => this.showUser(user)}/>
+            <UserData user= {user} 
+            key = {pos}
+            onClick={() => this.showUser(user)}/>
+        );
+    }
+
+    renderUserList() {
+        let index = 0;
+        return (
+            <div>
+                <Table>
+                    <TableBody>
+                        {this.state.users.map(user => this.renderUser(user, index))}
+                    </TableBody>
+                </Table>
+            </div>
         );
     }
 
@@ -51,13 +77,10 @@ class Profile extends React.Component {
         if(!this.state.userShown) {
             return this.renderUserList();
         }
-
-        return (
-            
-        );
+        return null;
     }
 
-    showUser(user) {
+    displayUser(user) {
         const newState= {
             users: this.state.users,
             userShown: user
