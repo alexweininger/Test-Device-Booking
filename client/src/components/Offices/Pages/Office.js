@@ -3,6 +3,7 @@ import React from 'react';
 import './Office.css';
 
 import OfficeInfo from './OfficeInfo.js';
+import NewOffice from './NewOffice';
 
 //material UI imports
 import Button from '@material-ui/core/Button';
@@ -71,9 +72,13 @@ class Offices extends React.Component {
 			//an array of objects with data about each office
 			offices : offices,
 			
-			//the office to currently display details for,
-			//null if the list should be shown
-			officeToShow : null,
+			//the current page to show, one of
+			//'list', 'info', 'new'
+			pageToShow : 'list',
+			
+			//the office to currently display details for
+			//iff pageToShow == 'info'
+			officeToShow : null
 		}
 	}
 	
@@ -101,25 +106,33 @@ class Offices extends React.Component {
 							{this.state.offices.map(office => this.renderOffice(office,i++))}
 					</TableBody>
 				</Table>
-				<Button>Add New</Button>
+				{/*when the new office button is clicked, go to new office page*/}
+				<Button onClick= {()=>{this.setPageToShow('new')}}>
+					Add New
+				</Button>
 			</div>
 		);
 	}
 	
 	render(){
-		//if we have not selected an office, show the office list
-		if(!this.state.officeToShow){	
-			return this.renderOfficeList();
+		switch(this.state.pageToShow){
+			case 'list':
+				return this.renderOfficeList();
+			case 'info':
+				return (
+					<OfficeInfo office= {this.state.officeToShow}
+								returnToList= {() => this.setPageToShow('list')}/>
+				);
+				//returnToList= {() => this.setPageToShow('list')}
+			case 'new':
+				return (
+					<NewOffice returnToList= {() => this.setPageToShow('list')} />
+				);
 		}
-		
-		//if we have selected an office, show the office info
-		return (
-			<OfficeInfo office= {this.state.officeToShow}
-						returnToList= {() => this.setOfficeToShow(null)}/>
-		);
 	}
 	
 	/* set the office to display details for
+	 * also sets  pageToShow to 'info'
 	 * @param office the office object for which the details page
 	 *					should be displayed. null if the office list
 	 *					should be shown
@@ -127,11 +140,29 @@ class Offices extends React.Component {
 	setOfficeToShow(office){
 		const newState= {
 			offices : this.state.offices,
+			pageToShow: 'info',
 			officeToShow: office
 		}
 		
 		this.setState(newState);
 	}
+	
+	/* set the page to show
+	 * @param page should be one of
+				'list' - show the list
+				'info' - show the office info for this.state.officeToShow
+				'new'  - show the new office page
+	 */
+	 setPageToShow(page){
+		 //TODO comback and improve how state is copied and updated
+		 const newState= {
+			 offices : this.state.offices,
+			 pageToShow : page,
+			 officeToShow : this.state.office
+		 }
+		 
+		 this.setState(newState);
+	 }
 }
 
 // ========================================

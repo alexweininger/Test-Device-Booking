@@ -9,6 +9,7 @@ class EditOffice extends React.Component {
     return (
       <div>
 		<Button onClick>
+		<Button>
 			<ArrowBack />
 			Back to Office Info
 		</Button>

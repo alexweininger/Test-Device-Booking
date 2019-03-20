@@ -21,7 +21,7 @@ TabContainer.propTypes = {
 
 class MyTabs extends React.Component{
 	state = {
-		value: 0
+		value: 1,
 	};
 
 	
