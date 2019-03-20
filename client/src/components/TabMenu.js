@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import Office from './Offices/Pages/Office';
 import Devices from './Devices/Devices';
 import Login from './Users/Pages/Login';
+import Profile from './Users/Pages/profile';
 
 function TabContainer(props) {
 	return (
@@ -48,6 +49,7 @@ class MyTabs extends React.Component {
 				{value === 1 && <TabContainer><Office /></TabContainer>}
 				{value === 2 && <TabContainer>Item Three</TabContainer>}
 				{value === 3 && <TabContainer><Login /></TabContainer>}
+		    {value === 4 && <TabContainer><Profile/></TabContainer>}
 			</div>
 		);
 	}
