@@ -11,6 +11,18 @@ import EditUser from './Users/Pages/EditUser';
 import Login from './Users/Pages/Login';
 import Profile from './Users/Pages/profile';
 
+function TabContainer(props) {
+	return (
+		<Typography component="div" style={{ padding: 8 * 3 }}>
+			{props.children}
+		</Typography>
+	);
+}
+
+TabContainer.propTypes = {
+	children: PropTypes.node.isRequired,
+};
+
 class MyTabs extends React.Component {
 	state = {
 		value: 0,
@@ -25,7 +37,7 @@ class MyTabs extends React.Component {
 	render() {
 		const { value } = this.state;
 		return (
-
+			
 			<div>
 				<AppBar position="static">
 					<Tabs value={value} onChange={this.handleChange}>

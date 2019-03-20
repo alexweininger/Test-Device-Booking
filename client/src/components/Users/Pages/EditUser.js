@@ -12,6 +12,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 
 /* create one of three different mocked office datas
  * @param i which office data to return
@@ -26,7 +29,6 @@ function createMockUser() {
     }
 }
 
-
 /* A high level component that is able to render,
  * -the list of offices
  * -the office details
@@ -40,32 +42,41 @@ class EditUser extends React.Component {
         this.state = {
             //an array of objects with data about each office
             userInfo: userInfo,
-
+            first_name: userInfo.first_name,
+            last_name: userInfo.last_name,
+            email: userInfo.email,
+            location: userInfo.location,
+            slack_name: userInfo.slack_name,
             isAdmin: null,
             isMainUser: null,
         }
     }
 
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.value });
+      };
+
     renderCurrentUser() {
 
         return (
             <form className={"b"} noValidate autoComplete="off">
-                {this.renderUserAttribute("First Name", this.state.userInfo.first_name)}
-                {this.renderUserAttribute("Last Name", this.state.userInfo.last_name)}
-                {this.renderUserAttribute("Email", this.state.userInfo.email)}
-                {this.renderUserAttribute("Location", this.state.userInfo.location)}
-                {this.renderUserAttribute("Slack Username", this.state.userInfo.slack_name)}
+                {this.renderUserAttribute("first_name", "First Name", this.state.userInfo.first_name)}
+                {this.renderUserAttribute("last_name", "Last Name", this.state.userInfo.last_name)}
+                {this.renderUserAttribute("email", "Email", this.state.userInfo.email)}
+                {this.renderUserAttribute("location", "Location", this.state.userInfo.location)}
+                {this.renderUserAttribute("slack_name", "Slack Username", this.state.userInfo.slack_name)}
             </form>
         );
     }
 
-    renderUserAttribute(attName, value) {
+    renderUserAttribute(attName, label, value) {
+
         return(
             <TextField
                 id="user-name"
-                label={attName}
-                className={"b"}
-                value={value}
+                label={label}
+                value={this.state[attName]}
+                onChange={this.handleChange(attName)}
                 margin="normal"
             />
         );
