@@ -21,10 +21,11 @@ function createMockUser() {
         "first_name": "John",
         "last_name": "Snow",
         "email": "knows.nothing@north.got",
-        "location": "the wall",
+        "location": "Portland, Oregon",
         "slack_name": "LordCommander2"
     }
 }
+
 
 /* A high level component that is able to render,
  * -the list of offices
@@ -48,31 +49,26 @@ class EditUser extends React.Component {
     renderCurrentUser() {
 
         return (
-            <TextField
-                id="user-name"
-                label={"yes"}
-                className={"b"}
-                value={this.state.userInfo.first_name}
-                margin="normal"
-            />
             <form className={"b"} noValidate autoComplete="off">
-                {this.renderUserAttribute("first_name", this.state.userInfo.first_name)}
-                {this.renderUserAttribute("last_name", this.state.userInfo.last_name)}
-                {this.renderUserAttribute("email", this.state.userInfo.email)}
-                {this.renderUserAttribute("location", this.state.userInfo.location)}
-                {this.renderUserAttribute("slack_name", this.state.userInfo.slack_name)}
+                {this.renderUserAttribute("First Name", this.state.userInfo.first_name)}
+                {this.renderUserAttribute("Last Name", this.state.userInfo.last_name)}
+                {this.renderUserAttribute("Email", this.state.userInfo.email)}
+                {this.renderUserAttribute("Location", this.state.userInfo.location)}
+                {this.renderUserAttribute("Slack Username", this.state.userInfo.slack_name)}
             </form>
         );
     }
 
     renderUserAttribute(attName, value) {
-        <TextField
-            id="user-name"
-            label={attName}
-            className={"b"}
-            value={value}
-            margin="normal"
-        />
+        return(
+            <TextField
+                id="user-name"
+                label={attName}
+                className={"b"}
+                value={value}
+                margin="normal"
+            />
+        );
     }
 
     render() {
