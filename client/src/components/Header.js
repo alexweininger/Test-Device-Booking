@@ -38,7 +38,7 @@ function ButtonAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <img alt="DevBridge Logo" src={logo} style={{ height: 75 }}></img>
           </Typography>
-          <Button color="inherit" onClick={TabContainer.state({ value: 3 })} >Login</Button>
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </div >
