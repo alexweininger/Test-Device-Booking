@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+console.log(express.static(__dirname + '/client/public'));
 app.use(express.static(__dirname + '/client/public'));
 
 app.get('/api/customers', (req, res) => {
@@ -10,6 +11,7 @@ app.get('/api/customers', (req, res) => {
   res.json(customers);
 });
 
+app.use('/poop', require('./routes/thing.js'));
 
 const port = 5000;
 

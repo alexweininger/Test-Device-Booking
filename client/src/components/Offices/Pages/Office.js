@@ -66,6 +66,8 @@ class Offices extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		
+		
 		const offices= [createMockOffice(1), createMockOffice(2), createMockOffice(3)]
 		
 		this.state= {
