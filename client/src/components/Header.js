@@ -7,6 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import logo from './Data/devbridge_full.png';
+import TabContainer from './TabMenu';
+import Login from './Users/Pages/Login';
+
 
 const styles = {
   root: {
@@ -30,10 +34,11 @@ function ButtonAppBar(props) {
           <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
+
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            DevBridge
+            <img alt="DevBridge Logo" src={logo} style={{ height: 75 }}></img>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={TabContainer.state({ value: 3 })} >Login</Button>
         </Toolbar>
       </AppBar>
     </div >
