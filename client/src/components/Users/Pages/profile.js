@@ -66,11 +66,37 @@ function CustomizedTable(props) {
           { firstName: 'John', lastName: 'Snow', email: 'knows.nothing@north.got', location: 'Portland, Oregon', slackName: 'LordCommand' },
           { firstName: 'Bronius', lastName: null, email: null, location: null, slackName: null },
         ]}
-      title="Default Actions"
-      options={{
-        columnsButton: true,
-        exportButton: true,
-      }}
+      title="More Actions"
+      actions={[
+        {
+          icon: 'account_circle',
+          tooltip: 'Show User Info',
+          onClick: (event, rowData) => {
+            alert('You clicked user ' + rowData.name)
+          },
+        },
+        rowData => ({
+          icon: 'account_circle',
+          tooltip: 'Show User Info',
+          disabled: rowData.birthYear >= 2000,
+          onClick: (event, rowData) => {
+            alert('You clicked user ' + rowData.name)
+          },
+        }),
+        {
+          icon: 'account_circle',
+          tooltip: 'Show User Info',
+          onClick: (event, rowData) => {
+            alert('You clicked user ' + rowData.name)
+          },
+          iconProps: {
+            style: {
+              fontSize: 30,
+              color: 'green',
+            },
+          },
+        },
+      ]}
     />
   );
 }
