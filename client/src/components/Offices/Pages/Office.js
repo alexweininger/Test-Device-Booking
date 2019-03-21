@@ -74,11 +74,19 @@ class Offices extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		fetch('/poop', {
+			method: 'POST',
+			body: "hello"
+		}).then(function(responce){
+			//console.log(responce);
+			responce.text().then(function(text){
+				console.log(text);
+			});
+		});
+		
+		
 
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
-
-        this.getOfficesFromDb();
-        const test = [];
 
 		
 		this.state= {
@@ -93,29 +101,6 @@ class Offices extends React.Component {
 			//iff pageToShow == 'info'
 			officeToShow : null
 		}
-    }
-
-    getOfficesFromDb () {
-        fetch('/Offices')
-            .then(function (response) {
-                if (response.status >= 400) {
-                    throw new Error("Bad response from server");
-                }
-                return response.json();
-            }).then(function (data) {
-                this.setOffices(data);
-            }).catch(err => {
-                console.log('caught it!', err);
-            })
-            .then
-    }
-
-    setOffices(data) {
-        this.state = {
-            country: data.country,
-            city: data.city,
-            address: data.address
-        };
     }
 	
 	/* render a single office list entry
@@ -159,28 +144,34 @@ class Offices extends React.Component {
 					<OfficeInfo office= {this.state.officeToShow}
 								returnToList= {() => this.setPageToShow('list')}/>
 				);
-				//returnToList= {() => this.setPageToShow('list')}
 			case 'new':
 				return (
 					<NewOffice returnToList= {() => this.setPageToShow('list')} />
 				);
+			default:
+				return (
+					<div>
+						Error: unexpected pageToShow in Office.js<br/>
+						pageToShow= {this.state.pageToShow}
+					</div>
+				);
 		}
 	}
+	
+	setOffices(offices) {
+        this.updateState({offices : offices});
+    }
 	
 	/* set the office to display details for
 	 * also sets  pageToShow to 'info'
 	 * @param office the office object for which the details page
-	 *					should be displayed. null if the office list
-	 *					should be shown
-	 */		
+	 *					should be displayed.
+	 */
 	setOfficeToShow(office){
-		const newState= {
-			offices : this.state.offices,
-			pageToShow: 'info',
-			officeToShow: office
-		}
-		
-		this.setState(newState);
+		this.updateState({
+			officeToShow : office,
+			pageToShow : 'info'
+		});
 	}
 	
 	/* set the page to show
@@ -190,13 +181,30 @@ class Offices extends React.Component {
 				'new'  - show the new office page
 	 */
 	 setPageToShow(page){
-		 //TODO comback and improve how state is copied and updated
-		 const newState= {
-			 offices : this.state.offices,
-			 pageToShow : page,
-			 officeToShow : this.state.office
+		 console.log("Here");
+		 this.updateState({pageToShow : page});
+	 }
+	 
+	 /* set the new state, changing only those pieces of state passed in
+	  * as an object 'changes', i.e, to change just offices, call
+	  * updateState({offices : newOffices}),
+	  * to change page to show and office to show, call
+	  * updateState({pageToShow : newPage, officeToShow : newOffice})
+	  */
+	 updateState(changes){
+		 //copy the state
+		 var newState= {};
+		 
+		 let key;
+		 for(key in this.state){
+			 newState[key]= this.state[key];
 		 }
 		 
+		 //make updates
+		 for(key in changes){
+			 newState[key]= changes[key];
+		 }
+
 		 this.setState(newState);
 	 }
 }

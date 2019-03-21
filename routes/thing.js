@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', (req, res) => {
-	res.json(createMockedOffice(1));
+router.post('/', (req, res) => {
+	console.log(req);
+	res.send(req.body);
 });
 
 /* create one of three different mocked office datas

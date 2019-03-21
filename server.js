@@ -14,9 +14,9 @@ const connection = mysql.createConnection({
     database: 'Devices'
 });
 
-connection.connect(function (err) {
+/*connection.connect(function (err) {
     (err) ? console.log(err) : console.log(connection);
-});
+});*/
 
 app.get('/Offices', (req, res) => {
     connection.query(officeQuery, (err, results) => {
