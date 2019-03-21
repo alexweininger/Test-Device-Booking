@@ -12,6 +12,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
+
+
 /* create one of three different mocked office datas
  * @param i which office data to return
  */
@@ -35,7 +37,13 @@ function createMockOffice(i){
 				country : "Lietuva",
 				city : "Kaunas",
 				address : "Juozapaviciaus 11D"
-			};
+            };
+        case 4:
+            return {
+                country: "USA",
+                city: "Portland",
+                address: "Test Address"
+            };
 	}
 }
 
@@ -66,11 +74,15 @@ class Offices extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		const offices= [createMockOffice(1), createMockOffice(2), createMockOffice(3)]
+        const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
+
+        this.getOfficesFromDb();
+        const test = [];
+
 		
 		this.state= {
 			//an array of objects with data about each office
-			offices : offices,
+            offices: offices,
 			
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -80,7 +92,30 @@ class Offices extends React.Component {
 			//iff pageToShow == 'info'
 			officeToShow : null
 		}
-	}
+    }
+
+    getOfficesFromDb () {
+        fetch('/Offices')
+            .then(function (response) {
+                if (response.status >= 400) {
+                    throw new Error("Bad response from server");
+                }
+                return response.json();
+            }).then(function (data) {
+                this.setOffices(data);
+            }).catch(err => {
+                console.log('caught it!', err);
+            })
+            .then
+    }
+
+    setOffices(data) {
+        this.state = {
+            country: data.country,
+            city: data.city,
+            address: data.address
+        };
+    }
 	
 	/* render a single office list entry
 	 * @param office the data for this list entry to display
