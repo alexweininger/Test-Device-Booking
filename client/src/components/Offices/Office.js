@@ -12,8 +12,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-
-
 /* create one of three different mocked office datas
  * @param i which office data to return
  */
@@ -47,9 +45,6 @@ function createMockOffice(i){
 	}
 }
 
-
-
-
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems
  * @param props an object with properties for this office item including
@@ -74,20 +69,18 @@ class Offices extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		fetch('/poop', {
+		/*const request = new Request('/poop',{
 			method: 'POST',
-			body: "hello"
-		}).then(function(responce){
-			//console.log(responce);
-			responce.text().then(function(text){
-				console.log(text);
-			});
+			body: JSON.stringify({foo: "bar"}),
+			headers: {"Content-Type": "application/json"}
 		});
-		
-		
+			
+		fetch(request).then(res => res.text()).then(text => {
+			console.log(text);
+			this.updateState({pageToShow : 'other'});
+		});*/
 
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
-
 		
 		this.state= {
 			//an array of objects with data about each office
@@ -135,7 +128,7 @@ class Offices extends React.Component {
 		);
 	}
 	
-	render(){
+	render(){		
 		switch(this.state.pageToShow){
 			case 'list':
 				return this.renderOfficeList();
@@ -146,7 +139,8 @@ class Offices extends React.Component {
 				);
 			case 'new':
 				return (
-					<NewOffice returnToList= {() => this.setPageToShow('list')} />
+					<NewOffice returnToList= {() => this.setPageToShow('list')}
+							   addOffice= {this.addOffice}/>
 				);
 			default:
 				return (
@@ -156,6 +150,37 @@ class Offices extends React.Component {
 					</div>
 				);
 		}
+	}
+	
+	/* add the given office to the database
+	 */
+	addOffice(office){
+		//TODO - no duplicate offices
+		//we must have all three properties
+		if(!office.country || !office.city || !office.address){
+			console.log("bad office");
+			return false;
+		}
+		
+		//send office to the DB
+		const request = new Request('/new_office',{
+			method: 'POST',
+			body: JSON.stringify(office),
+			headers: {"Content-Type": "application/json"}
+		});
+		
+		fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){
+				//add the office
+				this.updateState({
+					offices : this.state.offices.append(office)
+				});
+				console.log("added " + office);
+			}
+		});
+		
+		return true;
 	}
 	
 	setOffices(offices) {
@@ -181,7 +206,6 @@ class Offices extends React.Component {
 				'new'  - show the new office page
 	 */
 	 setPageToShow(page){
-		 console.log("Here");
 		 this.updateState({pageToShow : page});
 	 }
 	 

@@ -4,26 +4,54 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-function NewOffice(props){
-	return (
-		<div>
-			<Typography variant= {'headline'}>
-				Add New Office
-			</Typography>
-			<TextField label={"Country"} />
-			<TextField label={"City"} />
-			<TextField label={"Address"} />
-			
-			<div />
-			
-			<Button onClick= {() => props.returnToList()}>
-				Create
-			</Button>
-			<Button onClick= {() => props.returnToList()}>
-				Cancel
-			</Button>
-		</div>
-	);
+class NewOffice extends React.Component {
+	constructor(props){
+		super(props);
+		
+		this.state= {
+			country : 'Canada',
+			city : "Vancouver",
+			address : "956 N poop st."
+		};
+	}
+	
+	render(){
+		return (
+			<div>
+				<Typography variant= {'headline'}>
+					Add New Office
+				</Typography>
+				<TextField label={"Country"}
+							defaultValue= {this.state.country}
+						   onChange= {event => this.updateState('country', event)} />
+				<TextField label={"City"}
+							defaultValue= {this.state.city}
+						   onChange= {event => this.updateState('city', event)} />
+				<TextField label={"Address"}
+							defaultValue= {this.state.address}
+						   onChange= {event => this.updateState('address', event)} />
+				
+				<div />
+				
+				<Button onClick= {() => this.props.addOffice(this.state)}>
+					Create
+				</Button>
+				<Button onClick= {() => this.props.returnToList()}>
+					Cancel
+				</Button>
+			</div>
+		);
+   }
+   
+   /* update the state to reflect that a field should be changed
+    * be the given event
+    * the component does not need to be rerendered
+	*/
+   updateState(field, event){
+	   //this gives a warning, but ignore it because the state
+	   //is not used for rendering
+	   this.state[field]= event.target.value;
+   }
 }
 
 export default NewOffice;

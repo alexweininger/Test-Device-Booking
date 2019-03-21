@@ -68,6 +68,13 @@ class OfficeInfo extends React.Component{
 					<EditOffice office = {this.props.office}
 						returnToInfo= {() => this.setPageToShow('info')}/>
 				);
+			default:
+				return (
+					<div>
+						Error: unxpected pageToShow in OfficeInfo<br/>
+						pageToShow= {this.state.pageToShow}
+					</div>
+				);
 		}
 	};
 		

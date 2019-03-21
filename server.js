@@ -2,8 +2,11 @@ const express = require('express');
 const mysql = require('mysql');  
 
 const app = express();
-console.log(express.static(__dirname + '/client/public'));
 app.use(express.static(__dirname + '/client/public'));
+
+//body parser for posts
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 
 const officeQuery = "SELECT * FROM Devices.office;";
 
@@ -39,6 +42,7 @@ app.get('/api/customers', (req, res) => {
 });
 
 app.use('/poop', require('./routes/thing.js'));
+app.use('/new_office', require('./routes/new_office.js'));
 
 const port = 5000;
 
