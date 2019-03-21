@@ -23,10 +23,6 @@ const styles = theme => ({
   grow: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -42,6 +38,7 @@ const styles = theme => ({
     },
     marginLeft: 0,
     width: '100%',
+    height: '70%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit,
       width: 'auto',
@@ -59,6 +56,7 @@ const styles = theme => ({
   inputRoot: {
     color: 'inherit',
     width: '100%',
+    height: '100%',
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -67,10 +65,13 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 10,
     transition: theme.transitions.create('width'),
     width: '100%',
+    height: '100%',
     [theme.breakpoints.up('sm')]: {
       width: 200,
+      height: '100%',
       '&:focus': {
         width: 275,
+        height: '100%',
       },
     },
   },

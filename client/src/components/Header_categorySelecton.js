@@ -17,7 +17,6 @@ const styles = theme => ({
         flexWrap: 'wrap',
     },
     formControl: {
-        margin: theme.spacing.unit,
         minWidth: 150,
         backgroundColor: theme.palette.primary.dark,
     },
