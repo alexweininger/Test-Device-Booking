@@ -41,7 +41,6 @@ app.get('/api/customers', (req, res) => {
   res.json(customers);
 });
 
-app.use('/poop', require('./routes/thing.js'));
 app.use('/new_office', require('./routes/new_office.js'));
 
 const port = 5000;
