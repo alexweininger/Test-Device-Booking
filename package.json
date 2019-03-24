@@ -40,6 +40,8 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "express": "^4.16.2",
+    "react-swipeable-views": "^0.13.1"
   }
 }
