@@ -53,8 +53,7 @@ class FullWidthTabs extends React.Component {
               </div>
           
         </AppBar>
-
-        <Route path="/" exact component={Grid} />
+        <Route path="/" exact component={Grid}/>
         <Route path="/Reports/" component={Reports} />
     </Router>
       </div>
