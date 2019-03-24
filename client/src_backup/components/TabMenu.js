@@ -1,11 +1,10 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import Office from'./Offices/Pages/Office';
+import Office from'./Offices/Office';
 import Devices from './Devices/Devices';
 
 function TabContainer(props) {
@@ -22,7 +21,7 @@ TabContainer.propTypes = {
 
 class MyTabs extends React.Component{
 	state = {
-		value: 0,
+		value: 1,
 	};
 
 	

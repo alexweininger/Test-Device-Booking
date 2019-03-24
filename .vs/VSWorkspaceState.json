@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\public",
+    "\\client\\src",
+    "\\client\\src\\components",
+    "\\client\\src\\components\\Offices",
+    "\\client\\src\\components\\Offices\\Pages"
+  ],
+  "SelectedNode": "\\client\\src\\components\\Offices\\Pages\\Office.js",
+  "PreviewInSolutionExplorer": false
+}
