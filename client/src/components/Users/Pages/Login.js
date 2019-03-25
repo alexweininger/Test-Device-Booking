@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -13,6 +12,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import './Login.css';
+import Header from '../../Layout/Header'
 
 function TabContainer({ children, dir }) {
     return (
@@ -32,18 +32,21 @@ TabContainer.propTypes = {
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.primary,
-        width: 450,
     },
     main: {
-        width: 'auto',
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
     },
+    tab: {
+        width: 400,
+    },
     paper: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: 400,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -75,9 +78,9 @@ class FullWidthTabs extends React.Component {
 
         return (
             <main className={classes.main}>
-                <CssBaseline />
-
-                {/* <button type+ */}
+                <div>
+                    <Header />
+                </div>
                 <div className={classes.root}>
                     <AppBar position="static" color="default">
                         <Tabs
@@ -86,6 +89,7 @@ class FullWidthTabs extends React.Component {
                             indicatorColor="secondary"
                             textColor="secondary"
                             variant="fullWidth"
+                            style={{ width: 450, marginLeft: 'auto', marginRight: 'auto' }}
                         >
                             <Tab label={<span style={{ fontSize: 18 }}><strong>LOGIN</strong></span>} />
                             <Tab label={<span style={{ fontSize: 18 }}><strong>SIGN UP</strong></span>} />

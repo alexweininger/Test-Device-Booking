@@ -4,11 +4,10 @@ import Header from './components/Layout/Header';
 
 class App extends Component {
   render() {
-    const { classes } = this.props;
     return (
       <div className="App">
-         <Header/>
-         <TabMenu></TabMenu>
+        <Header />
+        <TabMenu></TabMenu>
       </div>
     );
   }
