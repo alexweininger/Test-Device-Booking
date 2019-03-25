@@ -56,6 +56,8 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 2,
     },
 });
+
+
 class FullWidthTabs extends React.Component {
     state = {
         value: 0,
@@ -69,6 +71,26 @@ class FullWidthTabs extends React.Component {
         this.setState({ value: index });
     };
 
+    createAccountHandler = () => {
+
+function postData(url = ``, data = {}) {
+    // Default options are marked with *
+      return fetch(url, {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "no-cors", // no-cors, cors, *same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "omit", // include, *same-origin, omit
+          headers: {
+              "Content-Type": "application/*+json",
+              // "Content-Type": "application/x-www-form-urlencoded",
+          },
+          redirect: "follow", // manual, *follow, error
+          referrer: "no-referrer", // no-referrer, *client
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+      }).then(response => response.json()); // parses JSON response into native Javascript objects
+  }
+        postData(`http://localhost:5000/users/new`, {answer: 42}).then(data => console.log(JSON.stringify(data))).catch(error => console.error(error));
+    }
     render() {
 
         const { classes, theme } = this.props;
@@ -130,7 +152,7 @@ class FullWidthTabs extends React.Component {
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <Paper className={classes.paper}>
-                                <form className={classes.form}>
+                                <form className={classes.form} onSubmit={this.createAccountHandler} >
                                     <h3>
                                         Enter your details below to create your account:
                                     </h3>
@@ -168,6 +190,7 @@ class FullWidthTabs extends React.Component {
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
+                                        onClick={this.createAccountHandler}
                                     >
                                         Create Account
                                     </Button>
