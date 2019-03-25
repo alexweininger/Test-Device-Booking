@@ -1,8 +1,7 @@
 import React from 'react';
-
 import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-
+import EditOffice from './EditOffice';
 /* render a component for the office details
  * @param props an object with properties for this office including
 				-office an object with data about the office to display
@@ -13,7 +12,22 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 								where office is the new data for the office
  */
 class OfficeInfo extends React.Component{
-	render(){
+	constructor(props) {
+		super(props);
+		this.state = {pageToShow : "info"}
+	}
+	
+	//sets state variable pageToShow to page
+	setPageToShow(page){
+		const newState={
+			pageToShow : page
+		}
+		this.setState(newState);
+	}
+		
+
+	//returns Office Info page
+	renderOfficeInfo(){
 		return (
 			<div>
 				<Button onClick= {() => this.props.returnToList()}>
@@ -37,12 +51,34 @@ class OfficeInfo extends React.Component{
 						</tr>
 					</tbody>
 				</table>
-				<Button>
-					Edit Device
+				<Button onClick={() => {this.setPageToShow('edit')}}>
+					Edit Office
 				</Button>
 			</div>
 		);
 	}
+	
+	//renders appropriate page based on state variable pageToShow
+	render(){
+		switch(this.state.pageToShow){
+			case 'info':
+				return this.renderOfficeInfo();
+			case 'edit':
+				return (
+					<EditOffice office = {this.props.office}
+						returnToInfo= {() => this.setPageToShow('info')}/>
+				);
+			default:
+				return (
+					<div>
+						Error: unxpected pageToShow in OfficeInfo<br/>
+						pageToShow= {this.state.pageToShow}
+					</div>
+				);
+		}
+	};
+		
 }
+
 
 export default OfficeInfo;
