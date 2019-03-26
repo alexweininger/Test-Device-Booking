@@ -7,6 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Login from './Login';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -42,7 +43,11 @@ function createData(first_name, last_name, email, location, slack_name) {
 
 const rows = createData('John', 'Snow', 'knows.nothing@north.got', 'Portland, Oregon', 'LordCommander2');
 
-function CustomizedTable(props) {
+class CustomizedTable extends React.Component{
+
+    constructor(props) {
+        super(props);
+    }
     const { classes } = props;
 
     return (
@@ -75,6 +80,37 @@ function CustomizedTable(props) {
             </Table>
         </Paper>
     );
+
+    addUser(user) {
+        // var user = {
+        //     firstName: ReactDOM.findDOMNode(this.refs.firstName).value,
+        //     lastName: ReactDOM.findDOMNode(this.refs.lastName).value,
+        //     email: ReactDOM.findDOMNode(this.refs.email).value,
+        //     slackUsername: ReactDOM.findDOMNode(this.refs.slackUsername).value,
+        //     officeId: ReactDOM.findDOMNode(this.refs.officeID).value,
+        //     id: ReactDOM.findDOMNode(this.refs.employID)
+        // };
+
+        console.log(user);
+
+        const request = new Request('/newuser', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){
+				//add the office
+
+				console.log("added user");
+			}
+        });
+        return true;
+    }
 }
 
 CustomizedTable.propTypes = {

@@ -13,6 +13,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import './Login.css';
 import Header from '../../Layout/Header'
+import ReactDOM from 'react-dom';
+import * as request from 'request';
 
 function TabContainer({ children, dir }) {
     return (
@@ -62,9 +64,17 @@ const styles = theme => ({
 
 
 class FullWidthTabs extends React.Component {
-    state = {
-        value: 0,
-    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: 0,
+            lastName: "",
+            firstName: ""
+        };
+    }
+
 
     handleChange = (event, value) => {
         this.setState({ value });
@@ -74,26 +84,17 @@ class FullWidthTabs extends React.Component {
         this.setState({ value: index });
     };
 
-    createAccountHandler = () => {
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
-function postData(url = ``, data = {}) {
-    // Default options are marked with *
-      return fetch(url, {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "no-cors", // no-cors, cors, *same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "omit", // include, *same-origin, omit
-          headers: {
-              "Content-Type": "application/*+json",
-              // "Content-Type": "application/x-www-form-urlencoded",
-          },
-          redirect: "follow", // manual, *follow, error
-          referrer: "no-referrer", // no-referrer, *client
-          body: JSON.stringify(data), // body data type must match "Content-Type" header
-      }).then(response => response.json()); // parses JSON response into native Javascript objects
-  }
-        postData(`http://localhost:5000/users/new`, {answer: 42}).then(data => console.log(JSON.stringify(data))).catch(error => console.error(error));
-    }
+        this.setState({
+          [name]: value
+        });
+      }
+
+
     render() {
 
         const { classes, theme } = this.props;
@@ -162,39 +163,39 @@ function postData(url = ``, data = {}) {
                                     </h3>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="firstName">First Name</InputLabel>
-                                        <Input id="firstName" name="firstName" autoComplete="firstName" />
+                                        <Input id="firstName" name="firstName" autoComplete="firstName" onChange={this.handleInputChange}/>
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="lastName">Last Name</InputLabel>
-                                        <Input id="lastName" name="lastName" autoComplete="lastName" />
+                                        <Input value={this.state.lastName} id="lastName" name="lastName" autoComplete="lastName" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="slackUsername">Slack Username</InputLabel>
-                                        <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" />
+                                        <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="employID">Employee ID</InputLabel>
-                                        <Input id="employID" name="employID" autoComplete="employID" />
+                                        <Input id="employID" name="employID" autoComplete="employID" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="officeID">Office ID</InputLabel>
-                                        <Input id="officeID" name="officeID" autoComplete="officeID" />
+                                        <Input id="officeID" name="officeID" autoComplete="officeID" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="username">Username</InputLabel>
-                                        <Input id="username" name="username" autoComplete="username" />
+                                        <Input id="username" name="username" autoComplete="username" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input name="password" type="password" id="password" autoComplete="current-password" />
+                                        <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
-                                        type="submit"
+                                        type=""
                                         fullWidth
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
-                                        onClick={this.createAccountHandler}
+                                        onClick={() => this.addUser(this.state)}
                                     >
                                         Create Account
                                     </Button>
@@ -205,6 +206,35 @@ function postData(url = ``, data = {}) {
                 </div>
             </main >
         );
+    }
+
+    addUser(user) {
+
+        console.log(user);
+
+        const request = new Request('http://localhost:5000/new_user', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user)
+        });
+
+        fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){
+				//add the office
+
+				console.log("added user");
+			}
+        }).catch(err => {
+			//if we successfully updated the DB
+			console.log(err);
+            console.log('post failed');
+
+        });
+        return true;
     }
 }
 
