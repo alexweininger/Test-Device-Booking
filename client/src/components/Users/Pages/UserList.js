@@ -51,10 +51,39 @@ function createData(first_name, last_name, email, location, slack_name) {
   return { first_name, last_name, email, location, slack_name };
 }
 
-const users = [
+function getUsers(){
+  const request = new Request("http://localhost:5000/users", {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+
+      }
+  });
+
+  fetch(request).then(res => {
+//if we successfully updated the DB
+if(res.ok){
+  //add the office
+          console.log(res.body);
+          console.log("getting user");
+          return res.body;
+      }
+  }).catch(err => {
+//if we successfully updated the DB
+console.log(err);
+      console.log('post failed');
+
+  });
+
+  return true;
+}
+
+let users = [
   createData('John', 'Snow', "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"),
   createData('Bronius', null, null, null, null),
 ];
+
+getUsers();
 
 class CustomizedTable extends React.Component {
 

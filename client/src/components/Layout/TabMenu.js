@@ -8,7 +8,7 @@ import Reports from '../Devices/Reports';
 import Grid from '../Devices/Grid';
 import Office from '../Offices/Office';
 import User from "../Users/Pages/User";
-import profile from "../Users/Pages/profile";
+import profile from "../Users/Pages/UserList";
 
 const styles = theme => ({
   root: {

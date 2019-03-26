@@ -95,33 +95,6 @@ class ProfileTable extends React.Component{
             </Paper>
         )
     };
-
-    getUsers(){
-        const request = new Request("http://localhost:3000/UserList/r", {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user)
-        });
-
-        fetch(request).then(data => {
-            return data.json()
-        }).then(res => {
-			//if we successfully updated the DB
-			if(res.ok){
-				//add the office
-
-                console.log("getting user");
-            }
-        }).catch(err => {
-			//if we successfully updated the DB
-			console.log(err);
-            console.log('post failed');
-
-        });
-    }
 }
 
 ProfileTable.propTypes = {
