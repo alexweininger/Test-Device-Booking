@@ -73,7 +73,7 @@ class CustomizedTable extends React.Component {
     const { classes } = this.props;
     if (this.state.selectedUser) {
       return (
-<ProfileTable user= {this.state.selectedUser} returnToList= {() => this.setSelectedUser(null)}/>
+        <ProfileTable user= {this.state.selectedUser} returnToList= {() => this.setSelectedUser(null)}/>
       );
     } else {
       return (
@@ -92,7 +92,7 @@ class CustomizedTable extends React.Component {
               <TableBody>
                 {users.map(user => (
 
-                  <TableRow className={classes.row, classes.tableRowHover} key={user.id} onClick={() => this.setSelectedUser(user)} >
+                  <TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)} >
                     <CustomTableCell align="center">{user.first_name}</CustomTableCell> {/*component="th" scope="row"*/}
                     <CustomTableCell align="center">{user.last_name}</CustomTableCell>
                     <CustomTableCell align="center">{user.email}</CustomTableCell>
@@ -102,10 +102,8 @@ class CustomizedTable extends React.Component {
 
                 ))}
               </TableBody>
-            </Table>
+          </Table>
         </Paper>
-
-
       );
     }
 
