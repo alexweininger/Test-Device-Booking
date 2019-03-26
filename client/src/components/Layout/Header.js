@@ -10,7 +10,6 @@ import logo from '../Data/devbridge_full.png';
 import SearchIcon from '@material-ui/icons/Search';
 import Login from '../Users/Pages/Login';
 import Categories from './Header_categorySelecton';
-import Fab from "@material-ui/core/Fab";
 
 
 const styles = theme => ({
@@ -100,9 +99,7 @@ function ButtonAppBar(props) {
           <div>
             <Categories />
           </div>
-          <Fab style={{ marginLeft: 16, marginRight: 8 }} className={classes.fab} color="primary" variant="extended" onClick={() => (ReactDOM.render(<Login />, document.getElementById("root")))}>
-            Login
-          </Fab>
+          <button style={{ borderRadius: 18, marginLeft: 16, marginRight: 8, backgroundColor: '#F6F6F6', border: 'none', fontSize: 16, padding: 9 }} onClick={() => { ReactDOM.render(<Login />, document.getElementById("root")) }}>Login</button>
         </Toolbar>
       </AppBar>
     </div >
