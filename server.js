@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
 var cors = require('cors');
-const app = express();
+const app = require('./app');
 
 app.use(cors());
 app.use(express.static(__dirname + '/client/public'));
