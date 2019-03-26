@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Reports from '../Devices/Reports';
 import Grid from '../Devices/Grid';
 import Office from '../Offices/Office';
+import User from "../Users/Pages/User";
+import profile from "../Users/Pages/profile";
 
 const styles = theme => ({
   root: {
@@ -48,6 +50,8 @@ class FullWidthTabs extends React.Component {
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/"> DEVICE BOOKING</Link>
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Reports/">REPORTS</Link>
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Offices/">OFFICES</Link>
+                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/UserList/">USER LIST</Link>
+                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Profile/">USER PROFILE</Link>
                 </Tabs>
               </nav>
 
@@ -57,6 +61,8 @@ class FullWidthTabs extends React.Component {
           <Route path="/" exact component={Grid} />
           <Route path="/Reports/" component={Reports} />
           <Route path="/Offices/" component={Office} />
+          <Route path="/UserList/" component={profile} />
+          <Route path="/Profile/" component={User} />
         </Router>
       </div>
     );
