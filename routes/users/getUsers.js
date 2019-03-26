@@ -7,25 +7,32 @@ var router = express.Router();
 
 // respond with "hello world" when a GET request is made to the homepage
 router.post('/', function (req, res) {
-	console.log('request recieved', req.body);
+	console.log('getUsers: request recieved');
 
-	const id = req.body;
-	let err = isValidId(id);
-	if (err) {
-		res.status(400).send(err);
-	} else {
-		console.log(id);
-
-		// make call to db to get all users
-		dbms.dbquery('Select * from Users;', (err, results) => {
-			if (err) {
-				console.error(err);
-				res.status(400).send(err);
-			}
+	// make call to db to get all users
+	dbms.dbquery('Select * from Users;', (err, results) => {
+		if (err) {
+			console.error(err);
+			res.status(400).send(err);
+		} else {
+			res.setHeader('Content-Type', 'application/json');
 			console.log(results);
-			res.status(200).json(results);
-		});
-	}
+			let users = [];
+			let obj = [];
+			Object.keys(results).forEach(function (key) {
+				let rowObj = {};
+				var row = results[key];
+				Object.keys(row).forEach(function (keyc) {
+					var col = row[keyc];
+					rowObj[keyc] = row[keyc];
+				});
+				obj.push(rowObj);
+			});
+			console.log('json', obj);
+			res.json(obj);
+		}
+	});
+
 });
 
 // make sure id is an admin id

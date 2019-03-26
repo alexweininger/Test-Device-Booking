@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -7,6 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Paragraph from "react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ProfileTable from "./User";
@@ -23,9 +25,11 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = theme => ({
 	root: {
-		width: "100%",
+		width: "auto",
 		marginTop: theme.spacing.unit * 3,
-		overflowX: "auto"
+		overflowX: "auto",
+	marginLeft: "auto",
+	marginRight: 'auto'
 	},
 	table: {
 		minWidth: 700
@@ -49,115 +53,107 @@ function createData(first_name, last_name, email, location, slack_name) {
 	return { first_name, last_name, email, location, slack_name };
 }
 
-function getUsers(){
-  const request = new Request("http://localhost:5000/users", {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
+let users = [createData("John", "Snow", "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"), createData("Bronius", null, null, null, null)];
 
-      }
-  });
-
-  fetch(request).then(res => {
-//if we successfully updated the DB
-if(res.ok){
-  //add the office
-          console.log(res.body);
-          console.log("getting user");
-          return res.body;
-      }
-  }).catch(err => {
-//if we successfully updated the DB
-console.log(err);
-      console.log('post failed');
-
-  });
-
-  return true;
-}
-
-let users = [
-  createData('John', 'Snow', "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"),
-  createData('Bronius', null, null, null, null),
-];
-
-getUsers();
 
 class CustomizedTable extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedUser: null,
+			users: users
+		};
+		this.getUsers();
+		this.state.users = this.getUsers(); // later we will get this from the server
+	}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedUser: null,
-      users: users
-    }
+	getUsers = () => {
+		console.log('getting all users');
 
-    this.state.users = null // later we will get this from the server
-  }
+		const request = new Request("http://localhost:5000/users", {
+			method: "POST"
+		});
 
-  render () {
+		fetch(request)
+			.then(res => {
 
-    const { classes } = this.props;
-    if (this.state.selectedUser) {
-      return (
-        <ProfileTable user= {this.state.selectedUser} returnToList= {() => this.setSelectedUser(null)}/>
-      );
-    } else {
-      return (
-        <Paper className={classes.root}>
+				//if we successfully updated the DB
+				if (res.ok) {
+					//add the office
+					res.json().then(obj => {
+						console.log(obj);
+						this.setState({users: obj});
+						console.log('loaded all users', this.state);
+						return obj;
+					});
+				}
+			})
+			.catch(err => {
+				//if we successfully updated the DB
+				console.log('Error in getUsers', err);
+				console.log("post failed");
+			});
+	}
 
-          <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <CustomTableCell align="center">First Name</CustomTableCell>
-                  <CustomTableCell align="center">Last Name</CustomTableCell>
-                  <CustomTableCell align="center">Email</CustomTableCell>
-                  <CustomTableCell align="center">Location</CustomTableCell>
-                  <CustomTableCell align="center">Slack Name</CustomTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map(user => (
+	render() {
+		const { classes } = this.props;
+		if (this.state.selectedUser) {
+			return <ProfileTable user={this.state.selectedUser} returnToList={() => this.setSelectedUser(null)} />;
+		} else if(this.state.users) {
+			return (
+				<Paper className={classes.root, classes.container}>
+					<Table className={classes.table}>
+						<TableHead>
+							<TableRow>
+								<CustomTableCell align="center">First Name</CustomTableCell>
+								<CustomTableCell align="center">Last Name</CustomTableCell>
+								<CustomTableCell align="center">Email Address</CustomTableCell>
+								<CustomTableCell align="center">Slack Username</CustomTableCell>
+								<CustomTableCell align="center">Office ID</CustomTableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{this.state.users.map(user => (
+								<TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)}>
+									<CustomTableCell align="center">{user.firstName}</CustomTableCell> {/*component="th" scope="row"*/}
+									<CustomTableCell align="center">{user.lastName}</CustomTableCell>
+									<CustomTableCell align="center">{user.email}</CustomTableCell>
+									<CustomTableCell align="center">{user.slackUsername}</CustomTableCell>
+									<CustomTableCell align="center">{user.officeId}</CustomTableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</Paper>
+			);
+		} else {
+			return (
+				<h1>Loading...</h1>
+			);
+		}
+	}
 
-                  <TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)} >
-                    <CustomTableCell align="center">{user.first_name}</CustomTableCell> {/*component="th" scope="row"*/}
-                    <CustomTableCell align="center">{user.last_name}</CustomTableCell>
-                    <CustomTableCell align="center">{user.email}</CustomTableCell>
-                    <CustomTableCell align="center">{user.location}</CustomTableCell>
-                    <CustomTableCell align="center">{user.slack_name}</CustomTableCell>
-                  </TableRow>
+	setSelectedUser = user => {
+		console.log("clicked user ", user);
+		this.updateState({ selectedUser: user });
+	};
 
-                ))}
-              </TableBody>
-          </Table>
-        </Paper>
-      );
-    }
+	updateState(changes) {
+		//copy the state
+		var newState = {};
 
+		let key;
+		for (key in this.state) {
+			newState[key] = this.state[key];
+		}
 
-  }
+		//make updates
+		for (key in changes) {
+			newState[key] = changes[key];
+		}
 
-  setSelectedUser = (user) => {
-    console.log('clicked user ', user);
-    this.updateState({selectedUser: user});
-  };
-
-  updateState(changes){
-    //copy the state
-    var newState= {};
-
-    let key;
-    for(key in this.state){
-      newState[key]= this.state[key];
-    }
-
-    //make updates
-    for(key in changes){
-      newState[key]= changes[key];
-    }
-
-    this.setState(newState);
-  }
+		this.setState(newState);
+	}
 }
 
 CustomizedTable.propTypes = {
