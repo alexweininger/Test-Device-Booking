@@ -75,7 +75,7 @@ exports.dbquery = function(query_str, callback) {
         }
 
         //close connection to database
-        dbclient.end();
+        // dbclient.end();
 
     });
 
