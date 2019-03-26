@@ -76,19 +76,19 @@ class ProfileTable extends React.Component{
                     <TableBody>
                         <TableRow>
                             <CustomTableCell align="left">Name</CustomTableCell> {/*component="th" scope="row"*/}
-                            <CustomTableCell align="left">{this.props.user.first_name} {this.props.user.last_name}</CustomTableCell>
+                            <CustomTableCell align="left">{this.props.user.firstName} {this.props.user.lastName}</CustomTableCell>
                         </TableRow>
                         <TableRow>
                             <CustomTableCell align="left">Email</CustomTableCell> {/*component="th" scope="row"*/}
                             <CustomTableCell align="left">{this.props.user.email}</CustomTableCell>
                         </TableRow>
                         <TableRow>
-                            <CustomTableCell align="left">Location</CustomTableCell> {/*component="th" scope="row"*/}
-                            <CustomTableCell align="left">{this.props.user.location}</CustomTableCell>
+                            <CustomTableCell align="left">Slack Name</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.slackUsername}</CustomTableCell>
                         </TableRow>
                         <TableRow>
-                            <CustomTableCell align="left">Slack Name</CustomTableCell> {/*component="th" scope="row"*/}
-                            <CustomTableCell align="left">{this.props.user.slack_name}</CustomTableCell>
+                            <CustomTableCell align="left">Location</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.officeId}</CustomTableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

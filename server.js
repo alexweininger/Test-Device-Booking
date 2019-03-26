@@ -1,7 +1,10 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require("body-parser");
+var cors = require('cors');
 const app = express();
+
+app.use(cors());
 app.use(express.static(__dirname + '/client/public'));
 
 //body parser for posts
@@ -9,32 +12,12 @@ app.use(express.static(__dirname + '/client/public'));
 app.use(bodyParser.json());
 
 const officeQuery = "SELECT * FROM Devices.office;";
-const usersQuery = "SELECT * FROM Devices.users;";
 
-const connection = mysql.createConnection({
-  host: '35.185.195.184',
-  user: 'student',
-  password: 'student',
-  database: 'Devices'
-});
+let getUsersRouter = require('./routes/users/getUsers');
+let newUserRouter = require('./routes/users/newUser');
 
-/*connection.connect(function (err) {
-    (err) ? console.log(err) : console.log(connection);
-});*/
-
-app.use('/users', (req, res) => {
-  connection.query(usersQuery, (err, results) => {
-    if (err) {
-      return res.send(err);
-    } else {
-      return res.json({
-        data: results
-      });
-    }
-  });
-});
-
-app.use('/new_user', require('./routes/users/newUser'));
+app.use('/users', getUsersRouter);
+app.use('/new_user', newUserRouter);
 
 app.get('/Offices', (req, res) => {
   connection.query(officeQuery, (err, results) => {
