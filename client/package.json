@@ -9,7 +9,8 @@
     "react-dom": "^16.2.0",
     "react-fetch": "0.0.9",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.0.17",
+    "request": "^2.88.0"
   },
   "scripts": {
     "start": "react-scripts start",
