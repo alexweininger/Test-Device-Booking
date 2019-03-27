@@ -1,8 +1,7 @@
 /node_modules
 /coverage
 coverage/*
-/coverage/**
-coverage/**
+
 /.vs
 ./.vs
 coverage/
