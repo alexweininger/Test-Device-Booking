@@ -1,8 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');  
-
-const app = express();
-app.use(express.static(__dirname + '/client/public'));
+const mysql = require('mysql');
 
 const officeQuery = "SELECT * FROM Devices.office;";
 
@@ -17,11 +14,11 @@ connection.connect(function (err) {
     (err) ? console.log(err) : console.log(connection);
 });
 
-app.get('/', (req, res) => {
+app.get('/Office', (req, res) => {
     connection.query(officeQuery, (err, results) => {
         if (err) {
             return res.send(err);
-        } 
+        }
         else {
             app.send()
             return res.json({
@@ -30,15 +27,3 @@ app.get('/', (req, res) => {
         }
     });
 });
-
-app.get('/api/customers', (req, res) => {
-  const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-  ];
-  res.json(customers);
-});
-
-
-const port = 5000;
-
-app.listen(port, () => 'Server running on port ${port}');

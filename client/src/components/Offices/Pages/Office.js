@@ -12,8 +12,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-
-
 /* create one of three different mocked office datas
  * @param i which office data to return
  */
@@ -77,12 +75,12 @@ class Offices extends React.Component {
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
 
         this.getOfficesFromDb();
-        const test = [];
+        const test = {};
 
 		
 		this.state= {
 			//an array of objects with data about each office
-            offices: offices,
+            offices: [],
 			
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -94,26 +92,26 @@ class Offices extends React.Component {
 		}
     }
 
-    getOfficesFromDb () {
-        fetch('/Offices')
-            .then(function (response) {
-                if (response.status >= 400) {
-                    throw new Error("Bad response from server");
-                }
-                return response.json();
-            }).then(function (data) {
-                this.setOffices(data);
-            }).catch(err => {
-                console.log('caught it!', err);
-            })
-            .then
+    getOfficesFromDb() {
+        fetch('/')
+        .then(function (response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function (data) {
+            console.log({ Offices: data });
+            return data;
+        }).catch(err => {
+            console.log('caught it!', err);
+        });
     }
 
     setOffices(data) {
-        this.state = {
-            country: data.country,
-            city: data.city,
-            address: data.address
+        this.state.offices = {
+            country: data.Country,
+            city: data.City,
+            address: data.Address 
         };
     }
 	
