@@ -7,6 +7,7 @@ before_script:
 install:
   - npm install -g codecov
 script:
-  - npm run server &
-  - jest --detectOpenHandles &
+  -  node server.js &
+  - jest --detectOpenHandles
+after_success:
   - codecov
