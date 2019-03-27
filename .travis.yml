@@ -3,3 +3,9 @@ node_js:
  - lts/*
 before_script:
  - npm install && npm run client-install
+
+install:
+  - npm install -g codecov
+script:
+  - node server.js &
+  - jest --detectOpenHandles --forceExit --coverage && codecov

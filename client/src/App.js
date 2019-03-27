@@ -1,16 +1,16 @@
-import React, { Component, Fragment } from "react";
-import Header from './components/Header'
-import Footer from './components/Footer'
-import TabMenu from './components/TabMenu'
+import React, { Component } from "react";
+import TabMenu from './components/Layout/TabMenu';
+import Header from './components/Layout/Header';
 
-export default class extends Component {
+class App extends Component {
   render() {
     return (
-      <Fragment>
+      <div className="App">
         <Header />
-		<TabMenu/>
-        <Footer />
-      </Fragment>
+        <TabMenu></TabMenu>
+      </div>
     );
   }
 }
+export default (App);
+

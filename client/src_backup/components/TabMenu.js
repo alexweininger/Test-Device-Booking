@@ -1,10 +1,10 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import Office from './Offices/Office';
 import Office from './Offices/Pages/Office';
 import Devices from './Devices/Devices';
 import EditUser from './Users/Pages/EditUser';
@@ -26,7 +26,7 @@ TabContainer.propTypes = {
 
 class MyTabs extends React.Component {
 	state = {
-		value: 0,
+		value: 1,
 	};
 
 
@@ -38,7 +38,7 @@ class MyTabs extends React.Component {
 	render() {
 		const { value } = this.state;
 		return (
-			
+
 			<div>
 				<AppBar position="static">
 					<Tabs value={value} onChange={this.handleChange}>
@@ -47,8 +47,8 @@ class MyTabs extends React.Component {
 						<Tab label="Reports" />
 						<Tab label="Login" />
 						<Tab label="Profile" />
-						<Tab label="User"/>
-						<Tab label="EditUser"/>
+						<Tab label="User" />
+						<Tab label="EditUser" />
 					</Tabs>
 				</AppBar>
 				{value === 0 && <TabContainer><Devices /></TabContainer>}
@@ -57,7 +57,7 @@ class MyTabs extends React.Component {
 				{value === 3 && <TabContainer><Login /></TabContainer>}
 				{value === 4 && <TabContainer><Profile /></TabContainer>}
 				{value === 5 && <TabContainer><User /></TabContainer>}
-				{value === 6 && <TabContainer><EditUser/></TabContainer>}
+				{value === 6 && <TabContainer><EditUser /></TabContainer>}
 			</div>
 		);
 	}

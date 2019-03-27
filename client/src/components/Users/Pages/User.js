@@ -7,6 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Login from './Login';
+import Button from '@material-ui/core/Button';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -40,45 +43,62 @@ function createData(first_name, last_name, email, location, slack_name) {
     return { first_name, last_name, email, location, slack_name };
 }
 
-const rows = createData('John', 'Snow', 'knows.nothing@north.got', 'Portland, Oregon', 'LordCommander2');
+const user = createData('John', 'Snow', 'knows.nothing@north.got', 'Portland, Oregon', 'LordCommander2');
 
-function CustomizedTable(props) {
-    const { classes } = props;
+class ProfileTable extends React.Component{
 
-    return (
-        <Paper className={classes.root}>
-            <Table className={classes.table}>
-                <TableHead>
-                    <TableRow>
-                        <CustomTableCell align="left">Profile</CustomTableCell>
-                        <CustomTableCell align="left"></CustomTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <CustomTableCell align="left">Name</CustomTableCell> {/*component="th" scope="row"*/}
-                        <CustomTableCell align="left">{rows.first_name} {rows.last_name}</CustomTableCell>
-                    </TableRow>
-                    <TableRow>
-                        <CustomTableCell align="left">Email</CustomTableCell> {/*component="th" scope="row"*/}
-                        <CustomTableCell align="left">{rows.email}</CustomTableCell>
-                    </TableRow>
-                    <TableRow>
-                        <CustomTableCell align="left">Location</CustomTableCell> {/*component="th" scope="row"*/}
-                        <CustomTableCell align="left">{rows.location}</CustomTableCell>
-                    </TableRow>
-                    <TableRow>
-                        <CustomTableCell align="left">Slack Name</CustomTableCell> {/*component="th" scope="row"*/}
-                        <CustomTableCell align="left">{rows.slack_name}</CustomTableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
-        </Paper>
-    );
+    constructor(props) {
+        super(props);
+    }
+
+    setSelectedUser(user){
+		const newState={
+			selectedUser : user
+		}
+		this.setState(newState);
+	}
+
+    render () {
+        const { classes, props } = this.props;
+        return (
+            <Paper className={classes.root}>
+                <Button onClick= {() => this.props.returnToList()}>
+					<ArrowBack />
+					Back to the list
+				</Button>
+                <Table className={classes.table}>
+                    <TableHead>
+                        <TableRow>
+                            <CustomTableCell align="left">Profile</CustomTableCell>
+                            <CustomTableCell align="left"></CustomTableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow>
+                            <CustomTableCell align="left">Name</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.firstName} {this.props.user.lastName}</CustomTableCell>
+                        </TableRow>
+                        <TableRow>
+                            <CustomTableCell align="left">Email</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.email}</CustomTableCell>
+                        </TableRow>
+                        <TableRow>
+                            <CustomTableCell align="left">Slack Name</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.slackUsername}</CustomTableCell>
+                        </TableRow>
+                        <TableRow>
+                            <CustomTableCell align="left">Location</CustomTableCell> {/*component="th" scope="row"*/}
+                            <CustomTableCell align="left">{this.props.user.officeId}</CustomTableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Paper>
+        )
+    };
 }
 
-CustomizedTable.propTypes = {
+ProfileTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CustomizedTable);
+export default withStyles(styles)(ProfileTable);
