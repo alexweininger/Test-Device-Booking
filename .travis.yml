@@ -11,3 +11,6 @@ script:
   - jest --detectOpenHandles
 after_success:
   - codecov
+
+after_script:
+  - codecov
