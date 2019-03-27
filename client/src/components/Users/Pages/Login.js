@@ -90,9 +90,9 @@ class FullWidthTabs extends React.Component {
         const name = target.name;
 
         this.setState({
-          [name]: value
+            [name]: value
         });
-      }
+    }
 
 
     render() {
@@ -163,11 +163,15 @@ class FullWidthTabs extends React.Component {
                                     </h3>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="firstName">First Name</InputLabel>
-                                        <Input id="firstName" name="firstName" autoComplete="firstName" onChange={this.handleInputChange}/>
+                                        <Input id="firstName" name="firstName" autoComplete="firstName" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="lastName">Last Name</InputLabel>
                                         <Input value={this.state.lastName} id="lastName" name="lastName" autoComplete="lastName" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="email">Email</InputLabel>
+                                        <Input id="email" name="email" autoComplete="email" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="slackUsername">Slack Username</InputLabel>
@@ -222,15 +226,15 @@ class FullWidthTabs extends React.Component {
         });
 
         fetch(request).then(res => {
-			//if we successfully updated the DB
-			if(res.ok){
-				//add the office
+            //if we successfully updated the DB
+            if (res.ok) {
+                //add the office
 
-				console.log("added user");
-			}
+                console.log("added user");
+            }
         }).catch(err => {
-			//if we successfully updated the DB
-			console.log(err);
+            //if we successfully updated the DB
+            console.log(err);
             console.log('post failed');
 
         });
