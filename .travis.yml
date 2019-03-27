@@ -8,5 +8,4 @@ install:
   - npm install -g codecov
 script:
   -  node server.js &
-  - jest --detectOpenHandles &&
-  - codecov
+  - jest --detectOpenHandles && codecov
