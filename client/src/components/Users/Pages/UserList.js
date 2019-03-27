@@ -136,11 +136,29 @@ class CustomizedTable extends React.Component {
 					]}
 					data={this.state.users}
 
-					title="Default Actions"
+					title="User List"
+					actions={[
+						{
+							icon: 'account_circle',
+							tooltip: 'Show User Info',
+							onClick: (event, rowData) => {
+								this.setSelectedUser(rowData)
+							},
+							iconProps: {
+								style: {
+									fontSize: 30,
+									color: '#CE2B27'
+								},
+							},
+						},
+					]
+					}
+
 					options={{
 						columnsButton: true,
 						exportButton: true,
-					}}
+					}
+					}
 				/>
 			);
 		} else {
