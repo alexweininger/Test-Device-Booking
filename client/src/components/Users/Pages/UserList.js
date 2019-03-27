@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Paragraph from "react"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import MaterialTable from 'material-table'
 
 import ProfileTable from "./User";
 
@@ -28,8 +29,8 @@ const styles = theme => ({
 		width: "auto",
 		marginTop: theme.spacing.unit * 3,
 		overflowX: "auto",
-	marginLeft: "auto",
-	marginRight: 'auto'
+		marginLeft: "auto",
+		marginRight: 'auto'
 	},
 	table: {
 		minWidth: 700
@@ -82,7 +83,7 @@ class CustomizedTable extends React.Component {
 					//add the office
 					res.json().then(obj => {
 						console.log(obj);
-						this.setState({users: obj});
+						this.setState({ users: obj });
 						console.log('loaded all users', this.state);
 						return obj;
 					});
@@ -99,32 +100,56 @@ class CustomizedTable extends React.Component {
 		const { classes } = this.props;
 		if (this.state.selectedUser) {
 			return <ProfileTable user={this.state.selectedUser} returnToList={() => this.setSelectedUser(null)} />;
-		} else if(this.state.users) {
+		} else if (this.state.users) {
 			return (
-				<Paper className={classes.root, classes.container}>
-					<Table className={classes.table}>
-						<TableHead>
-							<TableRow>
-								<CustomTableCell align="center">First Name</CustomTableCell>
-								<CustomTableCell align="center">Last Name</CustomTableCell>
-								<CustomTableCell align="center">Email Address</CustomTableCell>
-								<CustomTableCell align="center">Slack Username</CustomTableCell>
-								<CustomTableCell align="center">Office ID</CustomTableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{this.state.users.map(user => (
-								<TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)}>
-									<CustomTableCell align="center">{user.firstName}</CustomTableCell> {/*component="th" scope="row"*/}
-									<CustomTableCell align="center">{user.lastName}</CustomTableCell>
-									<CustomTableCell align="center">{user.email}</CustomTableCell>
-									<CustomTableCell align="center">{user.slackUsername}</CustomTableCell>
-									<CustomTableCell align="center">{user.officeId}</CustomTableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</Paper>
+				// <Paper className={classes.root, classes.container}>
+				// 	<Table className={classes.table}>
+				// 		<TableHead>
+				// 			<TableRow>
+				// 				<CustomTableCell align="center">First Name</CustomTableCell>
+				// 				<CustomTableCell align="center">Last Name</CustomTableCell>
+				// 				<CustomTableCell align="center">Email Address</CustomTableCell>
+				// 				<CustomTableCell align="center">Slack Username</CustomTableCell>
+				// 				<CustomTableCell align="center">Office ID</CustomTableCell>
+				// 			</TableRow>
+				// 		</TableHead>
+				// 		<TableBody>
+				// 			{this.state.users.map(user => (
+				// 				<TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)}>
+				// 					<CustomTableCell align="center">{user.firstName}</CustomTableCell> {/*component="th" scope="row"*/}
+				// 					<CustomTableCell align="center">{user.lastName}</CustomTableCell>
+				// 					<CustomTableCell align="center">{user.email}</CustomTableCell>
+				// 					<CustomTableCell align="center">{user.slackUsername}</CustomTableCell>
+				// 					<CustomTableCell align="center">{user.officeId}</CustomTableCell>
+				// 				</TableRow>
+				// 			))}
+				// 		</TableBody>
+				// 	</Table>
+				// </Paper>
+				<MaterialTable
+					columns={[
+						{ title: 'First Name', field: 'firstName' },
+						{ title: 'Last Name', field: 'lastName' },
+						{ title: 'Email Address', field: 'email' },
+						{ title: 'Slack Username', field: 'slackUsername' },
+						{ title: 'Office ID', field: 'officeID' },
+					]}
+
+					{this.state.users.map(user => (
+						data = {
+							[
+								{ firstName: user.first_name, lastName: user.last_name, emial: user.email, slackUsername: user.slackUsername, officeID: user.officeID },
+							]}
+					))}
+
+
+
+					title="Default Actions"
+					options={{
+						columnsButton: true,
+						exportButton: true,
+					}}
+				/>
 			);
 		} else {
 			return (
