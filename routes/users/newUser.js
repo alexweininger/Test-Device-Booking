@@ -16,7 +16,6 @@ router.post('/', function (req, res) {
 	if (err) {
 		res.status(400).send(err);
 	} else {
-		// console.log(user.lastName, user.firstName, user.email, user.slackName, user.id, user.officeId);
 		res.status(200).send('Profile created successfully.');
 	}
 });
