@@ -44,7 +44,7 @@ class SimpleSelect extends React.Component {
 
         return (
             <form className={classes.root} autoComplete="off">
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl variant="outlined" className={classes.formControl} style={{ backgroundColor: '#F6F6F6' }}>
                     <InputLabel
                         ref={ref => {
                             this.InputLabelRef = ref;
