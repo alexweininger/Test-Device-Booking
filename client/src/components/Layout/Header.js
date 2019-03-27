@@ -1,23 +1,20 @@
 import React from 'react';
+import ReactDOM from "react-dom";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import MenuIcon from '@material-ui/icons/Menu';
 import logo from '../Data/devbridge_full.png';
-import TabContainer from './TabMenu';
 import SearchIcon from '@material-ui/icons/Search';
 import Login from '../Users/Pages/Login';
-import Categories from './Header_categorySelecton'
+import Categories from './Header_categorySelecton';
 
 
 const styles = theme => ({
   root: {
+    backgroundColor: theme.palette.primary,
     width: '100%',
   },
   grow: {
@@ -77,16 +74,17 @@ const styles = theme => ({
   },
 });
 
+
 function ButtonAppBar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar color="inherit" position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            <img alt="DevBridge Logo" src={logo} style={{ height: 75 }}></img>
+            <a href="/"><img alt="DevBridge Logo" src={logo} style={{ height: 75 }} /></a>
           </Typography>
-          <div className={classes.search}>
+          <div className={classes.search} style={{ backgroundColor: '#F6F6F6' }}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -101,12 +99,14 @@ function ButtonAppBar(props) {
           <div>
             <Categories />
           </div>
-          <Button color="inherit">Login</Button>
+          <button style={{ borderRadius: 18, marginLeft: 16, marginRight: 8, backgroundColor: '#F6F6F6', border: 'none', fontSize: 16, padding: 9, cursor: 'pointer' }} onClick={() => { ReactDOM.render(<Login />, document.getElementById("root")) }}>Login</button>
         </Toolbar>
       </AppBar>
     </div >
   );
+
 }
+
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired,

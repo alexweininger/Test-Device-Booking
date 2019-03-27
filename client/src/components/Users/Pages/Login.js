@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -13,6 +12,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import './Login.css';
+import Header from '../../Layout/Header'
+import ReactDOM from 'react-dom';
+import * as request from 'request';
 
 function TabContainer({ children, dir }) {
     return (
@@ -32,18 +34,21 @@ TabContainer.propTypes = {
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.primary,
-        width: 450,
     },
     main: {
-        width: 'auto',
         display: 'block', // Fix IE 11 issue.
         [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
             marginLeft: 'auto',
             marginRight: 'auto',
         },
     },
+    tab: {
+        width: 400,
+    },
     paper: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: 400,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -56,10 +61,20 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 2,
     },
 });
+
+
 class FullWidthTabs extends React.Component {
-    state = {
-        value: 0,
-    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: 0,
+            lastName: "",
+            firstName: ""
+        };
+    }
+
 
     handleChange = (event, value) => {
         this.setState({ value });
@@ -69,15 +84,26 @@ class FullWidthTabs extends React.Component {
         this.setState({ value: index });
     };
 
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+
     render() {
 
         const { classes, theme } = this.props;
 
         return (
             <main className={classes.main}>
-                <CssBaseline />
-
-                {/* <button type+ */}
+                <div>
+                    <Header />
+                </div>
                 <div className={classes.root}>
                     <AppBar position="static" color="default">
                         <Tabs
@@ -86,6 +112,7 @@ class FullWidthTabs extends React.Component {
                             indicatorColor="secondary"
                             textColor="secondary"
                             variant="fullWidth"
+                            style={{ width: 450, marginLeft: 'auto', marginRight: 'auto' }}
                         >
                             <Tab label={<span style={{ fontSize: 18 }}><strong>LOGIN</strong></span>} />
                             <Tab label={<span style={{ fontSize: 18 }}><strong>SIGN UP</strong></span>} />
@@ -130,44 +157,49 @@ class FullWidthTabs extends React.Component {
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <Paper className={classes.paper}>
-                                <form className={classes.form}>
+                                <form className={classes.form} onSubmit={this.createAccountHandler} >
                                     <h3>
                                         Enter your details below to create your account:
                                     </h3>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="firstName">First Name</InputLabel>
-                                        <Input id="firstName" name="firstName" autoComplete="firstName" />
+                                        <Input id="firstName" name="firstName" autoComplete="firstName" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="lastName">Last Name</InputLabel>
-                                        <Input id="lastName" name="lastName" autoComplete="lastName" />
+                                        <Input value={this.state.lastName} id="lastName" name="lastName" autoComplete="lastName" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="email">Email</InputLabel>
+                                        <Input id="email" name="email" autoComplete="email" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="slackUsername">Slack Username</InputLabel>
-                                        <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" />
+                                        <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="employID">Employee ID</InputLabel>
-                                        <Input id="employID" name="employID" autoComplete="employID" />
+                                        <Input id="employID" name="employID" autoComplete="employID" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="officeID">Office ID</InputLabel>
-                                        <Input id="officeID" name="officeID" autoComplete="officeID" />
+                                        <Input id="officeID" name="officeID" autoComplete="officeID" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="username">Username</InputLabel>
-                                        <Input id="username" name="username" autoComplete="username" />
+                                        <Input id="username" name="username" autoComplete="username" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input name="password" type="password" id="password" autoComplete="current-password" />
+                                        <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
-                                        type="submit"
+                                        type=""
                                         fullWidth
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
+                                        onClick={() => this.addUser(this.state)}
                                     >
                                         Create Account
                                     </Button>
@@ -178,6 +210,35 @@ class FullWidthTabs extends React.Component {
                 </div>
             </main >
         );
+    }
+
+    addUser(user) {
+
+        console.log(user);
+
+        const request = new Request('http://localhost:5000/new_user', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user)
+        });
+
+        fetch(request).then(res => {
+            //if we successfully updated the DB
+            if (res.ok) {
+                //add the office
+
+                console.log("added user");
+            }
+        }).catch(err => {
+            //if we successfully updated the DB
+            console.log(err);
+            console.log('post failed');
+
+        });
+        return true;
     }
 }
 
