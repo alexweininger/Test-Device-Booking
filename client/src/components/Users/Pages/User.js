@@ -101,7 +101,7 @@ class ProfileTable extends React.Component {
                         { title: 'Slack Username', field: 'slackUsername' },
                         { title: 'Office ID', field: 'officeId' },
                     ]}
-                    data={this.props.user}
+                    data={[this.props.user]}
 
                     title="User Profile"
                     options={{
