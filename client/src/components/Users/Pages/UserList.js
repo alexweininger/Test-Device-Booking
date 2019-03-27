@@ -119,7 +119,7 @@ class CustomizedTable extends React.Component {
 				// 					<CustomTableCell align="center">{user.firstName}</CustomTableCell> {/*component="th" scope="row"*/}
 				// 					<CustomTableCell align="center">{user.lastName}</CustomTableCell>
 				// 					<CustomTableCell align="center">{user.email}</CustomTableCell>
-				// 					<CustomTableCell align="center">{user.slackUsername}</CustomTableCell>
+				// 					<CustomTableCell align="center">{user.slackUsername}</CustomTableCell
 				// 					<CustomTableCell align="center">{user.officeId}</CustomTableCell>
 				// 				</TableRow>
 				// 			))}
@@ -132,17 +132,9 @@ class CustomizedTable extends React.Component {
 						{ title: 'Last Name', field: 'lastName' },
 						{ title: 'Email Address', field: 'email' },
 						{ title: 'Slack Username', field: 'slackUsername' },
-						{ title: 'Office ID', field: 'officeID' },
+						{ title: 'Office ID', field: 'officeId' },
 					]}
-
-					{this.state.users.map(user => (
-						data = {
-							[
-								{ firstName: user.first_name, lastName: user.last_name, emial: user.email, slackUsername: user.slackUsername, officeID: user.officeID },
-							]}
-					))}
-
-
+					data={this.state.users}
 
 					title="Default Actions"
 					options={{
