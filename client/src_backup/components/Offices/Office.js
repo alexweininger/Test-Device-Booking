@@ -1,4 +1,5 @@
 import React from 'react';
+import renderer from 'react-test-renderer';
 
 import './Office.css';
 
@@ -45,9 +46,6 @@ function createMockOffice(i){
 	}
 }
 
-
-
-
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems
  * @param props an object with properties for this office item including
@@ -72,15 +70,22 @@ class Offices extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		/*const request = new Request('/poop',{
+			method: 'POST',
+			body: JSON.stringify({foo: "bar"}),
+			headers: {"Content-Type": "application/json"}
+		});
+			
+		fetch(request).then(res => res.text()).then(text => {
+			console.log(text);
+			this.updateState({pageToShow : 'other'});
+		});*/
+
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
-
-        this.getOfficesFromDb();
-        const test = {};
-
 		
 		this.state= {
 			//an array of objects with data about each office
-            offices: [],
+            offices: offices,
 			
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -91,29 +96,6 @@ class Offices extends React.Component {
 			officeToShow : null
 		}
     }
-
-    getOfficesFromDb() {
-        fetch('/')
-        .then(function (response) {
-            if (response.status >= 400) {
-                throw new Error("Bad response from server");
-            }
-            return response.json();
-        }).then(function (data) {
-            console.log({ Offices: data });
-            return data;
-        }).catch(err => {
-            console.log('caught it!', err);
-        });
-    }
-
-    setOffices(data) {
-        this.state.offices = {
-            country: data.Country,
-            city: data.City,
-            address: data.Address 
-        };
-    }
 	
 	/* render a single office list entry
 	 * @param office the data for this list entry to display
@@ -121,11 +103,14 @@ class Offices extends React.Component {
 	 */
 	renderOffice(office, i){
 		return (
+			<button>Poop</button>
+		);
+		/*return (
 			//when an office item is clicked, show its details
 			<OfficeItem office= {office}
 						key= {i}
 						onClick= {() => this.setOfficeToShow(office)}/>
-		);
+		);*/
 	}
 	
 	/* render the entire list of offices as a table */
@@ -147,7 +132,7 @@ class Offices extends React.Component {
 		);
 	}
 	
-	render(){
+	render(){		
 		switch(this.state.pageToShow){
 			case 'list':
 				return this.renderOfficeList();
@@ -156,28 +141,66 @@ class Offices extends React.Component {
 					<OfficeInfo office= {this.state.officeToShow}
 								returnToList= {() => this.setPageToShow('list')}/>
 				);
-				//returnToList= {() => this.setPageToShow('list')}
 			case 'new':
 				return (
-					<NewOffice returnToList= {() => this.setPageToShow('list')} />
+					<NewOffice returnToList= {() => this.setPageToShow('list')}
+							   addOffice= {this.addOffice}/>
+				);
+			default:
+				return (
+					<div>
+						Error: unexpected pageToShow in Office.js<br/>
+						pageToShow= {this.state.pageToShow}
+					</div>
 				);
 		}
 	}
 	
+	/* add the given office to the database
+	 */
+	addOffice(office){
+		//TODO - no duplicate offices
+		//we must have all three properties
+		if(!office.country || !office.city || !office.address){
+			console.log("bad office");
+			return false;
+		}
+		
+		//send office to the DB
+		const request = new Request('/new_office',{
+			method: 'POST',
+			body: JSON.stringify(office),
+			headers: {"Content-Type": "application/json"}
+		});
+		
+		fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){
+				//add the office
+				this.updateState({
+					offices : this.state.offices.append(office)
+				});
+				console.log("added " + office);
+			}
+		});
+		
+		return true;
+	}
+	
+	setOffices(offices) {
+        this.updateState({offices : offices});
+    }
+	
 	/* set the office to display details for
 	 * also sets  pageToShow to 'info'
 	 * @param office the office object for which the details page
-	 *					should be displayed. null if the office list
-	 *					should be shown
-	 */		
+	 *					should be displayed.
+	 */
 	setOfficeToShow(office){
-		const newState= {
-			offices : this.state.offices,
-			pageToShow: 'info',
-			officeToShow: office
-		}
-		
-		this.setState(newState);
+		this.updateState({
+			officeToShow : office,
+			pageToShow : 'info'
+		});
 	}
 	
 	/* set the page to show
@@ -187,13 +210,29 @@ class Offices extends React.Component {
 				'new'  - show the new office page
 	 */
 	 setPageToShow(page){
-		 //TODO comback and improve how state is copied and updated
-		 const newState= {
-			 offices : this.state.offices,
-			 pageToShow : page,
-			 officeToShow : this.state.office
+		 this.updateState({pageToShow : page});
+	 }
+	 
+	 /* set the new state, changing only those pieces of state passed in
+	  * as an object 'changes', i.e, to change just offices, call
+	  * updateState({offices : newOffices}),
+	  * to change page to show and office to show, call
+	  * updateState({pageToShow : newPage, officeToShow : newOffice})
+	  */
+	 updateState(changes){
+		 //copy the state
+		 var newState= {};
+		 
+		 let key;
+		 for(key in this.state){
+			 newState[key]= this.state[key];
 		 }
 		 
+		 //make updates
+		 for(key in changes){
+			 newState[key]= changes[key];
+		 }
+
 		 this.setState(newState);
 	 }
 }
@@ -201,3 +240,4 @@ class Offices extends React.Component {
 // ========================================
 
 export default Offices;
+

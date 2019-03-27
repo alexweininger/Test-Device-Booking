@@ -9,21 +9,37 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest"
+    "test": "jest && codecov"
   },
   "author": "Alex Weininger",
   "license": "ISC",
   "devDependencies": {
     "jest": "^24.5.0",
     "nodemon": "^1.14.6",
-    "react-test-renderer": "^16.8.4"
+    "react": "^16.2.0",
+    "react-test-renderer": "^16.8.4",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.5.0"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.2",
-    "@material-ui/icons": "^3.0.2",
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
-    "mysql": "^2.16.0",
-    "node-fetch": "^2.3.0"
+    "mysql": "^2.16.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "codecov": "^3.2.0",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }

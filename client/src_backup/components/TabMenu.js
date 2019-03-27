@@ -4,7 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import Office from'./Offices/Pages/Office';
+import Office from'./Offices/Office';
 import Devices from './Devices/Devices';
 
 function TabContainer(props) {

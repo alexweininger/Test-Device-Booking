@@ -14,24 +14,23 @@ import EditOffice from './EditOffice';
 class OfficeInfo extends React.Component{
 	constructor(props) {
 		super(props);
-		this.showEditOffice = this.showEditOffice.bind(this);
-		this.state = {officeToShow : "Info"}
+		this.state = {pageToShow : "info"}
 	}
 	
-	showEditOffice(){
-		this.setState({officeToShow: "Edit"});
+	//sets state variable pageToShow to page
+	setPageToShow(page){
+		const newState={
+			pageToShow : page
+		}
+		this.setState(newState);
 	}
 		
-	renderEditOffice(){
-		return(
-			<EditOffice office = {this.props.office}/>
-		);	
-	}
-	
+
+	//returns Office Info page
 	renderOfficeInfo(){
 		return (
 			<div>
-				<Button>
+				<Button onClick= {() => this.props.returnToList()}>
 					<ArrowBack />
 					Back to the list
 				</Button>
@@ -52,19 +51,30 @@ class OfficeInfo extends React.Component{
 						</tr>
 					</tbody>
 				</table>
-				<Button onClick={this.showEditOffice}>
+				<Button onClick={() => {this.setPageToShow('edit')}}>
 					Edit Office
 				</Button>
 			</div>
 		);
 	}
 	
+	//renders appropriate page based on state variable pageToShow
 	render(){
-		if(this.state.officeToShow === "Edit"){
-			return this.renderEditOffice();
-		}
-		else if(this.state.officeToShow === "Info"){
-			return this.renderOfficeInfo();
+		switch(this.state.pageToShow){
+			case 'info':
+				return this.renderOfficeInfo();
+			case 'edit':
+				return (
+					<EditOffice office = {this.props.office}
+						returnToInfo= {() => this.setPageToShow('info')}/>
+				);
+			default:
+				return (
+					<div>
+						Error: unxpected pageToShow in OfficeInfo<br/>
+						pageToShow= {this.state.pageToShow}
+					</div>
+				);
 		}
 	};
 		

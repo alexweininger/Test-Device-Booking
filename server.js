@@ -4,6 +4,10 @@ const mysql = require('mysql');
 const app = express();
 app.use(express.static(__dirname + '/client/public'));
 
+//body parser for posts
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 const officeQuery = "SELECT * FROM Devices.office;";
 
 const connection = mysql.createConnection({
@@ -13,9 +17,9 @@ const connection = mysql.createConnection({
     database: 'Devices'
 });
 
-connection.connect(function (err) {
+/*connection.connect(function (err) {
     (err) ? console.log(err) : console.log(connection);
-});
+});*/
 
 app.get('/', (req, res) => {
     connection.query(officeQuery, (err, results) => {
@@ -38,6 +42,7 @@ app.get('/api/customers', (req, res) => {
   res.json(customers);
 });
 
+app.use('/new_office', require('./routes/new_office.js'));
 
 const port = 5000;
 
