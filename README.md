@@ -1,4 +1,4 @@
-# Test Device Booking ![Travis (.com)](https://img.shields.io/travis/com/alexweininger/Test-Device-Booking.svg) [![codecov](https://codecov.io/gh/alexweininger/Test-Device-Booking/branch/master/graph/badge.svg)](https://codecov.io/gh/alexweininger/Test-Device-Booking/branch/TeamB)
+# Test Device Booking ![Travis (.com)](https://img.shields.io/travis/com/alexweininger/Test-Device-Booking.svg) [![codecov](https://codecov.io/gh/alexweininger/Test-Device-Booking/branch/TeamB/graph/badge.svg)](https://codecov.io/gh/alexweininger/Test-Device-Booking/branch/TeamB)
 
 ## Installing
 
