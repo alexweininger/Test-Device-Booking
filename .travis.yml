@@ -7,5 +7,5 @@ before_script:
 install:
   - npm install -g codecov
 script:
-  -  node server.js &
+  - node server.js &
   - jest --detectOpenHandles --forceExit --coverage && codecov
