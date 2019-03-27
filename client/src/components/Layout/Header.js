@@ -79,12 +79,12 @@ function ButtonAppBar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar color="inherit" position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <a href="/"><img alt="DevBridge Logo" src={logo} style={{ height: 75 }} /></a>
           </Typography>
-          <div className={classes.search}>
+          <div className={classes.search} style={{ backgroundColor: '#F6F6F6' }}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -99,7 +99,7 @@ function ButtonAppBar(props) {
           <div>
             <Categories />
           </div>
-          <button style={{ borderRadius: 18, marginLeft: 16, marginRight: 8, backgroundColor: '#F6F6F6', border: 'none', fontSize: 16, padding: 9 }} onClick={() => { ReactDOM.render(<Login />, document.getElementById("root")) }}>Login</button>
+          <button style={{ borderRadius: 18, marginLeft: 16, marginRight: 8, backgroundColor: '#F6F6F6', border: 'none', fontSize: 16, padding: 9, cursor: 'pointer' }} onClick={() => { ReactDOM.render(<Login />, document.getElementById("root")) }}>Login</button>
         </Toolbar>
       </AppBar>
     </div >
