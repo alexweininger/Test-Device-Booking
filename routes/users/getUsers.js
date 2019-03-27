@@ -16,23 +16,11 @@ router.post('/', function (req, res) {
 			res.status(400).send(err);
 		} else {
 			res.setHeader('Content-Type', 'application/json');
-			console.log(results);
-			let users = [];
-			let obj = [];
-			Object.keys(results).forEach(function (key) {
-				let rowObj = {};
-				var row = results[key];
-				Object.keys(row).forEach(function (keyc) {
-					var col = row[keyc];
-					rowObj[keyc] = row[keyc];
-				});
-				obj.push(rowObj);
+			SQLArrayToJSON(results, (json) => {
+				res.status(200).json(json);
 			});
-			console.log('json', obj);
-			res.json(obj);
 		}
 	});
-
 });
 
 // make sure id is an admin id
@@ -42,6 +30,20 @@ function isValidId(id) {
 	}
 	let err;
 	return err;
+}
+
+function SQLArrayToJSON(sql, callback) {
+	let arr = [];
+	Object.keys(sql).forEach(function (key) {
+		let rowObj = {};
+		var row = sql[key];
+		Object.keys(row).forEach(function (keyc) {
+			var col = row[keyc];
+			rowObj[keyc] = row[keyc];
+		});
+		arr.push(rowObj);
+	});
+	callback(arr);
 }
 
 module.exports = router;
@@ -56,7 +58,8 @@ module.exports = router;
 //     id int(20),
 //     officeId int(11),
 //     role int(2) -- 0: normal user, 1: admin
+//	   password varchar(255) --encrypted password
 // 	);
 
-// 	INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)
-// VALUES ('Niraj', 'Mali', 'nirajmali@aol.com', 'everest', '303', '003', '0');
+// 	INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
+// VALUES ('Niraj', 'Mali', 'nirajmali@aol.com', 'everest', '303', '003', '0', '*********');
