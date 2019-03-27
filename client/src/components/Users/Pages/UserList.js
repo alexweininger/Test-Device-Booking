@@ -102,30 +102,7 @@ class CustomizedTable extends React.Component {
 			return <ProfileTable user={this.state.selectedUser} returnToList={() => this.setSelectedUser(null)} />;
 		} else if (this.state.users) {
 			return (
-				// <Paper className={classes.root, classes.container}>
-				// 	<Table className={classes.table}>
-				// 		<TableHead>
-				// 			<TableRow>
-				// 				<CustomTableCell align="center">First Name</CustomTableCell>
-				// 				<CustomTableCell align="center">Last Name</CustomTableCell>
-				// 				<CustomTableCell align="center">Email Address</CustomTableCell>
-				// 				<CustomTableCell align="center">Slack Username</CustomTableCell>
-				// 				<CustomTableCell align="center">Office ID</CustomTableCell>
-				// 			</TableRow>
-				// 		</TableHead>
-				// 		<TableBody>
-				// 			{this.state.users.map(user => (
-				// 				<TableRow className={classes.row} key={user.id} onClick={() => this.setSelectedUser(user)}>
-				// 					<CustomTableCell align="center">{user.firstName}</CustomTableCell> {/*component="th" scope="row"*/}
-				// 					<CustomTableCell align="center">{user.lastName}</CustomTableCell>
-				// 					<CustomTableCell align="center">{user.email}</CustomTableCell>
-				// 					<CustomTableCell align="center">{user.slackUsername}</CustomTableCell
-				// 					<CustomTableCell align="center">{user.officeId}</CustomTableCell>
-				// 				</TableRow>
-				// 			))}
-				// 		</TableBody>
-				// 	</Table>
-				// </Paper>
+
 				<MaterialTable
 					columns={[
 						{ title: 'First Name', field: 'firstName' },
