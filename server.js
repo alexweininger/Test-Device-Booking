@@ -21,13 +21,12 @@ const connection = mysql.createConnection({
     (err) ? console.log(err) : console.log(connection);
 });*/
 
-app.get('/', (req, res) => {
+app.get('/Offices', (req, res) => {
     connection.query(officeQuery, (err, results) => {
         if (err) {
             return res.send(err);
-        } 
+        }
         else {
-            app.send()
             return res.json({
                 data: results
             });
