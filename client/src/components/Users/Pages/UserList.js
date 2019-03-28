@@ -8,9 +8,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Paragraph from "react"
+import Paragraph from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import MaterialTable from 'material-table'
+import MaterialTable from 'material-table';
+import Avatar from 'react-avatar';
 
 import ProfileTable from "./User";
 
@@ -116,16 +117,10 @@ class CustomizedTable extends React.Component {
 					title="User List"
 					actions={[
 						{
-							icon: 'account_circle',
+							icon: () => <Avatar name={this.state.users[0].firstName + " " + this.state.users[0].lastName} size="50" round={true} textSizeRatio="1.5" />,
 							tooltip: 'Show User Info',
 							onClick: (event, rowData) => {
 								this.setSelectedUser(rowData)
-							},
-							iconProps: {
-								style: {
-									fontSize: 30,
-									color: '#CE2B27'
-								},
 							},
 						},
 					]
