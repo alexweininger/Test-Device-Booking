@@ -12,7 +12,6 @@ import Paragraph from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import MaterialTable from "material-table";
 import Avatar from "react-avatar";
-
 import ProfileTable from "./User";
 
 const CustomTableCell = withStyles(theme => ({
