@@ -68,23 +68,14 @@ function OfficeItem(props) {
 class Offices extends React.Component {
 	constructor(props) {
 		super(props);
-		
-		/*const request = new Request('/poop',{
-			method: 'POST',
-			body: JSON.stringify({foo: "bar"}),
-			headers: {"Content-Type": "application/json"}
-		});
 
-		fetch(request).then(res => res.text()).then(text => {
-			console.log(text);
-			this.updateState({pageToShow : 'other'});
-		});*/
+		this.addOffice = this.addOffice.bind(this);
 
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
 
 		this.state= {
 			//an array of objects with data about each office
-            offices: [],
+            offices: offices,
 
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -161,9 +152,11 @@ class Offices extends React.Component {
 								returnToList= {() => this.setPageToShow('list')}/>
 				);
 			case 'new':
+				console.log(this.state);
 				return (
 					<NewOffice returnToList= {() => this.setPageToShow('list')}
-							   addOffice= {this.addOffice}/>
+							   addOffice= {this.addOffice}
+					/>
 				);
 			default:
 				return (
@@ -195,11 +188,14 @@ class Offices extends React.Component {
 		fetch(request).then(res => {
 			//if we successfully updated the DB
 			if(res.ok){
+				console.log(this.state);
 				//add the office
+				this.state.offices.push(office);
 				this.updateState({
-					offices : this.state.offices.append(office)
+					offices : this.state.offices
 				});
 				console.log("added " + office);
+				this.setPageToShow("list");
 			}
 		});
 

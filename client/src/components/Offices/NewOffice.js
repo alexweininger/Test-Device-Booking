@@ -9,9 +9,9 @@ class NewOffice extends React.Component {
 		super(props);
 		
 		this.state= {
-			country : null,
-			city : null,
-			address : null
+			country : "USA",
+			city : "Portland",
+			address : "32945"
 		};
 	}
 	
