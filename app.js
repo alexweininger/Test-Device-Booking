@@ -33,7 +33,7 @@ app.get('/Offices', (req, res) => {
 });
 
 
-app.use('/new_office', require('./routes/new_office.js'));
+app.use('/new_office', require('./routes/offices/new_office.js'));
 
 
 app.get('/helloWorld', (req, res) => {
