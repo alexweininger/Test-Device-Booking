@@ -106,14 +106,6 @@ class Offices extends React.Component {
         });
     }
 
-    setOffices(data) {
-        this.state.offices = {
-            country: data.Country,
-            city: data.City,
-            address: data.Address
-        };
-    }
-
 	/* render a single office list entry
 	 * @param office the data for this list entry to display
 	 * @param i a key for iterating these list entries
@@ -158,7 +150,6 @@ class Offices extends React.Component {
 								editOffice= {this.editOffice}/>
 				);
 			case 'new':
-				console.log(this.state);
 				return (
 					<NewOffice returnToList= {() => this.setPageToShow('list')}
 							   addOffice= {this.addOffice}
@@ -194,13 +185,12 @@ class Offices extends React.Component {
 		fetch(request).then(res => {
 			//if we successfully updated the DB
 			if(res.ok){
-				console.log(this.state);
 				//add the office
 				this.state.offices.push(office);
 				this.updateState({
 					offices : this.state.offices
 				});
-				console.log("added " + office);
+				
 				this.setPageToShow("list");
 			}
 		});
