@@ -140,6 +140,46 @@ class CustomizedTable extends React.Component {
 						columnsButton: true,
 						exportButton: true
 					}}
+					editable={{
+						onRowAdd: newData =>
+						  new Promise((resolve, reject) => {
+							setTimeout(() => {
+							  {
+								//TODO Add push to database
+								const data = this.state.users;
+								data.push(newData);
+								this.setState({ data }, () => resolve());
+							  }
+							  resolve()
+							}, 1000)
+						  }),
+						onRowUpdate: (newData, oldData) =>
+						  new Promise((resolve, reject) => {
+							setTimeout(() => {
+							  {
+								//TODO push changes to database
+								const data = this.state.users;
+								const index = data.indexOf(oldData);
+								data[index] = newData;                
+								this.setState({ data }, () => resolve());
+							  }
+							  resolve()
+							}, 1000)
+						  }),
+						onRowDelete: oldData =>
+						  new Promise((resolve, reject) => {
+							setTimeout(() => {
+							  {
+								  //Push changes to DB
+									let data = this.state.users;
+									const index = data.indexOf(oldData);
+									data.splice(index, 1);
+									this.setState({ data }, () => resolve());
+							}
+							  resolve()
+							}, 1000)
+						  }),
+						}}
 				/>
 			);
 		} else {
