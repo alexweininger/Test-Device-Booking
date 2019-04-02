@@ -42,6 +42,7 @@ app.get('/api/customers', (req, res) => {
 });
 
 app.use('/new_office', require('./routes/new_office.js'));
+app.use('/edit_office', require('./routes/edit_office.js'));
 
 const port = 5000;
 

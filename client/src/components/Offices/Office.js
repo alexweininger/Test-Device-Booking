@@ -20,24 +20,28 @@ function createMockOffice(i){
 		default:
 		case 1:
 			return {
+				id: 1,
 				country : "USA",
 				city : "Portland",
 				address : "5118 N Yale St."
 			};
 		case 2:
 			return {
+				id: 2,
 				country : "Lietuva",
 				city : "Vilnius",
 				address : "Zalgirio 135"
 			};
 		case 3:
 			return {
+				id: 3,
 				country : "Lietuva",
 				city : "Kaunas",
 				address : "Juozapaviciaus 11D"
             };
         case 4:
             return {
+				id: 4,
                 country: "USA",
                 city: "Portland",
                 address: "Test Address"
@@ -68,11 +72,11 @@ function OfficeItem(props) {
 class Offices extends React.Component {
 	constructor(props) {
 		super(props);
-
+		this.editOffice = this.editOffice.bind(this);
 		this.addOffice = this.addOffice.bind(this);
 
-        const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
-
+		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
+        
 		this.state= {
 			//an array of objects with data about each office
             offices: offices,
@@ -131,7 +135,8 @@ class Offices extends React.Component {
 				<Table>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
-							{this.state.offices.map(office => this.renderOffice(office,i++))}
+							{Object.keys(this.state.offices).map(officeID => this.renderOffice(this.state.offices[officeID],i++))};
+								{/*{this.state.offices.keys.map(office => this.renderOffice(office,i++))}*/}
 					</TableBody>
 				</Table>
 				{/*when the new office button is clicked, go to new office page*/}
@@ -149,7 +154,8 @@ class Offices extends React.Component {
 			case 'info':
 				return (
 					<OfficeInfo office= {this.state.officeToShow}
-								returnToList= {() => this.setPageToShow('list')}/>
+								returnToList= {() => this.setPageToShow('list')}
+								editOffice= {this.editOffice}/>
 				);
 			case 'new':
 				console.log(this.state);
@@ -196,6 +202,40 @@ class Offices extends React.Component {
 				});
 				console.log("added " + office);
 				this.setPageToShow("list");
+			}
+		});
+
+		return true;
+	}
+
+	/* edit the office selected
+	 */
+	editOffice(office){
+		console.log(office);
+		console.log("Inside Edit Office");
+		//TODO - no duplicate offices
+		//we must have all three properties
+		if(!office.country || !office.city || !office.address){
+			console.log("bad office");
+			return false;
+		}
+
+		//send updated office to the server
+		const request = new Request('/edit_office',{
+			method: 'POST',
+			body: JSON.stringify({
+				officeToChange: (this.state.officeToShow.id),
+				updatedOffice: (office)
+			}),
+			headers: {"Content-Type": "application/json"}
+		});
+		var officeId = this.state.officeToShow.id;
+		fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){	
+				this.state.offices[this.state.officeToShow.id] = office;
+				console.log("Edited " + office);
+				this.setPageToShow("info");
 			}
 		});
 

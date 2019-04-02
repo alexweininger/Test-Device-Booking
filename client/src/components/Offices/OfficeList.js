@@ -95,6 +95,35 @@ class Offices extends React.Component {
 		);
 	}
 	
+	editOffice(office){
+		//TODO - no duplicate offices
+		//we must have all three properties
+		if(!office.country || !office.city || !office.address){
+			console.log("bad office");
+			return false;
+		}
+
+		//send office to the DB
+		const request = new Request('/edit_office',{
+			method: 'POST',
+			body: JSON.stringify(office),
+			headers: {"Content-Type": "application/json"}
+		});
+
+		fetch(request).then(res => {
+			//if we successfully updated the DB
+			if(res.ok){
+				//add the office
+				this.state.offices.push(office);
+				this.updateState({
+					offices : this.state.offices
+				});
+				console.log("added " + office);
+				this.setPageToShow("list");
+			}
+		});
+
+	
 	setOfficeToShow(office){
 		console.log(this);
 		const newState= {
