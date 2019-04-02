@@ -82,15 +82,13 @@ module.exports = function(passport) {
             usernameField : 'username',
             passwordField : 'password',
             passReqToCallback : true
-
         },
 
         function(req, email, password, done) {
-            console.log("hit");
             console.log('username (email): ', email);
-
-            connection.query("SELECT * FROM Users WHERE id = 307;", function(err, rows){
-                console.log(rows);
+            console.log('password: ' + password);
+            connection.query("SELECT * FROM Users WHERE email = '" + email + "';", function(err, rows){
+                console.log("Rows: " + rows);
                 
                 if (err)
 
@@ -102,7 +100,7 @@ module.exports = function(passport) {
                     return done(null, false, req.flash('loginMessage', 'No user found.')); 
                 }
                 console.log('password: ' + password + ' rows: ' + rows[0].password);
-                let cryptedpassword = bcrypt.hashSync('fuck', null, null);
+                let cryptedpassword = bcrypt.hashSync(rows[0].password, null, null);
                 if (!bcrypt.compareSync(password, cryptedpassword)) {
                     console.log('password is incorrect');
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));

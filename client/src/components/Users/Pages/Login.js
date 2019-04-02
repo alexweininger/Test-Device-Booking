@@ -146,6 +146,7 @@ class FullWidthTabs extends React.Component {
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
+                                        onClick={() => this.loginUser(this.state)}
                                     >
                                         Log In
                                     </Button>
@@ -210,6 +211,34 @@ class FullWidthTabs extends React.Component {
                 </div>
             </main >
         );
+    }
+
+    loginUser(user) {
+
+        console.log(user);
+
+        const request = new Request(`http://localhost:5000/login?password=*******&username=nirajmali@aol.com`, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({username: 'fuckyou', password: '*********'})
+        });
+
+        fetch(request).then(res => {
+            //if we successfully updated the DB
+            if (res.ok) {
+                //add the office
+
+                console.log("logged in");
+            }
+        }).catch(err => {
+            //if we successfully updated the DB
+            console.log(err);
+            console.log('post failed');
+        });
+        return true;
     }
 
     addUser(user) {
