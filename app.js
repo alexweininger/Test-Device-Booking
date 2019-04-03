@@ -9,7 +9,6 @@ app.use(cors());
 app.use(express.static(__dirname + '/client/public'));
 
 //body parser for posts
-
 app.use(bodyParser.json());
 
 
@@ -25,5 +24,6 @@ app.use('/edit_office', require('./routes/edit_office.js'));
 
 app.get('/helloWorld', (req, res) => {
     res.status(200).send('Hello World!');
-})
+});
+
 module.exports = app;
