@@ -108,7 +108,7 @@ class Offices extends React.Component {
 
         fetch(request).then(res => res.json()).then(result => {
             //if success then update the office list
-            if (result.success) {                
+            if (result.success) {
                 const officeList = result.offices;
                 // Reformat the offices by iterating through them all
                 let office, i;
@@ -126,13 +126,21 @@ class Offices extends React.Component {
             }
             else {
                 console.log("Error");
-               
+
             }
         }).catch(err => {
             console.log(err);
         });
 
         return rtrnList
+    }
+
+    setOffices(data) {
+        this.state.offices = {
+            country: data.Country,
+            city: data.City,
+            address: data.Address
+        };
     }
 
 	/* render a single office list entry
@@ -156,7 +164,7 @@ class Offices extends React.Component {
 				<Table>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
-							{Object.keys(this.state.offices).map(officeID => this.renderOffice(this.state.offices[officeID],i++))};
+							{Object.keys(this.state.offices).map(officeID => this.renderOffice(this.state.offices[officeID],i++))}
 								{/*{this.state.offices.keys.map(office => this.renderOffice(office,i++))}*/}
 					</TableBody>
 				</Table>
@@ -179,6 +187,7 @@ class Offices extends React.Component {
 								editOffice= {this.editOffice}/>
 				);
 			case 'new':
+				console.log(this.state);
 				return (
 					<NewOffice returnToList= {() => this.setPageToShow('list')}
 							   addOffice= {this.addOffice}
@@ -213,16 +222,17 @@ class Offices extends React.Component {
 
 		fetch(request).then(res => res.json()).then(result => {
 			//if we successfully updated the DB
-			if(result.success){
-				//add the office
-				this.state.offices[result.officeId] = office;
-				this.updateState({
-					offices : this.state.offices
-				});
-				
-				//add show the list
-				this.setPageToShow("list");
-			}
+
+		if(result.success){
+
+			//add the office
+			this.state.offices[result.officeId]= office;
+			this.updateState({
+				offices : this.state.offices
+			});
+			//add show the list
+			this.setPageToShow("list");
+		}
 		});
 
 		return true;
@@ -231,8 +241,8 @@ class Offices extends React.Component {
 	/* edit the office selected
 	 */
 	editOffice(office){
-		console.log(office);
-		console.log("Inside Edit Office");
+
+
 		//TODO - no duplicate offices
 		//we must have all three properties
 		if(!office.country || !office.city || !office.address){
@@ -252,9 +262,9 @@ class Offices extends React.Component {
 		var officeId = this.state.officeToShow.id;
 		fetch(request).then(res => {
 			//if we successfully updated the DB
-			if(res.ok){	
+			if(res.ok){
 				this.state.offices[this.state.officeToShow.id] = office;
-				console.log("Edited " + office);
+
 				this.setPageToShow("info");
 			}
 		});
