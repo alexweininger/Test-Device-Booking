@@ -11,43 +11,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-
-/* create one of three different mocked office datas
- * @param i which office data to return
- */
-function createMockOffice(i){
-	switch(i){
-		default:
-		case 1:
-			return {
-				id: 1,
-				country : "USA",
-				city : "Portland",
-				address : "5118 N Yale St."
-			};
-		case 2:
-			return {
-				id: 2,
-				country : "Lietuva",
-				city : "Vilnius",
-				address : "Zalgirio 135"
-			};
-		case 3:
-			return {
-				id: 3,
-				country : "Lietuva",
-				city : "Kaunas",
-				address : "Juozapaviciaus 11D"
-            };
-        case 4:
-            return {
-				id: 4,
-                country: "USA",
-                city: "Portland",
-                address: "Test Address"
-            };
-	}
-}
+import TableHead from '@material-ui/core/TableHead';
 
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems
@@ -77,15 +41,11 @@ class Offices extends React.Component {
 
 		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
 
-        const test = this.getOfficesFromDb();
-
-        console.log(offices);
-        console.log("==============")
-        console.log(test);
+  	this.getOfficesFromDb();
 
 		this.state= {
 			//an array of objects with data about each office
-            offices: offices,
+            offices: {},
 
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -95,44 +55,6 @@ class Offices extends React.Component {
 			//iff pageToShow == 'info'
 			officeToShow : null
 		}
-    }
-
-    getOfficesFromDb() {
-        const request = new Request('/get_offices', {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-        });
-
-        // Create a list to return.
-        let rtrnList = {};
-
-        fetch(request).then(res => res.json()).then(result => {
-            //if success then update the office list
-            if (result.success) {
-                const officeList = result.offices;
-                // Reformat the offices by iterating through them all
-                let office, i;
-                for (i in officeList) {
-                    office = officeList[i];  // current office pointer
-                    rtrnList[i] = {
-                        id: office.id_Office,
-                        country: office.Country,
-                        city: office.City,
-                        address: office.Address
-                    };
-                }
-                console.log(rtrnList);
-                this.updateState({offices: rtrnList});
-            }
-            else {
-                console.log("Error");
-
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-
-        return rtrnList
     }
 
     setOffices(data) {
@@ -161,7 +83,14 @@ class Offices extends React.Component {
 		let i= 0;
 		return (
 			<div>
-				<Table>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Country</TableCell>
+                            <TableCell>City</TableCell>
+                            <TableCell>Address</TableCell>
+                        </TableRow>
+                    </TableHead>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
 							{Object.keys(this.state.offices).map(officeID => 
@@ -268,8 +197,6 @@ class Offices extends React.Component {
 	/* edit the office selected
 	 */
 	editOffice(office){
-
-
 		//TODO - no duplicate offices
 		//we must have all three properties
 		if(!office.country || !office.city || !office.address){
@@ -290,14 +217,51 @@ class Offices extends React.Component {
 		fetch(request).then(res => {
 			//if we successfully updated the DB
 			if(res.ok){
-				this.state.offices[this.state.officeToShow.id] = office;
-
+				this.getOfficesFromDb();
 				this.setPageToShow("info");
 			}
 		});
 
 		return true;
-	}
+    }
+
+    /* Gets all the offices from the db, then updates the state.
+     * If there is an error it will be displayed in the console
+     */
+    getOfficesFromDb() {
+        const request = new Request('/get_offices', {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        // Create a list to return.
+        let rtrnList = {};
+
+        fetch(request).then(res => res.json()).then(result => {
+            //if success then update the office list
+            if (result.success) {
+                const officeList = result.offices;
+                // Reformat the offices by iterating through them all
+                let office, i;
+                for (i in officeList) {
+                    office = officeList[i];  // current office pointer
+                    rtrnList[i] = {
+                        id: office.id_Office,
+                        country: office.Country,
+                        city: office.City,
+                        address: office.Address
+                    };
+                }
+                console.log(rtrnList);
+                this.updateState({ offices: rtrnList });
+            }
+            else {
+                console.log("Error");
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
 	setOffices(offices) {
         this.updateState({offices : offices});
@@ -346,10 +310,7 @@ class Offices extends React.Component {
          }
 
          this.setState(newState);
-         console.log(newState);
 	 }
 }
-
-// ========================================
 
 export default Offices;
