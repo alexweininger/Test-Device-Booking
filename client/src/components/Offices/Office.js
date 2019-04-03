@@ -11,6 +11,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import TableHead from '@material-ui/core/TableHead';
 
 /* create one of three different mocked office datas
  * @param i which office data to return
@@ -77,11 +78,7 @@ class Offices extends React.Component {
 
 		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
 
-        const test = this.getOfficesFromDb();
-
-        console.log(offices);
-        console.log("==============")
-        console.log(test);
+        this.getOfficesFromDb();
 
 		this.state= {
 			//an array of objects with data about each office
@@ -95,44 +92,6 @@ class Offices extends React.Component {
 			//iff pageToShow == 'info'
 			officeToShow : null
 		}
-    }
-
-    getOfficesFromDb() {
-        const request = new Request('/get_offices', {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-        });
-
-        // Create a list to return.
-        let rtrnList = {};
-
-        fetch(request).then(res => res.json()).then(result => {
-            //if success then update the office list
-            if (result.success) {
-                const officeList = result.offices;
-                // Reformat the offices by iterating through them all
-                let office, i;
-                for (i in officeList) {
-                    office = officeList[i];  // current office pointer
-                    rtrnList[i] = {
-                        id: office.id_Office,
-                        country: office.Country,
-                        city: office.City,
-                        address: office.Address
-                    };
-                }
-                console.log(rtrnList);
-                this.updateState({offices: rtrnList});
-            }
-            else {
-                console.log("Error");
-
-            }
-        }).catch(err => {
-            console.log(err);
-        });
-
-        return rtrnList
     }
 
     setOffices(data) {
@@ -161,7 +120,14 @@ class Offices extends React.Component {
 		let i= 0;
 		return (
 			<div>
-				<Table>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Country</TableCell>
+                            <TableCell>City</TableCell>
+                            <TableCell>Address</TableCell>
+                        </TableRow>
+                    </TableHead>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
 							{Object.keys(this.state.offices).map(officeID => this.renderOffice(this.state.offices[officeID],i++))}
@@ -270,7 +236,45 @@ class Offices extends React.Component {
 		});
 
 		return true;
-	}
+    }
+
+    /* Gets all the offices from the db, then updates the state.   
+     * If there is an error it will be displayed in the console 
+     */
+    getOfficesFromDb() {
+        const request = new Request('/get_offices', {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        // Create a list to return.
+        let rtrnList = {};
+
+        fetch(request).then(res => res.json()).then(result => {
+            //if success then update the office list
+            if (result.success) {
+                const officeList = result.offices;
+                // Reformat the offices by iterating through them all
+                let office, i;
+                for (i in officeList) {
+                    office = officeList[i];  // current office pointer
+                    rtrnList[i] = {
+                        id: office.id_Office,
+                        country: office.Country,
+                        city: office.City,
+                        address: office.Address
+                    };
+                }
+                console.log(rtrnList);
+                this.updateState({ offices: rtrnList });
+            }
+            else {
+                console.log("Error");
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
 	setOffices(offices) {
         this.updateState({offices : offices});

@@ -19,7 +19,7 @@ app.use('/users', getUsersRouter);
 app.use('/new_user', newUserRouter);
 
 app.use('/new_office', require('./routes/offices/new_office.js'));
-app.use('/edit_office', require('./routes/edit_office.js'));
+app.use('/edit_office', require('./routes/offices/edit_office.js'));
 app.use('/get_offices', require('./routes/offices/get_offices.js'));
 
 app.get('/helloWorld', (req, res) => {
