@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
 		   .replace('{city}', office.city)
 		   .replace('{address}', office.address);
 	
-	db.dbqueryPromise(query).then(results => {;
+	db.dbqueryPromise(query).then(results => {
 		//if the insert is successful, pull off the id that was given
 		//and send it to the client
 		res.json({
