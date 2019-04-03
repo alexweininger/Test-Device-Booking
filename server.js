@@ -41,8 +41,10 @@ app.get('/api/customers', (req, res) => {
   res.json(customers);
 });
 
-app.use('/edit_office', require('./routes/offices/edit_office.js'));
+
+const app = require('./app.js');
+
 
 const port = 5000;
 
-app.listen(port, () => 'Server running on port ${port}');
+app.listen(port, () => console.log(`Server running on port ${port}`));

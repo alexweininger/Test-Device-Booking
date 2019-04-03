@@ -191,18 +191,19 @@ class Offices extends React.Component {
 			headers: {"Content-Type": "application/json"}
 		});
 
-		fetch(request).then(res => {
+		fetch(request).then(res => res.json()).then(result => {
 			//if we successfully updated the DB
-			if(res.ok){
-				console.log(this.state);
-				//add the office
-				this.state.offices.push(office);
-				this.updateState({
-					offices : this.state.offices
-				});
-				console.log("added " + office);
-				this.setPageToShow("list");
-			}
+
+		if(result.success){
+
+			//add the office
+			this.state.offices[result.officeId]= office;
+			this.updateState({
+				offices : this.state.offices
+			});
+			//add show the list
+			this.setPageToShow("list");
+		}
 		});
 
 		return true;
