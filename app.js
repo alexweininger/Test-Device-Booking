@@ -34,8 +34,7 @@ app.get('/Offices', (req, res) => {
 
 
 app.use('/new_office', require('./routes/offices/new_office.js'));
-
-app.use('/edit_office', require('./routes/edit_office.js'));
+app.use('/edit_office', require('./routes/offices/edit_office.js'));
 
 
 app.get('/helloWorld', (req, res) => {
