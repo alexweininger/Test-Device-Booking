@@ -13,43 +13,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
-/* create one of three different mocked office datas
- * @param i which office data to return
- */
-function createMockOffice(i){
-	switch(i){
-		default:
-		case 1:
-			return {
-				id: 1,
-				country : "USA",
-				city : "Portland",
-				address : "5118 N Yale St."
-			};
-		case 2:
-			return {
-				id: 2,
-				country : "Lietuva",
-				city : "Vilnius",
-				address : "Zalgirio 135"
-			};
-		case 3:
-			return {
-				id: 3,
-				country : "Lietuva",
-				city : "Kaunas",
-				address : "Juozapaviciaus 11D"
-            };
-        case 4:
-            return {
-				id: 4,
-                country: "USA",
-                city: "Portland",
-                address: "Test Address"
-            };
-	}
-}
-
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems
  * @param props an object with properties for this office item including
@@ -78,11 +41,11 @@ class Offices extends React.Component {
 
 		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
 
-        this.getOfficesFromDb();
+  	this.getOfficesFromDb();
 
 		this.state= {
 			//an array of objects with data about each office
-            offices: offices,
+            offices: {},
 
 			//the current page to show, one of
 			//'list', 'info', 'new'
@@ -207,8 +170,6 @@ class Offices extends React.Component {
 	/* edit the office selected
 	 */
 	editOffice(office){
-
-
 		//TODO - no duplicate offices
 		//we must have all three properties
 		if(!office.country || !office.city || !office.address){
@@ -229,8 +190,7 @@ class Offices extends React.Component {
 		fetch(request).then(res => {
 			//if we successfully updated the DB
 			if(res.ok){
-				this.state.offices[this.state.officeToShow.id] = office;
-
+				this.getOfficesFromDb();
 				this.setPageToShow("info");
 			}
 		});
@@ -238,8 +198,8 @@ class Offices extends React.Component {
 		return true;
     }
 
-    /* Gets all the offices from the db, then updates the state.   
-     * If there is an error it will be displayed in the console 
+    /* Gets all the offices from the db, then updates the state.
+     * If there is an error it will be displayed in the console
      */
     getOfficesFromDb() {
         const request = new Request('/get_offices', {
@@ -323,10 +283,7 @@ class Offices extends React.Component {
          }
 
          this.setState(newState);
-         console.log(newState);
 	 }
 }
-
-// ========================================
 
 export default Offices;
