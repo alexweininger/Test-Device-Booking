@@ -191,6 +191,7 @@ class Offices extends React.Component {
 					offices : this.state.offices
 				});
 				
+				//add show the list
 				this.setPageToShow("list");
 			}
 		});
