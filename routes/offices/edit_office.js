@@ -19,6 +19,7 @@ router.post('/', (req, res) => {
 });
 
 function callBack(error, data){
+	console.log("Callback function");
 	console.log(error);
 	console.log(data);
 }
