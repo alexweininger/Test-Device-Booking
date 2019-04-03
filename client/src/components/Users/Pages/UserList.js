@@ -70,6 +70,9 @@ class CustomizedTable extends React.Component {
 			users: users
 		};
 		this.getUsers();
+		this.setUser = (index, user) => {
+			this.state.users[index] = user;
+		}
 		this.state.users = this.getUsers(); // later we will get this from the server
 	}
 	getUsers = () => {
@@ -98,6 +101,33 @@ class CustomizedTable extends React.Component {
 			.catch(err => {
 				//if we successfully updated the DB
 				console.log("Error in getUsers", err);
+				console.log("post failed");
+			});
+	};
+
+
+	editUsers = (index, newData) => {
+		console.log("editing users ");
+
+		const request = new Request("http://localhost:5000/users", {
+			method: "POST"
+		});
+
+		fetch(request)
+			.then(res => {
+				//if we successfully updated the DB
+				if (res.ok) {
+					//add the office
+					res.json().then(obj => {
+						this.setUser(index, newData);
+						console.log("updated edited user", this.state.users[index]);
+						return obj;
+					});
+				}
+			})
+			.catch(err => {
+				//if we successfully updated the DB
+				console.log("Error in editUsers", err);
 				console.log("post failed");
 			});
 	};
@@ -142,44 +172,45 @@ class CustomizedTable extends React.Component {
 					}}
 					editable={{
 						onRowAdd: newData =>
-						  new Promise((resolve, reject) => {
-							setTimeout(() => {
-							  {
-								//TODO Add push to database
-								const data = this.state.users;
-								data.push(newData);
-								this.setState({ data }, () => resolve());
-							  }
-							  resolve()
-							}, 1000)
-						  }),
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//TODO Add push to database
+										const data = this.state.users;
+										data.push(newData);
+										this.setState({ data }, () => resolve());
+									}
+									resolve()
+								}, 1000)
+							}),
 						onRowUpdate: (newData, oldData) =>
-						  new Promise((resolve, reject) => {
-							setTimeout(() => {
-							  {
-								//TODO push changes to database
-								const data = this.state.users;
-								const index = data.indexOf(oldData);
-								data[index] = newData;                
-								this.setState({ data }, () => resolve());
-							  }
-							  resolve()
-							}, 1000)
-						  }),
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//TODO push changes to database
+										const data = this.state.users;
+										const index = data.indexOf(oldData);
+										data[index] = newData;
+										this.setState({ data }, () => resolve());
+										this.editUsers(index, newData);
+									}
+									resolve()
+								}, 1000)
+							}),
 						onRowDelete: oldData =>
-						  new Promise((resolve, reject) => {
-							setTimeout(() => {
-							  {
-								  //Push changes to DB
-									let data = this.state.users;
-									const index = data.indexOf(oldData);
-									data.splice(index, 1);
-									this.setState({ data }, () => resolve());
-							}
-							  resolve()
-							}, 1000)
-						  }),
-						}}
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//Push changes to DB
+										let data = this.state.users;
+										const index = data.indexOf(oldData);
+										data.splice(index, 1);
+										this.setState({ data }, () => resolve());
+									}
+									resolve()
+								}, 1000)
+							}),
+					}}
 				/>
 			);
 		} else {
