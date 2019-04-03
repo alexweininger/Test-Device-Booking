@@ -76,7 +76,13 @@ class Offices extends React.Component {
 		this.addOffice = this.addOffice.bind(this);
 
 		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
-        
+
+        const test = this.getOfficesFromDb();
+
+        console.log(offices);
+        console.log("==============")
+        console.log(test);
+
 		this.state= {
 			//an array of objects with data about each office
             offices: offices,
@@ -92,18 +98,41 @@ class Offices extends React.Component {
     }
 
     getOfficesFromDb() {
-        fetch('/')
-        .then(function (response) {
-            if (response.status >= 400) {
-                throw new Error("Bad response from server");
-            }
-            return response.json();
-        }).then(function (data) {
-            console.log({ Offices: data });
-            return data;
-        }).catch(err => {
-            console.log('caught it!', err);
+        const request = new Request('/get_offices', {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
         });
+
+        // Create a list to return.
+        let rtrnList = {};
+
+        fetch(request).then(res => res.json()).then(result => {
+            //if success then update the office list
+            if (result.success) {
+                const officeList = result.offices;
+                // Reformat the offices by iterating through them all
+                let office, i;
+                for (i in officeList) {
+                    office = officeList[i];  // current office pointer
+                    rtrnList[i] = {
+                        id: office.id_Office,
+                        country: office.Country,
+                        city: office.City,
+                        address: office.Address
+                    };
+                }
+                console.log(rtrnList);
+                this.updateState({offices: rtrnList});
+            }
+            else {
+                console.log("Error");
+
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+        return rtrnList
     }
 
     setOffices(data) {
@@ -239,8 +268,8 @@ class Offices extends React.Component {
 	/* edit the office selected
 	 */
 	editOffice(office){
-		
-		
+
+
 		//TODO - no duplicate offices
 		//we must have all three properties
 		if(!office.country || !office.city || !office.address){
@@ -260,9 +289,9 @@ class Offices extends React.Component {
 		var officeId = this.state.officeToShow.id;
 		fetch(request).then(res => {
 			//if we successfully updated the DB
-			if(res.ok){	
+			if(res.ok){
 				this.state.offices[this.state.officeToShow.id] = office;
-				
+
 				this.setPageToShow("info");
 			}
 		});
@@ -314,9 +343,10 @@ class Offices extends React.Component {
 		 //make updates
 		 for(key in changes){
 			 newState[key]= changes[key];
-		 }
+         }
 
-		 this.setState(newState);
+         this.setState(newState);
+         console.log(newState);
 	 }
 }
 
