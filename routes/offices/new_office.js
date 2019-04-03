@@ -8,23 +8,30 @@ router.post('/', (req, res) => {
 	
 	//TODO make sure the office is unique
 	
-	let query= 'INSERT INTO office (Country, City, Address) ' +
-			   'VALUES ({country}, {city}, {address});';
+	let query= "INSERT INTO office (Country, City, Address) " +
+			   "VALUES ('{country}', '{city}', '{address}');";
 	
 	query= query.replace('{country}', office.country)
 		   .replace('{city}', office.city)
 		   .replace('{address}', office.address);
 	
-	console.log(query);
-	
-	db.dbqueryPromise(query).then(results => {
-		console.log(results);
+	db.dbqueryPromise(query).then(results => {;
+		
+		res.json({
+			success : true,
+			officeId : results.insertId
+		});
+		
 	}).catch(err => {
-		console.log("There was an error:");
+		console.log("There was an error inserting a new office:");
+		console.log("---------------------------------");
 		console.log(err);
+		console.log("---------------------------------");
+		
+		res.json({
+			success : false
+		});
 	});
-				
-	res.sendStatus(200);
 });
 
 module.exports= router;
