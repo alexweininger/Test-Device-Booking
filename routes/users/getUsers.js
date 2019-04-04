@@ -63,3 +63,8 @@ module.exports = router;
 
 // 	INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
 // VALUES ('Niraj', 'Mali', 'nirajmali@aol.com', 'everest', '303', '003', '0', '*********');
+
+// INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
+// VALUES ('Andrew', 'Lang', 'andrew_lang_98@hotmail.com', 'langa', '305', '003', '0', '*********'),
+//  ('Benji', 'Dog', 'benjithedog@hotmail.com', 'benji', '306', '003', '0', '*********'),
+//  ('Big', 'Chungus', 'chugus@big.com', 'chugus', '307', '003', '0', '*********');
