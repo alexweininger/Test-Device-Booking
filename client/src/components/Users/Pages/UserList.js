@@ -1,18 +1,19 @@
+import { Link, Route, BrowserRouter as Router } from "react-router-dom";
+
+import Avatar from "react-avatar";
+import MaterialTable from "material-table";
+import Paper from "@material-ui/core/Paper";
+import Paragraph from "react";
+import ProfileTable from "./User";
+import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Paragraph from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import MaterialTable from "material-table";
-import Avatar from "react-avatar";
-import ProfileTable from "./User";
+import { withStyles } from "@material-ui/core/styles";
 
 const CustomTableCell = withStyles(theme => ({
 	head: {
@@ -69,6 +70,9 @@ class CustomizedTable extends React.Component {
 			users: users
 		};
 		this.getUsers();
+		this.setUser = (index, user) => {
+			this.state.users[index] = user;
+		}
 		this.state.users = this.getUsers(); // later we will get this from the server
 	}
 	getUsers = () => {
@@ -97,6 +101,33 @@ class CustomizedTable extends React.Component {
 			.catch(err => {
 				//if we successfully updated the DB
 				console.log("Error in getUsers", err);
+				console.log("post failed");
+			});
+	};
+
+
+	editUsers = (index, newData) => {
+		console.log("editing users ");
+
+		const request = new Request("http://localhost:5000/users", {
+			method: "POST"
+		});
+
+		fetch(request)
+			.then(res => {
+				//if we successfully updated the DB
+				if (res.ok) {
+					//add the office
+					res.json().then(obj => {
+						this.setUser(index, newData);
+						console.log("updated edited user", this.state.users[index]);
+						return obj;
+					});
+				}
+			})
+			.catch(err => {
+				//if we successfully updated the DB
+				console.log("Error in editUsers", err);
 				console.log("post failed");
 			});
 	};
@@ -138,6 +169,47 @@ class CustomizedTable extends React.Component {
 					options={{
 						columnsButton: true,
 						exportButton: true
+					}}
+					editable={{
+						onRowAdd: newData =>
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//TODO Add push to database
+										const data = this.state.users;
+										data.push(newData);
+										this.setState({ data }, () => resolve());
+									}
+									resolve()
+								}, 1000)
+							}),
+						onRowUpdate: (newData, oldData) =>
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//TODO push changes to database
+										const data = this.state.users;
+										const index = data.indexOf(oldData);
+										data[index] = newData;
+										this.setState({ data }, () => resolve());
+										this.editUsers(index, newData);
+									}
+									resolve()
+								}, 1000)
+							}),
+						onRowDelete: oldData =>
+							new Promise((resolve, reject) => {
+								setTimeout(() => {
+									{
+										//Push changes to DB
+										let data = this.state.users;
+										const index = data.indexOf(oldData);
+										data.splice(index, 1);
+										this.setState({ data }, () => resolve());
+									}
+									resolve()
+								}, 1000)
+							}),
 					}}
 				/>
 			);
