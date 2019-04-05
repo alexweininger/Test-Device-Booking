@@ -36,7 +36,7 @@ module.exports = function(passport) {
 				passReqToCallback: true
 			},
 
-			function(req, firstName, lastName, slackUsername, email, slackUsername, id, officeId, role, password, done) {
+			function(req, firstName, lastName, email, slackUsername, id, officeId, role, password, done) {
 				connection.query("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
 					if (err) return done(err);
 
