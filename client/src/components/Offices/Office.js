@@ -39,7 +39,7 @@ class Offices extends React.Component {
 		this.editOffice = this.editOffice.bind(this);
 		this.addOffice = this.addOffice.bind(this);
 
-		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
+		//const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
 
   	this.getOfficesFromDb();
 
@@ -93,8 +93,9 @@ class Offices extends React.Component {
                     </TableHead>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
-							{Object.keys(this.state.offices).map(officeID => this.renderOffice(this.state.offices[officeID],i++))}
-								{/*{this.state.offices.keys.map(office => this.renderOffice(office,i++))}*/}
+							{Object.keys(this.state.offices).map(officeID => 
+								this.renderOffice(this.state.offices[officeID],i++))};
+								
 					</TableBody>
 				</Table>
 				{/*when the new office button is clicked, go to new office page*/}
@@ -135,10 +136,8 @@ class Offices extends React.Component {
 	/* add the given office to the database
 	 */
 	addOffice(office){
-		//TODO - no duplicate offices
-		//we must have all three properties
-		if(!office.country || !office.city || !office.address){
-			console.log("bad office");
+		console.log("callded_");
+		if(!this.officeCanBeAdded(office)){
 			return false;
 		}
 
@@ -152,18 +151,46 @@ class Offices extends React.Component {
 		fetch(request).then(res => res.json()).then(result => {
 			//if we successfully updated the DB
 
-		if(result.success){
-
-			//add the office
-			this.state.offices[result.officeId]= office;
-			this.updateState({
-				offices : this.state.offices
-			});
-			//add show the list
-			this.setPageToShow("list");
-		}
+			if(result.success){
+				//add the office
+				office.id= result.officeId;
+				this.state.offices[result.officeId]= office;
+				this.updateState({
+					offices : this.state.offices
+				});
+			}
 		});
 
+		return true;
+	}
+	
+	/* return whether this office is a valid office to add to the list
+	 * checks that each entry is non-null, 
+	 * and that this is not a duplicate office
+	 */
+	officeCanBeAdded(office){
+		//we must have all three properties
+		if(!office.country || !office.city || !office.address){
+			return false;
+		}
+		
+		let country= office.country.trim().toLowerCase();
+		let city= office.city.trim().toLowerCase();
+		let address= office.address.trim().toLowerCase().replace('.',"");
+		
+		//check if this entry office is already in the list
+		for(let officeId in this.state.offices){
+			let currOffice= this.state.offices[officeId];
+			
+			//if this office matches the input office
+			if(country == currOffice.country.trim().toLowerCase()
+				&& city == currOffice.city.trim().toLowerCase()
+				&& address == currOffice.address.trim().toLowerCase().replace('.','')){
+				
+				return false;
+			}
+		}
+		
 		return true;
 	}
 

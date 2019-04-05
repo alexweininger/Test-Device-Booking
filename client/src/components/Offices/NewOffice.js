@@ -9,48 +9,71 @@ class NewOffice extends React.Component {
 		super(props);
 		
 		this.state= {
-			country : "USA",
-			city : "Portland",
-			address : "32945"
+			office : {
+				country : "USA",
+				city : "Portland",
+				address : "32945"
+			},
+			message : null
 		};
 	}
 	
 	render(){
 		return (
 			<div>
-				<Typography variant= {'headline'}>
+				<Typography variant= {'h4'}>
 					Add New Office
 				</Typography>
 				<TextField label={"Country"}
-							defaultValue= {this.state.country}
-						   onChange= {event => this.updateState('country', event)} />
+							defaultValue= {this.state.office.country}
+						   onChange= {event => this.updateOffice('country', event)} />
 				<TextField label={"City"}
-							defaultValue= {this.state.city}
-						   onChange= {event => this.updateState('city', event)} />
+							defaultValue= {this.state.office.city}
+						   onChange= {event => this.updateOffice('city', event)} />
 				<TextField label={"Address"}
-							defaultValue= {this.state.address}
-						   onChange= {event => this.updateState('address', event)} />
+							defaultValue= {this.state.office.address}
+						   onChange= {event => this.updateOffice('address', event)} />
 				
 				<div />
 				
-				<Button onClick= {() => this.props.addOffice(this.state)}>
+				<Button onClick= {() => this.addOffice()}>
 					Create
 				</Button>
 				<Button onClick= {() => this.props.returnToList()}>
 					Cancel
 				</Button>
+				<Typography variant= {'body1'}>
+					{this.state.message}
+				</Typography>
 			</div>
 		);
+   }
+   
+   addOffice(){
+	   //attempt to add this office
+	   let success= this.props.addOffice(this.state.office);
+	   
+	   //if we added the office, go back to the list
+	   if(success){
+		  this.props.returnToList(); 
+	   }
+	   //otherwise, show the error message
+	   else{
+		   this.setState({
+			   office : this.state.office,
+			   message : 'Invalid Office'
+		   });
+	   }
    }
    
    /* update the state to reflect that a field should be changed
     * be the given event
     * the component does not need to be rerendered
 	*/
-   updateState(field, event){
+   updateOffice(field, event){
 	   //this gives a warning, but ignore it because the state
 	   //is not used for rendering
-	   this.state[field]= event.target.value;
+	   this.state.office[field]= event.target.value;
    }
 }
 

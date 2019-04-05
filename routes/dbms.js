@@ -57,7 +57,7 @@ function dbquery(query_str, callback) {
         function (rows, fields, callback) {
             //console.log('\n** dumping data:');
             results = rows;
-            console.log('' + rows);
+            //console.log('' + rows);
             callback(null);
         }
 
