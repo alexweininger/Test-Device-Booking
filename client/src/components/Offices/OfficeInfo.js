@@ -14,7 +14,11 @@ import EditOffice from './EditOffice';
 class OfficeInfo extends React.Component{
 	constructor(props) {
 		super(props);
-		this.state = {pageToShow : "info"}
+		this.state = {
+						pageToShow : "info",
+						office: this.props.office
+					}
+		this.updateOfficeInfo = this.updateOfficeInfo.bind(this);
 	}
 	
 	//sets state variable pageToShow to page
@@ -25,7 +29,12 @@ class OfficeInfo extends React.Component{
 		this.setState(newState);
 	}
 		
-
+	updateOfficeInfo(office){
+		
+		//call update state
+		this.updateState(office);
+		this.props.editOffice(office);
+	}
 	//returns Office Info page
 	renderOfficeInfo(){
 		return (
@@ -39,15 +48,15 @@ class OfficeInfo extends React.Component{
 					<tbody>
 						<tr>
 							<td className= "label">Country:</td>
-							<td className= "data">{this.props.office.country}</td>
+							<td className= "data">{this.state.office.country}</td>
 						</tr>
 						<tr>
 							<td className= "label">City:</td>
-							<td className= "data">{this.props.office.city}</td>
+							<td className= "data">{this.state.office.city}</td>
 						</tr>
 						<tr>
 							<td className= "label">Address:</td>
-							<td className= "data">{this.props.office.address}</td>
+							<td className= "data">{this.state.office.address}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -65,8 +74,10 @@ class OfficeInfo extends React.Component{
 				return this.renderOfficeInfo();
 			case 'edit':
 				return (
-					<EditOffice office = {this.props.office}
-						returnToInfo= {() => this.setPageToShow('info')}/>
+					<EditOffice office = {this.state.office}
+						returnToInfo= {() => this.setPageToShow('info')} 
+						updateOfficeInfo = {this.updateOfficeInfo}
+					/>
 				);
 			default:
 				return (
@@ -77,7 +88,17 @@ class OfficeInfo extends React.Component{
 				);
 		}
 	};
+	
+	updateState(officeUpdate){
+		 //copy the state
+		 var newState= {
+				pageToShow : "info",
+				office: officeUpdate
+		};
+		 
 		
+		this.setState(newState);
+	 }
 }
 
 
