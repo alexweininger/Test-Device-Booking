@@ -1,0 +1,32 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+}
+
+TableHeader {
+    font: 16px "Contury Gothic", Futura, sans-serif;
+    background-color: crimson;
+}
+
+
+
+.officeItem:hover {
+	background-color: #eeeeee;
+}
+
+.label {
+	color: #7B7B7B;
+	font-weight: bold;
+}
+
+.space {
+	padding-top: 30px;
+}
+
+.box{
+	border: 1px solid #999;
+}
+
+td {
+	padding-left: 20px;
+}
+
