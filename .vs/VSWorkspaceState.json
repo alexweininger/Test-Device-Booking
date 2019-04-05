@@ -3,10 +3,8 @@
     "",
     "\\client",
     "\\client\\src\\components",
-    "\\client\\src\\components\\Offices",
-    "\\client\\src\\components\\Offices\\Pages",
-    "\\routs"
+    "\\client\\tests"
   ],
-  "SelectedNode": "\\client\\package-lock.json",
+  "SelectedNode": "\\client\\tests\\Office.test.js",
   "PreviewInSolutionExplorer": false
 }

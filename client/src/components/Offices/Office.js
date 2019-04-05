@@ -240,20 +240,11 @@ class Offices extends React.Component {
         fetch(request).then(res => res.json()).then(result => {
             //if success then update the office list
             if (result.success) {
+               
                 const officeList = result.offices;
-                // Reformat the offices by iterating through them all
-                let office, i;
-                for (i in officeList) {
-                    office = officeList[i];  // current office pointer
-                    rtrnList[i] = {
-                        id: office.id_Office,
-                        country: office.Country,
-                        city: office.City,
-                        address: office.Address
-                    };
-                }
-                console.log(rtrnList);
-                this.updateState({ offices: rtrnList });
+                
+                console.log(officeList);
+                this.updateState({ offices: officeList });
             }
             else {
                 console.log("Error");

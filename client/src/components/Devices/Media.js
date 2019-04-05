@@ -32,8 +32,12 @@ function MediaCard(props) {
           <Typography gutterBottom variant="h5" component="h2">
             Samsung Galaxy
           </Typography>
-          <Typography component="p">
-            Identification number: 123456789 OS: macOS Location: Kaunas
+                  <Typography component="p">
+                      {`
+                      Identification number: 123456789,\n
+                      OS: macOS,
+                      Location: Kaunas
+                      `}
           </Typography>
         </CardContent>
       </CardActionArea>
