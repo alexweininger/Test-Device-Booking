@@ -39,7 +39,7 @@ class Offices extends React.Component {
 		this.editOffice = this.editOffice.bind(this);
 		this.addOffice = this.addOffice.bind(this);
 
-		const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
+		//const offices = {1: createMockOffice(1), 2: createMockOffice(2), 3: createMockOffice(3), 4: createMockOffice(4)}
 
   	this.getOfficesFromDb();
 

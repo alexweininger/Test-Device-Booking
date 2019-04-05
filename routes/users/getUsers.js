@@ -10,7 +10,7 @@ router.post('/', function (req, res) {
 	console.log('getUsers: request recieved');
 
 	// make call to db to get all users
-	dbms.dbquery('Select * from Users;', (err, results) => {
+	dbms.dbquery('Select * from user;', (err, results) => {
 		if (err) {
 			console.error(err);
 			res.status(400).send(err);
