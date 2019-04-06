@@ -68,7 +68,7 @@ let getUsersRouter = require('./routes/users/getUsers');
 let newUserRouter = require('./routes/users/newUser');
 
 app.use('/users', getUsersRouter);
-app.use('/new_user', newUserRouter);
+app.use('/new_user', newUserRouter.router);
 
 // parse cookies from the browser
 app.use(cookieParser());

@@ -13,8 +13,6 @@ router.post('/', (req, res) => {
 
 	const err = isValidUser(user);
 
-	let err = isValidUser(user);
-
 	if (err) {
 		res.status(400).send(err);
 	} else {
@@ -30,11 +28,13 @@ router.post('/', (req, res) => {
 	}
 });
 
+
+// validates that the initial user profile is set up
 function isValidUser(user) {
 	if (!user) {
 		return 'User is not defined.';
 	}
-	const keys = ['lastName', 'firstName'];
+	const keys = ['lastName', 'firstName', 'email', 'id', 'officeId'];
 	let err;
 	keys.forEach((key) => {
 		if (!user[key]) {
@@ -56,4 +56,4 @@ function isValidUser(user) {
 // }
 //
 
-module.exports = router;
+module.exports = {router, isValidUser};
