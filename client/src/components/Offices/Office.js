@@ -94,7 +94,7 @@ class Offices extends React.Component {
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
 							{Object.keys(this.state.offices).map(officeID => 
-								this.renderOffice(this.state.offices[officeID],i++))};
+								this.renderOffice(this.state.offices[officeID],i++))}
 								
 					</TableBody>
 				</Table>
