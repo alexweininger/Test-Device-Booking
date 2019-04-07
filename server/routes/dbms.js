@@ -1,4 +1,4 @@
-/**
+/*
  * dbms.js
  *
  * This file contains functions for accessing the MySQL database
