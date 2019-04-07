@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
         let office, i;
         let rtrnOffices = {};
         for (i in results) {
-            rtrnOffices[i] = {
+			//map by office id
+            rtrnOffices[results[i].id_Office] = {
                 id: results[i].id_Office,
                 country: results[i].Country,
                 city: results[i].City,
