@@ -16,6 +16,11 @@ router.post('/', (req, res) => {
 	if (err) {
 		res.status(400).send(err);
 	} else {
+
+		if (user.role === undefined) {
+			user.role = 0;
+		}
+
 		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)';
 		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.id}', '${user.officeId}', '${user.role}');`
 		dbms.dbquery(insert + values, (err, results) => {
