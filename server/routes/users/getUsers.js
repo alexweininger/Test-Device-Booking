@@ -3,9 +3,6 @@ const bodyParser = require("body-parser");
 var express = require('express');
 const dbms = require('../dbms');
 
-const express = require('express');
-const dbms = require('./dbms');
-
 const router = express.Router();
 
 function SQLArrayToJSON(sql, callback) {

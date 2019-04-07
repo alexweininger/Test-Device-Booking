@@ -46,21 +46,23 @@ app.use(express.static(__dirname + '/client/public'));
 // body parser for post requests
 app.use(bodyParser.json());
 
-const officeQuery = "SELECT * FROM Devices.office;";
+
+app.use('/new_office', require('./routes/offices/new_office.js'));
+app.use('/edit_office', require('./routes/offices/edit_office.js'));
+app.use('/get_offices', require('./routes/offices/get_offices.js'));
+
+const officeQuery = 'SELECT * FROM Devices.office;';
 
 app.get('/Offices', (req, res) => {
-  connection.query(officeQuery, (err, results) => {
-    if (err) {
-      return res.send(err);
-    } else {
-      return res.json({
-        data: results
-      });
-    }
-  });
+	connection.query(officeQuery, (err, results) => {
+		if (err) {
+			return res.send(err);
+		}
+		return res.json({
+			data: results,
+		});
+	});
 });
-
-app.use('/new_office', require('./routes/new_office.js'));
 
 let getUsersRouter = require('./routes/users/getUsers');
 let newUserRouter = require('./routes/users/newUser');
