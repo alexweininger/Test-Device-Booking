@@ -1,17 +1,30 @@
-"use strict";
-const bodyParser = require("body-parser");
-var express = require('express');
+const bodyParser = require('body-parser');
+const express = require('express');
 
-var router = express.Router();
+const router = express.Router();
+
+function isValidUser(user) {
+	if (!user) {
+		return 'User is not defined.';
+	}
+	const keys = ['lastName', 'firstName'];
+	let err;
+	keys.forEach((key) => {
+		if (!user[key]) {
+			err = `user.${key} is not defined.`;
+		}
+	});
+	return err;
+}
 
 // parse any type of request using bodyParser.json
 router.use(bodyParser.json({ type: '*/*' }));
 
 // Handles requests to create a new user.
-router.post('/', function (req, res) {
+router.post('/', (req, res) => {
 	const user = req.body;
 
-	let err = isValidUser(user);
+	const err = isValidUser(user);
 
 	if (err) {
 		res.status(400).send(err);
@@ -31,19 +44,5 @@ router.post('/', function (req, res) {
 // password: ''
 // }
 //
-
-function isValidUser(user) {
-	if (!user) {
-		return 'User is not defined.';
-	}
-	const keys = ['lastName', 'firstName', ];
-	let err;
-	keys.forEach(key => {
-		if (!user[key]) {
-			err = `user.${key} is not defined.`;
-		}
-	});
-	return err;
-}
 
 module.exports = router;
