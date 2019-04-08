@@ -1,20 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import './Login.css';
+
+import * as request from 'request';
+
+import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import Header from '../../Layout/Header'
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import './Login.css';
-import Header from '../../Layout/Header'
+import PropTypes from 'prop-types';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import * as request from 'request';
+import SwipeableViews from 'react-swipeable-views';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 function TabContainer({ children, dir }) {
     return (
@@ -103,6 +105,7 @@ class FullWidthTabs extends React.Component {
             <main className={classes.main}>
                 <div>
                     <Header />
+
                 </div>
                 <div className={classes.root}>
                     <AppBar position="static" color="default">
@@ -125,7 +128,7 @@ class FullWidthTabs extends React.Component {
                     >
                         <TabContainer dir={theme.direction}>
                             <Paper className={classes.paper}>
-                                <form className={classes.form}>
+                                <form className={classes.form} >
                                     <h1>
                                         Welcome back!
                                      </h1>
@@ -134,18 +137,19 @@ class FullWidthTabs extends React.Component {
                                     </h5>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="username">Username</InputLabel>
-                                        <Input id="username" name="username" autoComplete="username" />
+                                        <Input id="username" name="username" autoComplete="username" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input name="password" type="password" id="password" autoComplete="current-password" />
+                                        <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
-                                        type="submit"
+                                        type=""
                                         fullWidth
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
+                                        onClick={() => this.loginUser(this.state)}
                                     >
                                         Log In
                                     </Button>
@@ -157,7 +161,7 @@ class FullWidthTabs extends React.Component {
                         </TabContainer>
                         <TabContainer dir={theme.direction}>
                             <Paper className={classes.paper}>
-                                <form className={classes.form} onSubmit={this.createAccountHandler} >
+                                <form className={classes.form} onSubmit={this.createAccountHandler}  >
                                     <h3>
                                         Enter your details below to create your account:
                                     </h3>
@@ -210,6 +214,32 @@ class FullWidthTabs extends React.Component {
                 </div>
             </main >
         );
+    }
+
+    loginUser(user) {
+
+        var data = "username=nirajmali%40aol.com&password=*********&undefined=";
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log('request response text: ', this.response);
+        }
+        });
+
+        xhr.open("POST", "http://localhost:5000/login");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.setRequestHeader('mode', 'no-cors');
+        xhr.setRequestHeader('credentials', 'omit');
+        xhr.setRequestHeader('redirecnt', 'follow');
+        xhr.getResponseHeader('Set-Cookie');
+        xhr.send(data);
+
+
+        return true;
     }
 
     addUser(user) {

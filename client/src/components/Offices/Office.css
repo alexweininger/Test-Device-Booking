@@ -2,6 +2,11 @@ body {
   font: 14px "Century Gothic", Futura, sans-serif;
 }
 
+TableHeader {
+    font: 16px "Contury Gothic", Futura, sans-serif;
+    background-color: crimson;
+}
+
 
 
 .officeItem:hover {

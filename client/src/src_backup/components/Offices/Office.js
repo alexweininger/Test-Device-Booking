@@ -1,17 +1,21 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-
 import './Office.css';
 
-import OfficeInfo from './OfficeInfo.js';
-import NewOffice from './NewOffice';
-
-//material UI imports
 import Button from '@material-ui/core/Button';
+import NewOffice from './NewOffice';
+import OfficeInfo from './OfficeInfo.js.js';
+import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import renderer from 'react-test-renderer';
+
+//material UI imports
+
+
+
+
+
 
 /* create one of three different mocked office datas
  * @param i which office data to return
@@ -69,34 +73,34 @@ function OfficeItem(props) {
 class Offices extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		/*const request = new Request('/poop',{
 			method: 'POST',
 			body: JSON.stringify({foo: "bar"}),
 			headers: {"Content-Type": "application/json"}
 		});
-			
+
 		fetch(request).then(res => res.text()).then(text => {
 			console.log(text);
 			this.updateState({pageToShow : 'other'});
 		});*/
 
         const offices = [createMockOffice(1), createMockOffice(2), createMockOffice(3), createMockOffice(4)]
-		
+
 		this.state= {
 			//an array of objects with data about each office
             offices: offices,
-			
+
 			//the current page to show, one of
 			//'list', 'info', 'new'
 			pageToShow : 'list',
-			
+
 			//the office to currently display details for
 			//iff pageToShow == 'info'
 			officeToShow : null
 		}
     }
-	
+
 	/* render a single office list entry
 	 * @param office the data for this list entry to display
 	 * @param i a key for iterating these list entries
@@ -112,7 +116,7 @@ class Offices extends React.Component {
 						onClick= {() => this.setOfficeToShow(office)}/>
 		);*/
 	}
-	
+
 	/* render the entire list of offices as a table */
 	renderOfficeList(){
 		let i= 0;
@@ -131,8 +135,8 @@ class Offices extends React.Component {
 			</div>
 		);
 	}
-	
-	render(){		
+
+	render(){
 		switch(this.state.pageToShow){
 			case 'list':
 				return this.renderOfficeList();
@@ -155,7 +159,7 @@ class Offices extends React.Component {
 				);
 		}
 	}
-	
+
 	/* add the given office to the database
 	 */
 	addOffice(office){
@@ -165,14 +169,14 @@ class Offices extends React.Component {
 			console.log("bad office");
 			return false;
 		}
-		
+
 		//send office to the DB
 		const request = new Request('/new_office',{
 			method: 'POST',
 			body: JSON.stringify(office),
 			headers: {"Content-Type": "application/json"}
 		});
-		
+
 		fetch(request).then(res => {
 			//if we successfully updated the DB
 			if(res.ok){
@@ -183,14 +187,14 @@ class Offices extends React.Component {
 				console.log("added " + office);
 			}
 		});
-		
+
 		return true;
 	}
-	
+
 	setOffices(offices) {
         this.updateState({offices : offices});
     }
-	
+
 	/* set the office to display details for
 	 * also sets  pageToShow to 'info'
 	 * @param office the office object for which the details page
@@ -202,7 +206,7 @@ class Offices extends React.Component {
 			pageToShow : 'info'
 		});
 	}
-	
+
 	/* set the page to show
 	 * @param page should be one of
 				'list' - show the list
@@ -212,7 +216,7 @@ class Offices extends React.Component {
 	 setPageToShow(page){
 		 this.updateState({pageToShow : page});
 	 }
-	 
+
 	 /* set the new state, changing only those pieces of state passed in
 	  * as an object 'changes', i.e, to change just offices, call
 	  * updateState({offices : newOffices}),
@@ -222,12 +226,12 @@ class Offices extends React.Component {
 	 updateState(changes){
 		 //copy the state
 		 var newState= {};
-		 
+
 		 let key;
 		 for(key in this.state){
 			 newState[key]= this.state[key];
 		 }
-		 
+
 		 //make updates
 		 for(key in changes){
 			 newState[key]= changes[key];
@@ -240,4 +244,3 @@ class Offices extends React.Component {
 // ========================================
 
 export default Offices;
-

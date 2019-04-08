@@ -1,8 +1,8 @@
-/**
+/*
  * dbms.js
  *
  * This file contains functions for accessing the MySQL database
- * which contains the Cheesecake order data.
+ * which contains tables for devices, users, offices, etc.
  *
  */
 
@@ -13,10 +13,9 @@ var mysql = require('mysql'),
     async = require('async');
 
 var host = '35.185.195.184';  //from GCloud instance (this may change)
-var database = 'Users';
+var database = 'Devices';
 var user = 'student';
 var password = 'student';
-var dbclient;
 
 /**
  * dbquery
@@ -29,15 +28,15 @@ var dbclient;
  *                   error - (or 'false' if none)
  *                   results - as given by the mysql client
  */
-exports.dbquery = function(query_str, callback) {
-
+function dbquery(query_str, callback) {
+	var dbclient;
     var results = null;
 
     async.waterfall([
 
         //Step 1: Connect to the database
         function (callback) {
-            console.log('\n** creating connection.');
+            //console.log('\n** creating connection.');
             dbclient = mysql.createConnection({
                 host: host,
                 user: user,
@@ -50,15 +49,15 @@ exports.dbquery = function(query_str, callback) {
 
         //Step 2: Issue query
         function (results, callback) {
-            console.log('\n** retrieving data');
+            //console.log('\n** retrieving data');
             dbclient.query(query_str, callback);
         },
 
         //Step 3: Collect results
         function (rows, fields, callback) {
-            console.log('\n** dumping data:');
+            //console.log('\n** dumping data:');
             results = rows;
-            console.log('' + rows);
+            //console.log('' + rows);
             callback(null);
         }
 
@@ -66,17 +65,42 @@ exports.dbquery = function(query_str, callback) {
     // waterfall cleanup function
     function (err, res) {
         if (err) {
-            console.log('Database query failed.');
-            console.log(err);
+            //console.log('Database query failed.');
+            //console.log(err);
             callback(err, null);
         } else {
-            console.log('Database query completed.');
+            //console.log('Database query completed.');
             callback(false, results);
         }
 
         //close connection to database
-        // dbclient.end();
+        //dbclient.end();
 
     });
 
 }
+
+/** alternative way to query the database using a Promise as opposed
+  * to a callback function.
+  *
+  * @param query_str the query to perform (e.g., 'SELECT * FROM ...')
+  * @return a Promise that will be resolved with the results of the db query
+			or rejected with the error
+  */
+function dbqueryPromise(query_str){
+	return new Promise(function(resolve, reject){
+		dbquery(query_str, function(err, results){
+			//if there is an error, reject the promise
+			if(err){
+				reject(err);
+			}
+			//otherwise, resolve it with the results from the query
+			else{
+				resolve(results);
+			}
+		});
+	});
+}
+
+exports.dbquery = dbquery;
+exports.dbqueryPromise= dbqueryPromise;

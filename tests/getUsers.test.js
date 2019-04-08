@@ -3,8 +3,8 @@ module.exports = require("babel-jest").createTransformer({
   });
 
 const request = require('supertest');
-const app = require('../app');
-var getUsers = require('../routes/users/getUsers');
+const app = require('../server/app');
+var getUsers = require('../server/routes/users/getUsers');
 
 describe('Tests if the server started successfully', () => {
     test('It should response the GET method', () => {

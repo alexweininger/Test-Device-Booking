@@ -1,16 +1,28 @@
-"use strict";
 const bodyParser = require("body-parser");
 var express = require('express');
-const dbms = require('./dbms');
+const dbms = require('../dbms');
 
-var router = express.Router();
+const router = express.Router();
+
+function SQLArrayToJSON(sql, callback) {
+	const arr = [];
+	Object.keys(sql).forEach((key) => {
+		const rowObj = {};
+		const row = sql[key];
+		Object.keys(row).forEach((keyc) => {
+			rowObj[keyc] = row[keyc];
+		});
+		arr.push(rowObj);
+	});
+	callback(arr);
+}
 
 // respond with "hello world" when a GET request is made to the homepage
-router.post('/', function (req, res) {
+router.post('/', (req, res) => {
 	console.log('getUsers: request recieved');
 
 	// make call to db to get all users
-	dbms.dbquery('Select * from Users;', (err, results) => {
+	dbms.dbquery('Select * from user;', (err, results) => {
 		if (err) {
 			console.error(err);
 			res.status(400).send(err);
@@ -22,29 +34,6 @@ router.post('/', function (req, res) {
 		}
 	});
 });
-
-// make sure id is an admin id
-function isValidId(id) {
-	if (!id) {
-		return 'No id was provided in the body of the http request.';
-	}
-	let err;
-	return err;
-}
-
-function SQLArrayToJSON(sql, callback) {
-	let arr = [];
-	Object.keys(sql).forEach(function (key) {
-		let rowObj = {};
-		var row = sql[key];
-		Object.keys(row).forEach(function (keyc) {
-			var col = row[keyc];
-			rowObj[keyc] = row[keyc];
-		});
-		arr.push(rowObj);
-	});
-	callback(arr);
-}
 
 module.exports = router;
 
@@ -63,3 +52,8 @@ module.exports = router;
 
 // 	INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
 // VALUES ('Niraj', 'Mali', 'nirajmali@aol.com', 'everest', '303', '003', '0', '*********');
+
+// INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
+// VALUES ('Andrew', 'Lang', 'andrew_lang_98@hotmail.com', 'langa', '305', '003', '0', '*********'),
+//  ('Benji', 'Dog', 'benjithedog@hotmail.com', 'benji', '306', '003', '0', '*********'),
+//  ('Big', 'Chungus', 'chugus@big.com', 'chugus', '307', '003', '0', '*********');
