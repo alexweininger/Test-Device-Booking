@@ -44,6 +44,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.2",
     "icons": "^1.0.0",
+    "material-table": "^1.30.0",
     "react-swipeable-views": "^0.13.1"
   },
   "jest": {
