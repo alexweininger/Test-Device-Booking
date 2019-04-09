@@ -50,6 +50,8 @@ app.use(bodyParser.json());
 app.use('/new_office', require('./routes/offices/new_office.js'));
 app.use('/edit_office', require('./routes/offices/edit_office.js'));
 app.use('/get_offices', require('./routes/offices/get_offices.js'));
+app.use('/get_devices', require('./routes/devices/get_devices.js'));
+app.use('/add_device', require('./routes/devices/add_device.js'));
 
 const officeQuery = 'SELECT * FROM Devices.office;';
 
