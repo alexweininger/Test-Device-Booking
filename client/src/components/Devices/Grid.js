@@ -44,13 +44,13 @@ function TitlebarGridList(props) {
       <GridList className={classes.gridList} cols={3} cellHeight={100}>
         <GridListTile key="Subheader" cols={3} style={{ height: 20 }} />
         <Media />
-        {/* <Media />
         <Media />
         <Media />
         <Media />
         <Media />
         <Media />
-        <Media /> */}
+        <Media />
+        <Media />
       </GridList>
     </div>
   );
