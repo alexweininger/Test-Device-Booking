@@ -42,7 +42,9 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "date-fns": "^1.30.1",
     "express": "^4.16.2",
+<<<<<<< HEAD
     "express-session": "^1.15.6",
     "material-table": "^1.27.2",
     "morgan": "^1.9.1",
@@ -50,6 +52,10 @@
     "passport-local": "^1.0.0",
     "prop-types": "^15.7.2",
     "react-avatar": "^3.6.0",
+=======
+    "icons": "^1.0.0",
+    "material-table": "^1.30.0",
+>>>>>>> master
     "react-swipeable-views": "^0.13.1"
   },
   "jest": {
