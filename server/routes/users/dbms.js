@@ -13,7 +13,7 @@ const mysql = require('mysql');
 const async = require('async');
 
 const host = '35.185.195.184'; // from GCloud instance (this may change)
-const database = 'Users';
+const database = 'Devices';
 const user = 'student';
 const password = 'student';
 let dbclient;
@@ -62,18 +62,18 @@ exports.dbquery = (queryString, callback) => {
     },
 
   ],
-  // waterfall cleanup function
-  (err, res) => {
-    if (err) {
-      console.log('Database query failed.');
-      console.log(err);
-      callback(err, null);
-    } else {
-      console.log('Database query completed.');
-      callback(false, results);
-    }
+    // waterfall cleanup function
+    (err, res) => {
+      if (err) {
+        console.log('Database query failed.');
+        console.log(err);
+        callback(err, null);
+      } else {
+        console.log('Database query completed.');
+        callback(false, results);
+      }
 
-    // close connection to database
-    // dbclient.end();
-  });
+      // close connection to database
+      // dbclient.end();
+    });
 };

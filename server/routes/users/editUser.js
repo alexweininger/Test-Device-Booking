@@ -50,7 +50,7 @@ function isValidUser(user) {
 	if (!user) {
 		return 'User is not defined.';
 	}
-	const keys = ['lastName', 'firstName', ];
+	const keys = ['lastName', 'firstName',];
 	let err;
 	keys.forEach(key => {
 		if (!user[key]) {

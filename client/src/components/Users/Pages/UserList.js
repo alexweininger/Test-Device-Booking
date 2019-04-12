@@ -67,7 +67,8 @@ class CustomizedTable extends React.Component {
 		super(props);
 		this.state = {
 			selectedUser: null,
-			users: users
+			users: users,
+			user: null
 		};
 		this.getUsers();
 		this.setUser = (index, user) => {
