@@ -136,6 +136,28 @@ class Devices extends React.Component {
 				);
 		}
     }
+
+    getDevicesFromDB() {
+        const request = new Request('/get_devices', {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        fetch(request).then(res => res.json()).then(result => {
+            //if success then update the office list
+            if (result.success) {
+                console.log(result.devices);
+                return true;
+            }
+            else {
+                console.log("Error");
+                return false;
+            }
+        }).catch(err => {
+            console.log(err);
+            return false;
+        });
+    }
     
     setDeviceToShow(device){
         this.updateState({
