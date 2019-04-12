@@ -136,7 +136,6 @@ class Devices extends React.Component {
 				);
 		}
     }
-<<<<<<< HEAD
 
     getDevicesFromDB() {
         const request = new Request('/get_devices', {
@@ -159,8 +158,6 @@ class Devices extends React.Component {
             return false;
         });
     }
-=======
->>>>>>> master
     
     setDeviceToShow(device){
         this.updateState({
