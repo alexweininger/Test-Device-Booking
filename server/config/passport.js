@@ -7,19 +7,19 @@ var LocalStrategy = require("passport-local").Strategy;
 
 connection.query("USE " + dbconfig.database);
 
-module.exports = function(passport) {
+module.exports = function (passport) {
 
-	passport.serializeUser(function(user, done) {
+	passport.serializeUser(function (user, done) {
 		done(null, user.id);
 	});
 
-	passport.deserializeUser(function(id, done) {
-        console.log('deserializeUser id: ', id);
-		connection.query("SELECT * FROM Users WHERE id = ? ", [id], function(err, rows) {
-            console.log('deserializeUser got back row[0]: ', rows[0]);
+	passport.deserializeUser(function (id, done) {
+		console.log('deserializeUser id: ', id);
+		connection.query("SELECT * FROM user WHERE id = ? ", [id], function (err, rows) {
+			console.log('deserializeUser got back row[0]: ', rows[0]);
 			done(err, rows[0]);
 		});
-    });
+	});
 
 	passport.use(
 		"SignUp",
@@ -36,8 +36,8 @@ module.exports = function(passport) {
 				passReqToCallback: true
 			},
 
-			function(req, firstName, lastName, slackUsername, email, slackUsername, id, officeId, role, password, done) {
-				connection.query("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
+			function (req, firstName, lastName, email, slackUsername, id, officeId, role, password, done) {
+				connection.query("SELECT * FROM user WHERE username = ?", [username], function (err, rows) {
 					if (err) return done(err);
 
 					if (rows.length) {
@@ -68,7 +68,7 @@ module.exports = function(passport) {
 								newUserMysql.username,
 								newUserMysql.password
 							],
-							function(err, rows) {
+							function (err, rows) {
 								newUserMysql.id = rows.insertId;
 								return done(null, newUserMysql);
 							}
@@ -88,10 +88,10 @@ module.exports = function(passport) {
 				passReqToCallback: true
 			},
 
-			function(req, email, password, done) {
+			function (req, email, password, done) {
 				console.log("username (email): ", email);
 				console.log("password: " + password);
-				connection.query("SELECT * FROM Users WHERE email = '" + email + "';", function(err, rows) {
+				connection.query("SELECT * FROM user WHERE email = '" + email + "';", function (err, rows) {
 					console.log("Rows: " + rows);
 
 					if (err) {
