@@ -1,0 +1,61 @@
+{
+  "name": "test-device-booking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./server/server.js",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "start": "node ./server/server.js",
+    "server": "nodemon ./server/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "jest --detectOpenHandles && codecov"
+  },
+  "author": "Alex Weininger",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^24.5.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.5.0",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.14.6",
+    "react": "^16.2.0",
+    "react-test-renderer": "^16.8.4",
+    "superagent": "^4.1.0",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.0",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "@types/jest": "^24.0.11",
+    "bcrypt": "^3.0.5",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "concurrently": "^3.5.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "date-fns": "^1.30.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "material-table": "^1.27.2",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "prop-types": "^15.7.2",
+    "react-avatar": "^3.6.0",
+    "icons": "^1.0.0",
+    "react-swipeable-views": "^0.13.1"
+  },
+  "jest": {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
+  }
+}
