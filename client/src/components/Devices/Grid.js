@@ -38,7 +38,7 @@ function TitlebarGridList(props) {
 
   return (
     <div className={classes.root}>
-      <Fab className={classes.fab} color="primary" aria-label="Add" onClick={() => (ReactDOM.render(<NewDevice />, document.getElementById("root")))}>
+      <Fab className={classes.fab} color="primary" aria-label="Add" onClick={() => (ReactDOM.render(<NewDevice />, document.getElementById("root")))} style={{zIndex:1}}>
         <AddIcon />
       </Fab>
       <GridList className={classes.gridList} cols={3} cellHeight={100}>
