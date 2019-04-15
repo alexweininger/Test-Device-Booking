@@ -67,8 +67,7 @@ class CustomizedTable extends React.Component {
 		super(props);
 		this.state = {
 			selectedUser: null,
-			users: users,
-			user: null
+			users: users
 		};
 		this.getUsers();
 		this.setUser = (index, user) => {
@@ -180,13 +179,6 @@ class CustomizedTable extends React.Component {
 										const data = this.state.users;
 										data.push(newData);
 										this.setState({ data }, () => resolve());
-
-										const request = new Request('/new_user', {
-											method: 'POST',
-											body: JSON.stringify(data),
-											headers: { "Content-Type": "application/json" }
-										});
-
 									}
 									resolve()
 								}, 1000)
