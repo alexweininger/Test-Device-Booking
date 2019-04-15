@@ -8,6 +8,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import ReactDOM from "react-dom";
+import DeviceInfo from "./DeviceInfo.js";
 
 const styles = {
   card: {
@@ -16,16 +18,39 @@ const styles = {
   },
   media: {
     height: 180
-  }
+  },
+  button: {
+    margin: 5,
+    padding: 10
+  },
 };
+
+
+function createMockOffice(i){
+	switch(i){
+		default:
+		case 1:
+			return {
+				Id : "497",
+				OS : "Android 7.0",
+				Location : "Kaunas"
+      };
+      case 2:
+			return {
+				Id : "453",
+				OS : "Android 7.0",
+				Location : "Portland"
+			};
+	}
+}
+
 
 function MediaCard(props) {
   const { classes } = props;
   return (
     <Card className={classes.card}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
+        <CardMedia className={classes.media}
           image={require("../Data/image.jpg")}
         />
         <CardContent>
@@ -33,21 +58,26 @@ function MediaCard(props) {
             Samsung Galaxy
           </Typography>
           <Typography component="p">
-            Identification number: 123456789 OS: macOS Location: Kaunas
+            jadajadajada
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="large" variant="contained" color="inherit" className={classes.button}>
           Reserve
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" variant="contained" color="inherit" className={classes.button}>
           Book Device
+        </Button>
+        <Button variant="fab" color="secondary" onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
+          Info
         </Button>
       </CardActions>
     </Card>
   );
 }
+
+
 
 MediaCard.propTypes = {
   classes: PropTypes.object.isRequired
