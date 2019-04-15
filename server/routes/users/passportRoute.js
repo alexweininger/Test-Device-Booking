@@ -17,13 +17,11 @@ app.post('/login', passport.authenticate('local-login', {
         req.session.cookie.expires = false;
       }
       console.log('here');
-      res.redirect('/');
+      res.send(200);
     });
 
-    app.post('/profile', isLoggedIn, function(req, res) {
-      res.render('profile.ejs', {
-        user : req.user // get the user out of session and pass to template
-      });
+    app.post('/users', isLoggedIn, function(req, res) {
+      console.log(req.user);
     });
 
     app.post('/logout', function(req, res) {
@@ -39,6 +37,7 @@ function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
 
-	// if they aren't redirect them to the home page
-	res.redirect('/');
+  // if they aren't redirect them to the home page
+  console.log('not logged in');
+  res.redirect('/');
 }

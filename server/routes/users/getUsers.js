@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 var express = require('express');
 const dbms = require('../dbms');
-
+const passport = require('./passportRoute');
 const router = express.Router();
 
 function SQLArrayToJSON(sql, callback) {
@@ -19,6 +19,7 @@ function SQLArrayToJSON(sql, callback) {
 
 // respond with "hello world" when a GET request is made to the homepage
 router.post('/', (req, res) => {
+
 	console.log('getUsers: request recieved');
 
 	// make call to db to get all users

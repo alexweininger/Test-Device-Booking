@@ -1,43 +1,43 @@
-var passport = require("passport");
-var mysql = require("mysql");
-var dbconfig = require("./database");
-var connection = mysql.createConnection(dbconfig.connection);
-var bcrypt = require("bcrypt-nodejs");
-var LocalStrategy = require("passport-local").Strategy;
+const passport = require('passport');
+const mysql = require('mysql');
+const dbconfig = require('./database');
 
-connection.query("USE " + dbconfig.database);
+const connection = mysql.createConnection(dbconfig.connection);
+const bcrypt = require('bcrypt-nodejs');
+const LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function(passport) {
+connection.query(`USE ${  dbconfig.database}`);
 
-	passport.serializeUser(function(user, done) {
+module.exports = function (passport) {
+	passport.serializeUser((user, done) => {
 		done(null, user.id);
 	});
 
-	passport.deserializeUser(function(id, done) {
-        console.log('deserializeUser id: ', id);
-		connection.query("SELECT * FROM Users WHERE id = ? ", [id], function(err, rows) {
+	passport.deserializeUser((id, done) => {
+		console.log('deserializeUser id: ', id);
+		connection.query('SELECT * FROM Users WHERE id = ? ', [id], (err, rows) => {
             console.log('deserializeUser got back row[0]: ', rows[0]);
 			done(err, rows[0]);
 		});
-    });
+	});
 
 	passport.use(
-		"SignUp",
+		'SignUp',
 		new LocalStrategy(
 			{
-				firstNameField: "firstName",
-				lastNameField: "lastName",
-				slackUsernameField: "slackUsername",
-				EmployeeIDField: "employeeID",
-				officeIDField: "officeID",
-				emailField: "email",
-				usernameField: "username",
-				passwordField: "password",
-				passReqToCallback: true
+				firstNameField: 'firstName',
+				lastNameField: 'lastName',
+				slackUsernameField: 'slackUsername',
+				EmployeeIDField: 'employeeID',
+				officeIDField: 'officeID',
+				emailField: 'email',
+				usernameField: 'username',
+				passwordField: 'password',
+				passReqToCallback: true,
 			},
 
-			function(req, firstName, lastName, email, slackUsername, id, officeId, role, password, done) {
-				connection.query("SELECT * FROM users WHERE username = ?", [username], function(err, rows) {
+			((req, firstName, lastName, email, slackUsername, id, officeId, role, password, done) => {
+				connection.query('SELECT * FROM users WHERE username = ?', [username], (err, rows) => {
 					if (err) return done(err);
 
 					if (rows.length) {
@@ -75,23 +75,23 @@ module.exports = function(passport) {
 						);
 					}
 				});
-			}
-		)
+			}),
+		),
 	);
 
 	passport.use(
-		"local-login",
+		'local-login',
 		new LocalStrategy(
 			{
-				usernameField: "username",
-				passwordField: "password",
-				passReqToCallback: true
+				usernameField: 'username',
+				passwordField: 'password',
+				passReqToCallback: true,
 			},
 
-			function(req, email, password, done) {
-				console.log("username (email): ", email);
-				console.log("password: " + password);
-				connection.query("SELECT * FROM Users WHERE email = '" + email + "';", function(err, rows) {
+			((req, email, password, done) => {
+				console.log('username (email): ', email);
+				console.log('password: ' + password);
+				connection.query(`SELECT * FROM Users WHERE email = '${  email  }';`, (err, rows) => {
 					console.log("Rows: " + rows);
 
 					if (err) {
@@ -113,7 +113,7 @@ module.exports = function(passport) {
 					console.log("Login successful.");
 					return done(null, rows[0]);
 				});
-			}
-		)
+			}),
+		),
 	);
 };
