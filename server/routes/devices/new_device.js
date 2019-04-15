@@ -35,11 +35,10 @@ router.post('/', (req, res) => {
 		//and send it to the client
 		res.json({
 			success : true,
-			officeId : results.insertId
 		});
 
 	}).catch(err => {
-		console.log("There was an error inserting a new office:");
+		console.log("There was an error inserting a new device:");
 		console.log("---------------------------------");
 		console.log(err);
 		console.log("---------------------------------");
