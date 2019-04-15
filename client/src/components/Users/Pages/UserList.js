@@ -60,20 +60,22 @@ function createData(first_name, last_name, email, location, slack_name) {
 	return { first_name, last_name, email, location, slack_name };
 }
 
-let users = [createData("John", "Snow", "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"), createData("Bronius", null, null, null, null)];
+let users = [];
 
 class CustomizedTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedUser: null,
-			users: users
+			users: users,
+			loggedInUser: 'admin' //later we will turn this into being an object from the db
 		};
-		this.getUsers();
 		this.setUser = (index, user) => {
 			this.state.users[index] = user;
 		}
-		this.state.users = this.getUsers(); // later we will get this from the server
+		if (this.state.loggedInUser == 'admin' || this.state.loggedInUser == 'employee') {
+			this.state.users = this.getUsers(); // later we will get this from the server
+		}
 	}
 	getUsers = () => {
 		console.log("getting all users");
@@ -137,82 +139,131 @@ class CustomizedTable extends React.Component {
 		if (this.state.selectedUser) {
 			return <ProfileTable user={this.state.selectedUser} returnToList={() => this.setSelectedUser(null)} />;
 		} else if (this.state.users) {
-			return (
-				<MaterialTable
-					columns={[
-						{
-							title: "Profile",
-							field: "fullName",
-							render: rowData => {
-								return (
-									<Avatar
-										className={classes.hover}
-										name={rowData.firstName + " " + rowData.lastName}
-										round={true}
-										size={35}
-										textSizeRatio={2}
-										onClick={() => {
-											this.setSelectedUser(rowData);
-										}}
-									/>
-								);
-							}
-						},
-						{ title: "First Name", field: "firstName" },
-						{ title: "Last Name", field: "lastName" },
-						{ title: "Email Address", field: "email" },
-						{ title: "Slack Username", field: "slackUsername" },
-						{ title: "Office ID", field: "officeId" }
-					]}
-					data={this.state.users}
-					title="User List"
-					options={{
-						columnsButton: true,
-						exportButton: true
-					}}
-					editable={{
-						onRowAdd: newData =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//TODO Add push to database
-										const data = this.state.users;
-										data.push(newData);
-										this.setState({ data }, () => resolve());
-									}
-									resolve()
-								}, 1000)
-							}),
-						onRowUpdate: (newData, oldData) =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//TODO push changes to database
-										const data = this.state.users;
-										const index = data.indexOf(oldData);
-										data[index] = newData;
-										this.setState({ data }, () => resolve());
-										this.editUsers(index, newData);
-									}
-									resolve()
-								}, 1000)
-							}),
-						onRowDelete: oldData =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//Push changes to DB
-										let data = this.state.users;
-										const index = data.indexOf(oldData);
-										data.splice(index, 1);
-										this.setState({ data }, () => resolve());
-									}
-									resolve()
-								}, 1000)
-							}),
-					}}
-				/>
-			);
+			if (this.state.loggedInUser == 'admin') {
+				return (
+					<MaterialTable
+						columns={[
+							{
+								title: "Profile",
+								field: "fullName",
+								render: rowData => {
+									return (
+										<Avatar
+											className={classes.hover}
+											name={rowData.firstName + " " + rowData.lastName}
+											round={true}
+											size={35}
+											textSizeRatio={2}
+											onClick={() => {
+												this.setSelectedUser(rowData);
+											}}
+										/>
+									);
+								}
+							},
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={this.state.users}
+						title="User List"
+						options={{
+							columnsButton: true,
+							exportButton: true
+						}}
+						editable={{
+							onRowAdd: newData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//TODO Add push to database
+											const data = this.state.users;
+											data.push(newData);
+											this.setState({ data }, () => resolve());
+
+											const request = new Request('/new_user', {
+												method: 'POST',
+												body: JSON.stringify(data),
+												headers: { "Content-Type": "application/json" }
+											});
+
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowUpdate: (newData, oldData) =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//TODO push changes to database
+											const data = this.state.users;
+											const index = data.indexOf(oldData);
+											data[index] = newData;
+											this.setState({ data }, () => resolve());
+											this.editUsers(index, newData);
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowDelete: oldData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//Push changes to DB
+											let data = this.state.users;
+											const index = data.indexOf(oldData);
+											data.splice(index, 1);
+											this.setState({ data }, () => resolve());
+										}
+										resolve()
+									}, 1000)
+								}),
+						}}
+					/>
+				);
+			} else if (this.state.loggedInUser == 'employee') {
+				return (
+					<MaterialTable
+						columns={[
+							{
+								title: "Profile",
+								field: "fullName",
+								render: rowData => {
+									return (
+										<Avatar
+											className={classes.hover}
+											name={rowData.firstName + " " + rowData.lastName}
+											round={true}
+											size={35}
+											textSizeRatio={2}
+											onClick={() => {
+												this.setSelectedUser(rowData);
+											}}
+										/>
+									);
+								}
+							},
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={this.state.users}
+						title="User List"
+						options={{
+							columnsButton: true,
+						}}
+					/>
+				);
+			} else { //when user is not logged in
+				return (
+					<span> PLEASE LOG IN </span>
+				);
+			}
+
 		} else {
 			return <h1>Loading...</h1>;
 		}
