@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
+import BookDevice from "./BookDevice.js";
 
 const styles = {
   card: {
@@ -66,9 +67,8 @@ function MediaCard(props) {
         <Button size="large" variant="contained" color="inherit" className={classes.button}>
           Reserve
         </Button>
-        <Button size="small" variant="contained" color="inherit" className={classes.button}>
-          Book Device
-        </Button>
+        <BookDevice>
+        </BookDevice>
         <Button variant="fab" color="secondary" onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
           Info
         </Button>
