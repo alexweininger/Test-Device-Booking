@@ -33,7 +33,7 @@ function TitlebarGridList(props) {
 
   return (
     <div className={classes.root}>
-      <Fab className={classes.fab} color="primary" aria-label="Add" onClick={() => (ReactDOM.render(<NewDevice />, document.getElementById("root")))}>
+      <Fab className={classes.fab} color="primary" aria-label="Add" onClick={() => (ReactDOM.render(<NewDevice />, document.getElementById("root")))} style={{zIndex:1}}>
         <AddIcon />
       </Fab>
       <Grid container spacing={2}>
