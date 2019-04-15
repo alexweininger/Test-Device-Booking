@@ -136,7 +136,6 @@ class Offices extends React.Component {
 	/* add the given office to the database
 	 */
 	addOffice(office){
-		console.log("callded_");
 		if(!this.officeCanBeAdded(office)){
 			return false;
 		}

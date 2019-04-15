@@ -6,9 +6,7 @@ var db = require('../dbms.js');
 router.get('/', (req, res) => {
     let officeQuery = "SELECT * FROM Devices.office;";
 
-    db.dbqueryPromise(officeQuery).then(results => {;
-        console.log("======Results======");
-        console.log(results);
+    db.dbqueryPromise(officeQuery).then(results => {
         //if the insert is successful, pull off the id that was given
         //and send it to the client
         res.json({

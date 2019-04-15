@@ -89,16 +89,27 @@ class NewDevice extends Component {
 		
 		this.state = {
 			device : {
-				Brand : "",
-				Status : "",
-				Model : "",
-				Office : ""
+				Status : "Active",
+				Name : "Test",
+				Brand : "Samsung",
+				Model : "First",
+				Serial_Number : "9878978",
+				OS : "Android",
+				Category : "Phone",
+				Subcategory : "Smart Phone",
+				fk_office_id : "1",
+				Vendor : "Amazon",
+				Tax_rate : "8%",
+				Description : "This is a test"
 			},
 			offices : {}
 		};
+		this.state.device["Release_date"]= "2019-02";
+		this.state.device["Purchased_on"]= "2019-03-12";
 		
-		 this.handleChange = this.handleChange.bind(this);
-		 this.AddDevice = this.AddDevice.bind(this);
+		
+		this.handleChange = this.handleChange.bind(this);
+		this.AddDevice = this.AddDevice.bind(this);
 	}
   
 	handleChange = name => event => {
@@ -197,7 +208,7 @@ class NewDevice extends Component {
 					InputLabelProps={{
 					  shrink: true
 					}}
-					onChange={this.handleChange("Month/Year")}
+					onChange={this.handleChange("Release_date")}
 				/>
 				
 				{/*Device Serial Number*/}
@@ -238,8 +249,8 @@ class NewDevice extends Component {
 					select
 					label="Select Office"
 					className={classes.textField}
-					value={this.state.device.Office}
-					onChange={this.handleChange("Office")}
+					value={this.state.device.fk_office_id}
+					onChange={this.handleChange("fk_office_id")}
 				>
 					{/*map offices to selectable options*/}
 					{Object.keys(this.state.offices).map(id => (
