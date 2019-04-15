@@ -19,9 +19,9 @@ router.post('/', (req, res) => {
   .replace('{Description}', device.Description)
   .replace('{Image}', device.Image)
   .replace('{Serial_Number}', device.Serial_Number)
-  .replace('{Status}', device.Status)
+  .replace('{Status}', device.Status == 'Active' ? 1:0)
   .replace('{Name}', device.Name)
-  .replace('{Release_date}', device.Release_date)
+  .replace('{Release_date}', device.Release_date+"-01")
   .replace('{OS}', device.OS)
   .replace('{Category}', device.Category)
   .replace('{Subcategory}', device.Subcategory)
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
   .replace('{Vendor}', device.Vendor)
   .replace('{Tax_rate}', device.Tax_rate)
   .replace('{fk_office_id}', device.fk_office_id);
-	
+
 	console.log("Query\n\n\n\n" + query + "\n\n\n\n\n");
 	db.dbqueryPromise(query).then(results => {
 		res.json({
