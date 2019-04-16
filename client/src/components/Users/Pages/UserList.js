@@ -111,27 +111,45 @@ class CustomizedTable extends React.Component {
 	editUsers = (index, newData) => {
 		console.log("editing users ");
 
-		const request = new Request("http://localhost:5000/users", {
-			method: "POST"
-		});
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
 
-		fetch(request)
-			.then(res => {
-				//if we successfully updated the DB
-				if (res.ok) {
-					//add the office
-					res.json().then(obj => {
-						this.setUser(index, newData);
-						console.log("updated edited user", this.state.users[index]);
-						return obj;
-					});
-				}
-			})
-			.catch(err => {
-				//if we successfully updated the DB
-				console.log("Error in editUsers", err);
-				console.log("post failed");
-			});
+		xhr.addEventListener("readystatechange", function () {
+			if (this.readyState === 4) {
+				console.log('request response text: ', this.response);
+			}
+		});
+		console.log(this.state.users[index]);
+		xhr.open("POST", "http://localhost:5000/edit_user");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("cache-control", "no-cache");
+		xhr.setRequestHeader('mode', 'no-cors');
+		xhr.setRequestHeader('credentials', 'omit');
+		xhr.setRequestHeader('redirecnt', 'follow');
+		xhr.getResponseHeader('Set-Cookie');
+		xhr.send(JSON.stringify({user: this.state.users[index]}));
+	};
+
+	deleteUsers = (index, newData) => {
+		console.log("editing users ");
+
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+
+		xhr.addEventListener("readystatechange", function () {
+			if (this.readyState === 4) {
+				console.log('request response text: ', this.response);
+			}
+		});
+		console.log(this.state.users[index]);
+		xhr.open("POST", "http://localhost:5000/delete_user");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("cache-control", "no-cache");
+		xhr.setRequestHeader('mode', 'no-cors');
+		xhr.setRequestHeader('credentials', 'omit');
+		xhr.setRequestHeader('redirecnt', 'follow');
+		xhr.getResponseHeader('Set-Cookie');
+		xhr.send(JSON.stringify({id: this.state.users[index].id}));
 	};
 
 	render() {
@@ -195,6 +213,7 @@ class CustomizedTable extends React.Component {
 								}),
 							onRowUpdate: (newData, oldData) =>
 								new Promise((resolve, reject) => {
+
 									setTimeout(() => {
 										{
 											//TODO push changes to database
@@ -203,6 +222,27 @@ class CustomizedTable extends React.Component {
 											data[index] = newData;
 											this.setState({ data }, () => resolve());
 											this.editUsers(index, newData);
+											console.log("tittie fuck");
+											// send post request to edit_user with newData
+
+
+											// var xhr = new XMLHttpRequest();
+											// xhr.withCredentials = true;
+
+											// xhr.addEventListener("readystatechange", function () {
+											// 	if (this.readyState === 4) {
+											// 		console.log('request response text: ', this.response);
+											// 	}
+											// });
+
+											// xhr.open("POST", "http://localhost:5000/edit_user");
+											// xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+											// xhr.setRequestHeader("cache-control", "no-cache");
+											// xhr.setRequestHeader('mode', 'no-cors');
+											// xhr.setRequestHeader('credentials', 'omit');
+											// xhr.setRequestHeader('redirecnt', 'follow');
+											// xhr.getResponseHeader('Set-Cookie');
+											// xhr.send(newData);
 										}
 										resolve()
 									}, 1000)
@@ -216,6 +256,7 @@ class CustomizedTable extends React.Component {
 											const index = data.indexOf(oldData);
 											data.splice(index, 1);
 											this.setState({ data }, () => resolve());
+											this.deleteUsers(index, oldData);
 										}
 										resolve()
 									}, 1000)
