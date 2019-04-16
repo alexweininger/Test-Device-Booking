@@ -28,7 +28,7 @@ const CustomTableCell = withStyles(theme => ({
     }
   });
 
-class DayReservations extends React.Component {
+class BookingsTable extends React.Component {
     state = {
         open: false,
         selectedTimeValue: 0
@@ -70,7 +70,7 @@ class DayReservations extends React.Component {
         );
     }
 }
-export default withStyles(styles)(DayReservations);
+export default withStyles(styles)(BookingsTable);
 
 let id = 0;
 function createData(time, reservedBy) {
