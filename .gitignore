@@ -3,3 +3,4 @@
 /.vs
 ./.vs
 coverage/
+node_modules

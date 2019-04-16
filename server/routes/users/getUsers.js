@@ -4,16 +4,16 @@ const dbms = require('../dbms');
 const router = express.Router();
 
 function SQLArrayToJSON(sql, callback) {
-	const arr = [];
-	Object.keys(sql).forEach((key) => {
-		const rowObj = {};
-		const row = sql[key];
-		Object.keys(row).forEach((keyc) => {
-			rowObj[keyc] = row[keyc];
-		});
-		arr.push(rowObj);
-	});
-	callback(arr);
+  const arr = [];
+  Object.keys(sql).forEach(key => {
+    const rowObj = {};
+    const row = sql[key];
+    Object.keys(row).forEach(keyc => {
+      rowObj[keyc] = row[keyc];
+    });
+    arr.push(rowObj);
+  });
+  callback(arr);
 }
 
 // respond with "hello world" when a GET request is made to the homepage
@@ -37,7 +37,6 @@ router.post('/', (req, res) => {
 });
 
 module.exports = router;
-
 
 // CREATE TABLE Users
 //     (
