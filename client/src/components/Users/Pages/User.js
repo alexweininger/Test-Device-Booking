@@ -54,7 +54,7 @@ class ProfileTable extends React.Component {
 		this.state = {
 			selectedUser: null,
 			users: users,
-			loggedInUser: 'employee' //later we will turn this into being an object from the db
+			loggedInUser: 'Niraj' //later we will turn this into being an object from the db
 		};
 		this.setUser = (index, user) => {
 			this.state.users[index] = user;
@@ -70,7 +70,8 @@ class ProfileTable extends React.Component {
 
 	render() {
 		const { classes, props } = this.props;
-		if(this.state.loggedInUser == 'admin'){
+		console.log(this.props.user.firstName)
+		if(this.state.loggedInUser == 'admin' || this.state.loggedInUser == this.props.user.firstName){
 			return (
 				<Paper className={classes.root}>
 					<Button onClick={() => this.props.returnToList()}>
