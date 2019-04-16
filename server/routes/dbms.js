@@ -102,5 +102,19 @@ function dbqueryPromise(query_str){
 	});
 }
 
+function SQLArrayToJSON(sql, callback) {
+    const arr = [];
+    Object.keys(sql).forEach(key => {
+      const rowObj = {};
+      const row = sql[key];
+      Object.keys(row).forEach(keyc => {
+        rowObj[keyc] = row[keyc];
+      });
+      arr.push(rowObj);
+    });
+    callback(arr);
+  }
+
+exports.SQLArrayToJSON = SQLArrayToJSON;
 exports.dbquery = dbquery;
 exports.dbqueryPromise= dbqueryPromise;
