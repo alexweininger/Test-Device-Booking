@@ -109,11 +109,11 @@ class Devices extends React.Component {
       <div>
         <Table>
           <TableBody>
-            {/*render the list of offices, they are table rows*/}
+            {/*render the list of devices, they are table rows*/}
             {this.state.devices.map(device => this.renderDevice(device, i++))}
           </TableBody>
         </Table>
-        {/*when the new office button is clicked, go to new office page*/}
+        {/*when the new device button is clicked, go to new device page*/}
         <Button
           onClick={() => {
             this.setPageToShow("new");
