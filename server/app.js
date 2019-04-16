@@ -7,24 +7,31 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 var passport = require("passport");
+
 var Strategy = require("passport-local").Strategy;
 var flash = require("connect-flash");
 var morgan = require("morgan");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
-const dbms = require('./routes/dbms');
+const dbms = require("./routes/dbms");
+
 passport.use(
 	new Strategy(function(username, password, cb) {
 		findUserByUsername(username, function(err, user) {
 			if (err) {
+				console.log(err);
 				return cb(err);
 			}
 			if (!user) {
+				console.log("error");
 				return cb(null, false);
 			}
 			if (user.password != password) {
+				console.log("user", user);
+				console.log("wrong password", user.password, password);
 				return cb(null, false);
 			}
+			console.log("here");
 			return cb(null, user);
 		});
 	})
@@ -38,15 +45,21 @@ passport.use(
 // serializing, and querying the user record by ID from the database when
 // deserializing.
 passport.serializeUser(function(user, cb) {
+	console.log("serializeuser", user);
+
 	cb(null, user.id);
 });
 
 passport.deserializeUser(function(id, cb) {
+	console.log("deserializeuser", id);
+
 	findUserById(id, function(err, user) {
+		console.log("user returned", user);
+
 		if (err) {
 			return cb(err);
 		}
-		cb(null, user[0].id);
+		cb(null, user.id);
 	});
 });
 
@@ -56,7 +69,7 @@ const app = express();
 app.use(express.static(__dirname + "/client/public"));
 
 // body parser for post requests
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 // this enables server side logging for all requests and routes
 app.use(morgan("dev"));
 
@@ -72,7 +85,7 @@ app.use(function(req, res, next) {
 	res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 
 	// Request headers you wish to allow
-	res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+	res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,*");
 
 	// Set to true if you need the website to include cookies in the requests sent
 	// to the API (e.g. in case you use sessions)
@@ -82,30 +95,16 @@ app.use(function(req, res, next) {
 	next();
 });
 
+app.use(require("morgan")("combined"));
+app.use(require("cookie-parser")());
+app.use(require("body-parser").urlencoded({ extended: true }));
+app.use(require("express-session")({ secret: "keyboard cat", resave: true, saveUninitialized: true , cookie: {secure: false, sameSite: false}}));
+
 // initalize passport.js
 app.use(passport.initialize());
 
 // persistent login sessions
 app.use(passport.session());
-
-// parse cookies from the browser
-app.use(cookieParser());
-
-// extended body parsing for requests
-app.use(
-	bodyParser.urlencoded({
-		extended: true
-	})
-);
-
-// session handler
-app.use(
-	session({
-		secret: "vidyapathaisalwaysrunning",
-		resave: true,
-		saveUninitialized: true
-	})
-); // session secret
 
 // use connect-flash for flash messages stored in session
 app.use(flash());
@@ -130,59 +129,70 @@ app.get("/Offices", (req, res) => {
 let getUsersRouter = require("./routes/users/getUsers");
 let newUserRouter = require("./routes/users/newUser");
 
-app.post('/users', require('connect-ensure-login').ensureLoggedIn(), getUsersRouter);
+function loggedIn(req, res) {
+  console.log('loggedin req.user: ', req.user);
+}
+
+app.post("/users", require('connect-ensure-login').ensureLoggedIn(), getUsersRouter);
 
 // app.use('/users', getUsersRouter);
 app.use("/new_user", newUserRouter.router);
-
 
 app.get("/helloWorld", (req, res) => {
 	res.status(200).send("Hello World!");
 });
 
 app.post("/login", passport.authenticate("local", { failureRedirect: "/login" }), function(req, res) {
-	res.redirect("/");
+	console.log("login success", req.user);
+  req.user.password = undefined;
+	res.status(200).send(req.user);
 });
 
 function findUserById(id, callback) {
-  dbms.dbquery(`Select * from Users where id='${id}' limit 1;`, (err, results) => {
-		if (err) {
-			console.error(err);
-			callback(err, undefined);
-		} else {
-			SQLArrayToJSON(results, (json) => {
-        console.log(json);
-				callback(undefined, json);
-			});
-		}
+	process.nextTick(() => {
+		dbms.dbquery(`Select * from Users where id='${id}' limit 1;`, (err, results) => {
+			if (err) {
+				console.error(err);
+				callback(err, undefined);
+			} else {
+				SQLArrayToJSON(results, json => {
+					console.log("got user: ", json);
+					callback(undefined, json);
+				});
+			}
+		});
 	});
 }
 
 function findUserByUsername(id, callback) {
-  dbms.dbquery(`Select * from Users where email='${id}' limit 1;`, (err, results) => {
-		if (err) {
-			console.error(err);
-			callback(err, undefined);
-		} else {
-			SQLArrayToJSON(results, (json) => {
-        console.log(json);
-				callback(undefined, json);
-			});
-		}
+	process.nextTick(() => {
+		dbms.dbquery(`Select * from Users where email='${id}' limit 1;`, (err, results) => {
+			if (err) {
+				console.error(err);
+				callback(err, undefined);
+			} else {
+				SQLArrayToJSON(results, json => {
+					console.log("found user by username", json);
+					callback(undefined, json);
+				});
+			}
+		});
 	});
 }
 
 function SQLArrayToJSON(sql, callback) {
 	const arr = [];
-	Object.keys(sql).forEach((key) => {
+	Object.keys(sql).forEach(key => {
 		const rowObj = {};
 		const row = sql[key];
-		Object.keys(row).forEach((keyc) => {
+		Object.keys(row).forEach(keyc => {
 			rowObj[keyc] = row[keyc];
 		});
 		arr.push(rowObj);
 	});
-	callback(arr);
+	callback(arr[0]);
 }
+
+
 
 module.exports = app;
