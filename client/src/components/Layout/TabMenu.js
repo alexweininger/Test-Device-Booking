@@ -52,7 +52,6 @@ class FullWidthTabs extends React.Component {
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Reports/">REPORTS</Link>
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Offices/">OFFICES</Link>
                   <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/UserList/">USER LIST</Link>
-                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/selection/">SELECTION</Link>
                 </Tabs>
               </nav>
 
@@ -63,7 +62,6 @@ class FullWidthTabs extends React.Component {
           <Route path="/Reports/" component={Reports} />
           <Route path="/Offices/" component={Office} />
           <Route path="/UserList/" component={profile} />
-          <Route path="/selection/" component={Location} />
         </Router>
       </div>
     );

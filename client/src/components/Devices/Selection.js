@@ -5,6 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Location from './Location';
 
 const styles = theme => ({
   root: {
@@ -14,11 +15,12 @@ const styles = theme => ({
     display: 'block',
   },
   formControl: {
-    width: '100%',
+    width: 275,
     margin: theme.spacing.unit * 3,
     overflowY: 'auto',
     height: '7cm',
   },
+
 });
 
 class SelectionGroup extends React.Component {
@@ -42,11 +44,7 @@ class SelectionGroup extends React.Component {
         
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel style={{fontWeight: 'bold', color: '#595959'}} disabled >LOCATION</FormLabel>
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Kaunas" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Vilnius" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Chicago" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Toronto" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="London" />
+            <Location/>
         </FormControl>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel style={{fontWeight: 'bold', color: '#595959'}} disabled >AVAILABILITY</FormLabel>
