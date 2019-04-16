@@ -16,7 +16,7 @@ const styles = theme => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing.unit * 8
+    marginTop: theme.spacing.unit * 8,
   },
   icon: {
     color: "rgba(255, 255, 255, 0.54)"
@@ -44,13 +44,13 @@ function TitlebarGridList(props) {
       >
         <AddIcon />
       </Fab>
-      <Grid container spacing={2}>
+      <Grid container spacing={20}>
         <Grid item xs={3}>
           <Selection />
         </Grid>
 
         <Grid item xs={8}>
-          <Grid item xs={2.5} container spacing={1}>
+          <Grid item xs={2.5} container spacing={0}>
             <Media />
             <Media />
             <Media />

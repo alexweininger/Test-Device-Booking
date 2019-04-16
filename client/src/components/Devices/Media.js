@@ -11,13 +11,17 @@ import Typography from "@material-ui/core/Typography";
 import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
+import { labeledStatement } from "@babel/types";
 
 const styles = {
   card: {
     maxWidth: 300,
-    height: 360
+    height: 360,
+    marginRight: 20,
+    marginBottom: 20
   },
   media: {
+    width: 275,
     height: 180
   },
   button: {
@@ -45,11 +49,11 @@ function createMockOffice(i){
 	}
 }
 
-
 function MediaCard(props) {
   const { classes } = props;
   return (
     <Card className={classes.card}>
+      <Button onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
       <CardActionArea>
         <CardMedia className={classes.media}
           image={require("../Data/image.jpg")}
@@ -63,15 +67,18 @@ function MediaCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
+      </Button>
+      
       <CardActions>
-        <Button size="large" variant="contained" color="inherit" className={classes.button}>
+        <Button 
+          style={{height: 50, marginRight: 15, marginLeft: 12}} 
+          size="large" 
+          variant="contained" 
+          color="inherit" 
+          className={classes.button}>
           Reserve
         </Button>
-        <BookDevice>
-        </BookDevice>
-        <Button variant="fab" color="secondary" onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
-          Info
-        </Button>
+        <BookDevice/>
       </CardActions>
     </Card>
   );

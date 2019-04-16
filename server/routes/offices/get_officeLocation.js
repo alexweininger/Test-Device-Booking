@@ -7,8 +7,8 @@ router.get('/', (req, res) => {
     let officeQuery = "SELECT DISTINCT city FROM Device_Booking.atbl_Office ORDER BY city ASC;";
 
     db.dbqueryPromise(officeQuery).then(results => {;
-        console.log("======Locations======");
-        console.log(results);
+       // console.log("======Locations======");
+       // console.log(results);
         //if the insert is successful, pull off the id that was given
         //and send it to the client
         res.json({

@@ -7,10 +7,10 @@ router.get("/", (req, res) => {
   let deviceQuery =
     "SELECT DISTINCT Brand FROM Device_Booking.atbl_Device ORDER BY Brand ASC;";
 
-  db.dbqueryPromise(deviceQuery)
+  db.dbqueryPromise(brandQuery)
     .then(results => {
-      console.log("======Brands======");
-      console.log(results);
+      //console.log("======Brands======");
+      //console.log(results);
 
       res.json({
         success: true,
