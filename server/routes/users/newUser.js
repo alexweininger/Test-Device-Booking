@@ -21,8 +21,8 @@ router.post('/', (req, res) => {
 			user.role = 0;
 		}
 
-		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)';
-		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.id}', '${user.officeId}', '${user.role}');`
+		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)';
+		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.employeeId}', '${user.officeId}', '${user.role}', '${user.password}');`
 		dbms.dbquery(insert + values, (err, results) => {
 			if (err) {
 				res.status(400).send(err);
@@ -39,7 +39,7 @@ function isValidUser(user) {
 	if (!user) {
 		return 'User is not defined.';
 	}
-	const keys = ['lastName', 'firstName', 'email', 'id', 'officeId'];
+	const keys = ['lastName', 'firstName', 'email', 'employeeId', 'officeId', 'password'];
 	let err;
 	keys.forEach((key) => {
 		if (!user[key]) {

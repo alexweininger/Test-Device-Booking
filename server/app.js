@@ -8,35 +8,18 @@ const cors = require("cors");
 
 var passport = require("passport");
 
-var Strategy = require("passport-local").Strategy;
+const dbconfig = require('./config/database');
+
+const connection = mysql.createConnection(dbconfig.connection);
+const bcrypt = require('bcrypt-nodejs');
+const LocalStrategy = require('passport-local').Strategy;
 var flash = require("connect-flash");
 var morgan = require("morgan");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 const dbms = require("./routes/dbms");
 
-passport.use(
-	new Strategy(function(username, password, cb) {
-		findUserByUsername(username, function(err, user) {
-			if (err) {
-				console.log(err);
-				return cb(err);
-			}
-			if (!user) {
-				console.log("error");
-				return cb(null, false);
-			}
-			if (user.password != password) {
-				console.log("user", user);
-				console.log("wrong password", user.password, password);
-				return cb(null, false);
-			}
-			console.log("here");
-			return cb(null, user);
-		});
-	})
-);
-
+connection.query(`USE ${  dbconfig.database}`);
 // Configure Passport authenticated session persistence.
 //
 // In order to restore authentication state across HTTP requests, Passport needs
@@ -129,20 +112,25 @@ app.get("/Offices", (req, res) => {
 let getUsersRouter = require("./routes/users/getUsers");
 let newUserRouter = require("./routes/users/newUser");
 
-function loggedIn(req, res) {
-  console.log('loggedin req.user: ', req.user);
+function loggedIn(req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  console.log('loggedin req.user: ', req.user, req.body, req.isAuthenticated());
 }
 
-app.post("/users", require('connect-ensure-login').ensureLoggedIn(), getUsersRouter);
+app.post("/users", loggedIn, getUsersRouter);
 
 // app.use('/users', getUsersRouter);
 app.use("/new_user", newUserRouter.router);
+
+app.post('/signup', passport.authenticate("SignUp"), (req, res) => {
+  res.status(200).send('Sign up successful.');
+});
 
 app.get("/helloWorld", (req, res) => {
 	res.status(200).send("Hello World!");
 });
 
-app.post("/login", passport.authenticate("local", { failureRedirect: "/login" }), function(req, res) {
+app.post("/login", passport.authenticate("local-login", { failureRedirect: "/login" }), function(req, res) {
 	console.log("login success", req.user);
   req.user.password = undefined;
 	res.status(200).send(req.user);
@@ -192,6 +180,55 @@ function SQLArrayToJSON(sql, callback) {
 	});
 	callback(arr[0]);
 }
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  console.log('deserializeUser id: ', id);
+  connection.query('SELECT * FROM Users WHERE id = ? ', [id], (err, rows) => {
+          console.log('deserializeUser got back row[0]: ', rows[0]);
+    done(err, rows[0]);
+  });
+});
+
+passport.use(
+  'local-login',
+  new LocalStrategy(
+    {
+      usernameField: 'username',
+      passwordField: 'password',
+      passReqToCallback: true,
+    },
+
+    ((req, email, password, done) => {
+      console.log('username (email): ', email);
+      console.log('password: ' + password);
+      connection.query(`SELECT * FROM Users WHERE email = '${  email  }';`, (err, rows) => {
+        console.log("Rows: " + rows);
+
+        if (err) {
+          console.log("Error from query: ", err);
+          return done(err);
+        }
+
+        if (!rows.length) {
+          console.log("NO USERS FOUND");
+          return done(null, false, req.flash("loginMessage", "No user found."));
+        }
+        console.log("password: " + password + " rows: " + rows[0].password);
+        let cryptedpassword = bcrypt.hashSync(rows[0].password, null, null);
+        if (!bcrypt.compareSync(password, cryptedpassword)) {
+          console.log("password is incorrect");
+          return done(null, false, req.flash("loginMessage", "Oops! Wrong password."));
+        }
+
+        console.log("Login successful.");
+        return done(null, rows[0]);
+      });
+    }),
+  ),
+);
 
 
 
