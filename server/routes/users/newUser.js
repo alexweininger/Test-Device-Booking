@@ -43,7 +43,7 @@ function isValidUser(user) {
 	let err;
 	keys.forEach((key) => {
 		if (!user[key]) {
-			err = `user.${key} is not defined.`;
+			err += `user.${key} is not defined. `;
 		}
 	});
 	return err;
