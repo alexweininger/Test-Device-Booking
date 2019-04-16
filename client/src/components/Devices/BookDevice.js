@@ -154,7 +154,7 @@ function timeArray(date) {
   var min = date.getMinutes();
   var time = [];
 
-  min = Math.ceil(min /15) * 15;
+  min = (Math.ceil(min /15)+1) * 15;
   if (min >= 60) {
     min = 15;
     h++;
