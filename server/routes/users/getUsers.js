@@ -37,23 +37,3 @@ router.post('/', (req, res) => {
 });
 
 module.exports = router;
-
-// CREATE TABLE Users
-//     (
-//     firstName varchar(255),
-//     lastName varchar(255),
-//     email varchar(255),
-//     slackUsername varchar(255),
-//     id int(20),
-//     officeId int(11),
-//     role int(2) -- 0: normal user, 1: admin
-//	   password varchar(255) --encrypted password
-// 	);
-
-// 	INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
-// VALUES ('Niraj', 'Mali', 'nirajmali@aol.com', 'everest', '303', '003', '0', '*********');
-
-// INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)
-// VALUES ('Andrew', 'Lang', 'andrew_lang_98@hotmail.com', 'langa', '305', '003', '0', '*********'),
-//  ('Benji', 'Dog', 'benjithedog@hotmail.com', 'benji', '306', '003', '0', '*********'),
-//  ('Big', 'Chungus', 'chugus@big.com', 'chugus', '307', '003', '0', '*********');
