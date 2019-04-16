@@ -24,7 +24,6 @@ class Brands extends React.Component {
 				{brands.map(brand => 
 				
 				<FormControlLabel style={{marginRight: 90}} control={<Checkbox value="checkedC" />} label={brand.Brand}>
-					
 				</FormControlLabel>
 				)}
 			</div>

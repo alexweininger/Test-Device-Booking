@@ -94,11 +94,11 @@ class ProfileTable extends React.Component {
 				{/* </Table> */}
 				<MaterialTable
 					columns={[
-						{ title: "First Name", field: "firstName" },
-						{ title: "Last Name", field: "lastName" },
-						{ title: "Email Address", field: "email" },
-						{ title: "Slack Username", field: "slackUsername" },
-						{ title: "Office ID", field: "officeId" }
+						{ title: "First Name", field: "FirstName" },
+						{ title: "Last Name", field: "LastName" },
+						{ title: "Email Address", field: "Email" },
+						{ title: "Slack Username", field: "SlackUsername" },
+						{ title: "Office ID", field: "OfficeId" }
 					]}
 					data={[this.props.user]}
 					title="User Profile"
