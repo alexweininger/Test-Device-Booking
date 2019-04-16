@@ -68,6 +68,32 @@ class ProfileTable extends React.Component {
 		this.setState(newState);
 	}
 
+	editUsers = (index, newData) => {
+		console.log("editing users ");
+
+		const request = new Request("http://localhost:5000/users", {
+			method: "POST"
+		});
+
+		fetch(request)
+			.then(res => {
+				//if we successfully updated the DB
+				if (res.ok) {
+					//add the office
+					res.json().then(obj => {
+						this.setUser(index, newData);
+						console.log("updated edited user", this.state.users[index]);
+						return obj;
+					});
+				}
+			})
+			.catch(err => {
+				//if we successfully updated the DB
+				console.log("Error in editUsers", err);
+				console.log("post failed");
+			});
+	};
+
 	render() {
 		const { classes, props } = this.props;
 		console.log(this.props.user.firstName)
