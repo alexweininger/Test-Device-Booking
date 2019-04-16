@@ -4,12 +4,7 @@ module.exports = {
         'user': 'student',
         'password': 'student',
     },
-<<<<<<< HEAD
-    'database': 'Devices',
-    'user_table': 'Users'
-};
-=======
         'database': 'Devices',
         'user_table': 'Users'
 };
->>>>>>> origin/TeamB-LoginAndCreateUser
+
