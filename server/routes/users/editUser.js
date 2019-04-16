@@ -17,7 +17,7 @@ router.post('/', function (req, res) {
 	if (err) {
 		res.status(400).send(err);
 	} else {
-		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)';
+		const insert = 'INSERT INTO atbl_Users (firstName, lastName, email, slackUsername, id, officeId, role)';
 		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.id}', '${user.officeId}', '${user.role}');`
 		dbms.dbquery(insert + values, (err, results) => {
 			if (err) {
@@ -30,7 +30,7 @@ router.post('/', function (req, res) {
 
 	// Update Users
 	const update = `
-	UPDATE Users
+	UPDATE atbl_Users
 	Set firstName='${user.firstName}', lastName='${user.lastName}', email='${user.lastName}', slackUsername='${user.slackUsername}', officeId='${user.officeId}, role='${user.role}'
 	WHERE id='${user.id}';
 	`;

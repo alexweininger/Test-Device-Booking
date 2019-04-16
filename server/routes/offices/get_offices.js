@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require('../dbms.js');
 
 router.get('/', (req, res) => {
-    let officeQuery = "SELECT * FROM Devices.office;";
+    let officeQuery = "SELECT * FROM Device_Booking.atbl_Office;";
 
     db.dbqueryPromise(officeQuery).then(results => {;
         console.log("======Results======");

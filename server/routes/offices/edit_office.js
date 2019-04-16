@@ -5,7 +5,7 @@ var database = require('../dbms');
 router.post('/', (req, res) => {
 	const office= req.body;
 	
-	var query = "UPDATE office " + 
+	var query = "UPDATE  atbl_Office " + 
 		"SET Country = '(country)', City = '(city)', Address = '(address)' " +
 		"WHERE id_Office = (id)";
 	query = query.replace("(country)", office.updatedOffice.country);
