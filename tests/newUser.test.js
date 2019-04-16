@@ -13,8 +13,9 @@ describe("test the isValidUser function", () => {
 		firstName: "John",
 		lastName: "Doe",
 		officeId: "1",
-		id: "1234",
-		role: "0"
+		employeeId: "1234",
+		role: "0",
+		password: "a;lskdjf"
 	};
 
 	test("isValidUser returns an error that says the user object is missing the email property.", () => {
@@ -27,8 +28,9 @@ describe("test the isValidUser function", () => {
 		lastName: "Doe",
 		email: "john.doe@hotmail.com",
 		officeId: "1",
-		id: "1234",
-		role: "0"
+		employeeId: "1234",
+		role: "0",
+		password: "aksldj"
 	};
 
 	test("isValidUser returns no error string.", () => {
@@ -44,8 +46,9 @@ describe("test the new user route to add a user to the database", () => {
 		firstName: "test",
 		lastName: "test",
 		officeId: "1",
-		id: "453",
-		role: "0"
+		employeeId: "453",
+		role: "0",
+		password: "*******"
 	};
 
 	test("/new_user post request with invalid user in the body returns a 400 status.", () => {
@@ -59,8 +62,9 @@ describe("test the new user route to add a user to the database", () => {
 		lastName: "test",
 		email: "test.test@hotmail.com",
 		officeId: "1",
-		id: "1337",
-		role: "0"
+		employeeId: "1337",
+		role: "0",
+		password: "********"
 	};
 
 	test("/new_user post request with a valid user in body returns a 200 status.", () => {
