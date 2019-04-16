@@ -154,8 +154,11 @@ function timeArray(date) {
   var min = date.getMinutes();
   var time = [];
 
-  var i = 0;
-  min = Math.ceil(min / 15+1) * 15;
+  min = Math.ceil(min /15) * 15;
+  if (min >= 60) {
+    min = 15;
+    h++;
+  }
   while (h < 24) {
     if (min >= 60) {
       min = 0;
@@ -164,10 +167,8 @@ function timeArray(date) {
     var date = new Date();
     date.setHours(h);
     date.setMinutes(min);
-    time[i] = date;
-    min += 15;
-    i++;  
-    
+    time.push(date);
+    min += 15;    
   }
   return time;
 }
