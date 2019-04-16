@@ -1,11 +1,15 @@
+"use strict";
 const bodyParser = require("body-parser");
 var express = require('express');
 const dbms = require('../dbms');
-var router = express.Router();
 
+var router = express.Router();
 router.use(bodyParser.json({ type: '*/*' }));
 
+
 router.post('/', function (req, res) {
+	console.log('deleteUser: request recieved');
+	console.log("id: " + req.body.id);
 	// in the request body of edit user should be the entire updated user object as keys and values
 	const id = req.body.id;
 	const adminId = req.body.id; // some how check if admin???
@@ -32,6 +36,7 @@ function isValidId(id) {
 	if (!id) {
 		return 'No id was provided in the body of the http request.';
 	}
+	
 
 	let err;
 	return err;
