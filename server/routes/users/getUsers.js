@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
 			console.error(err);
 			res.status(400).send(err);
 		} else {
-			console.log('results', results);
+			// console.log('results', results);
 			res.setHeader('Content-Type', 'application/json');
 			SQLArrayToJSON(results, (json) => {
 				res.status(200).json(json);

@@ -11,15 +11,17 @@ router.post('/', function (req, res) {
 	// in the request body of edit user should be the entire updated user object as keys and values
 	const user = req.body.user;
 	const adminId = req.body.id; // some how check if admin???
-
+	console.log("user: " + user);
+	console.log("body: " + req.body)
+	
 	let err = isValidUser(user);
 
 	if (err) {
 		res.status(400).send(err);
 	} else {
-		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)';
-		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.id}', '${user.officeId}', '${user.role}');`
-		dbms.dbquery(insert + values, (err, results) => {
+		const update = `UPDATE Users Set firstName='${user.firstName}', lastName='${user.lastName}', email='${user.email}', slackUsername='${user.slackUsername}', officeId='${user.officeId}', role='${user.role}' WHERE id='${user.id}'`;
+		console.log("email: " + user.email);
+		dbms.dbquery(update, (err, results) => {
 			if (err) {
 				res.status(400).send(err);
 			} else {
@@ -27,13 +29,6 @@ router.post('/', function (req, res) {
 			}
 		});
 	}
-
-	// Update Users
-	const update = `
-	UPDATE Users
-	Set firstName='${user.firstName}', lastName='${user.lastName}', email='${user.lastName}', slackUsername='${user.slackUsername}', officeId='${user.officeId}, role='${user.role}'
-	WHERE id='${user.id}';
-	`;
 
 });
 

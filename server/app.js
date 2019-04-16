@@ -122,6 +122,9 @@ app.use("/users", getUsersRouter);
 // app.use('/users', getUsersRouter);
 app.use("/new_user", newUserRouter.router);
 
+app.use("/edit_user", require("./routes/users/editUser"));
+app.use("/delete_user", require("./routes/users/deleteUser"))
+
 app.post('/signup', passport.authenticate("SignUp"), (req, res) => {
   res.status(200).send('Sign up successful.');
 });
