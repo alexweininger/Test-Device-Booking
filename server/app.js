@@ -117,7 +117,7 @@ function loggedIn(req, res, next) {
   console.log('loggedin req.user: ', req.user, req.body, req.isAuthenticated());
 }
 
-app.post("/users", loggedIn, getUsersRouter);
+app.use("/users", getUsersRouter);
 
 // app.use('/users', getUsersRouter);
 app.use("/new_user", newUserRouter.router);
