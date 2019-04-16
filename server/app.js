@@ -4,19 +4,17 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
-var passport = require("passport");
-
-const dbconfig = require("./config/database");
-
 const connection = mysql.createConnection(dbconfig.connection);
 const bcrypt = require("bcrypt-nodejs");
 const LocalStrategy = require("passport-local").Strategy;
+const dbconfig = require("./config/database");
+const dbms = require("./routes/dbms");
+
+var passport = require("passport");
 var flash = require("connect-flash");
 var morgan = require("morgan");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
-const dbms = require("./routes/dbms");
 
 connection.query(`USE ${dbconfig.database}`);
 
