@@ -4,10 +4,10 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const connection = mysql.createConnection(dbconfig.connection);
 const bcrypt = require("bcrypt-nodejs");
 const LocalStrategy = require("passport-local").Strategy;
 const dbconfig = require("./config/database");
+const connection = mysql.createConnection(dbconfig.connection);
 const dbms = require("./routes/dbms");
 
 var passport = require("passport");
