@@ -155,8 +155,12 @@ function timeArray(date) {
   var time = [];
 
   min = (Math.ceil(min /15)+1) * 15;
-  if (min >= 60) {
+  if (min > 60) {
     min = 15;
+    h++;
+  }
+  if (min == 60) {
+    min = 0;
     h++;
   }
   while (h < 24) {
