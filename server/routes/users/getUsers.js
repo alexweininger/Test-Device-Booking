@@ -1,6 +1,6 @@
 const bodyParser = require("body-parser");
-var express = require('express');
 const dbms = require('../dbms');
+var express = require('express');
 const router = express.Router();
 
 router.post('/', (req, res) => {
@@ -11,7 +11,6 @@ router.post('/', (req, res) => {
 			console.error(err);
 			res.status(400).send(err);
 		} else {
-			// console.log('results', results);
 			res.setHeader('Content-Type', 'application/json');
 			dbms.SQLArrayToJSON(results, (json) => {
 				res.status(200).json(json);
