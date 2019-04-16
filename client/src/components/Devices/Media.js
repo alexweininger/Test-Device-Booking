@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
+import Reserve from "./Reserve.js";
 import { labeledStatement } from "@babel/types";
 
 const styles = {
@@ -70,14 +71,7 @@ function MediaCard(props) {
       </Button>
       
       <CardActions>
-        <Button 
-          style={{height: 50, marginRight: 15, marginLeft: 12}} 
-          size="large" 
-          variant="contained" 
-          color="inherit" 
-          className={classes.button}>
-          Reserve
-        </Button>
+        <Reserve/>
         <BookDevice/>
       </CardActions>
     </Card>
