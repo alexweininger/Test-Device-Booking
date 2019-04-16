@@ -52,7 +52,9 @@ app.use('/edit_office', require('./routes/offices/edit_office.js'));
 app.use('/get_offices', require('./routes/offices/get_offices.js'));
 app.use('/get_officeLocation', require('./routes/offices/get_officeLocation.js'));
 
-const officeQuery = 'SELECT * FROM Devices.office;';
+app.use('/get_deviceBrands', require('./routes/devices/get_deviceBrands.js'));
+
+/*const officeQuery = 'SELECT * FROM Devices.office;';
 
 app.get('/Offices', (req, res) => {
 	connection.query(officeQuery, (err, results) => {
@@ -63,7 +65,7 @@ app.get('/Offices', (req, res) => {
 			data: results,
 		});
 	});
-});
+});*/
 
 let getUsersRouter = require('./routes/users/getUsers');
 let newUserRouter = require('./routes/users/newUser');

@@ -6,6 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Location from './Location';
+import Brands from './Brands';
 
 const styles = theme => ({
   root: {
@@ -35,12 +36,8 @@ class SelectionGroup extends React.Component {
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel style={{fontWeight: 'bold', color: '#595959'}} disabled >BRANDS</FormLabel>
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Apple" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Asus" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Acer" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Dell" />
-            <FormControlLabel control={<Checkbox value="checkedC" />} label="Lenovo" />
-        </FormControl>
+            <Brands/>
+          </FormControl>
         
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel style={{fontWeight: 'bold', color: '#595959'}} disabled >LOCATION</FormLabel>

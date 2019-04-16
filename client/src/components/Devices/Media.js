@@ -12,13 +12,17 @@ import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
 import Reserve from "./Reserve.js";
+import { labeledStatement } from "@babel/types";
 
 const styles = {
   card: {
     maxWidth: 300,
-    height: 360
+    height: 360,
+    marginRight: 20,
+    marginBottom: 20
   },
   media: {
+    width: 275,
     height: 180
   },
   button: {
@@ -46,11 +50,11 @@ function createMockOffice(i){
 	}
 }
 
-
 function MediaCard(props) {
   const { classes } = props;
   return (
     <Card className={classes.card}>
+      <Button onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
       <CardActionArea>
         <CardMedia className={classes.media}
           image={require("../Data/image.jpg")}
@@ -64,12 +68,11 @@ function MediaCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
+      </Button>
+      
       <CardActions>
         <Reserve/>
         <BookDevice/>
-        <Button variant="fab" color="secondary" onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
-          Info
-        </Button>
       </CardActions>
     </Card>
   );

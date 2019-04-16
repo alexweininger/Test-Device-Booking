@@ -57,6 +57,7 @@ class BookDevice extends React.Component {
           color="inherit"
           className={classes.button}
           onClick={this.handleClickOpen}
+          style={{height: 50}}
         >
           Book device
         </Button>

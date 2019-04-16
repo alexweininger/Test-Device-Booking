@@ -90,7 +90,7 @@ class CustomizedTable extends React.Component {
 					res.json().then(obj => {
 						console.log(obj);
 						obj.forEach(user => {
-							user.fullName = user.first_name + " " + user.last_name;
+							user.fullName = user.FirstName + " " + user.LastName;
 						});
 						this.setState({ users: obj });
 						console.log("loaded all users", this.state);
@@ -147,7 +147,7 @@ class CustomizedTable extends React.Component {
 								return (
 									<Avatar
 										className={classes.hover}
-										name={rowData.firstName + " " + rowData.lastName}
+										name={rowData.FirstName + " " + rowData.LastName}
 										round={true}
 										size={35}
 										textSizeRatio={2}
@@ -158,11 +158,11 @@ class CustomizedTable extends React.Component {
 								);
 							}
 						},
-						{ title: "First Name", field: "firstName" },
-						{ title: "Last Name", field: "lastName" },
-						{ title: "Email Address", field: "email" },
-						{ title: "Slack Username", field: "slackUsername" },
-						{ title: "Office ID", field: "officeId" }
+						{ title: "First Name", field: "FirstName" },
+						{ title: "Last Name", field: "LastName" },
+						{ title: "Email Address", field: "Email" },
+						{ title: "Slack Username", field: "SlackUsername" },
+						{ title: "Office ID", field: "OfficeId" }
 					]}
 					data={this.state.users}
 					title="User List"

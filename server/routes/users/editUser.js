@@ -17,8 +17,8 @@ router.post('/', function (req, res) {
 	if (err) {
 		res.status(400).send(err);
 	} else {
-		const insert = 'INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role)';
-		const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.slackUsername}', '${user.id}', '${user.officeId}', '${user.role}');`
+		const insert = 'INSERT INTO atbl_Users (firstName, lastName, email, slackUsername, id, officeId, role)';
+		const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${user.Email}', '${user.SlackUsername}', '${user.ID}', '${user.OfficeId}', '${user.Role}');`
 		dbms.dbquery(insert + values, (err, results) => {
 			if (err) {
 				res.status(400).send(err);
@@ -30,9 +30,9 @@ router.post('/', function (req, res) {
 
 	// Update Users
 	const update = `
-	UPDATE Users
-	Set firstName='${user.firstName}', lastName='${user.lastName}', email='${user.lastName}', slackUsername='${user.slackUsername}', officeId='${user.officeId}, role='${user.role}'
-	WHERE id='${user.id}';
+	UPDATE atbl_Users
+	Set FirstName='${user.FirstName}', LastName='${user.LastName}', Email='${user.Email}', SlackUsername='${user.SlackUsername}', OfficeId='${user.OfficeId}, Role='${user.Role}'
+	WHERE ID='${user.ID}';
 	`;
 
 });
