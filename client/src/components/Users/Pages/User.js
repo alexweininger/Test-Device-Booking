@@ -46,9 +46,19 @@ function createData(first_name, last_name, email, location, slack_name) {
 
 const user = createData("John", "Snow", "knows.nothing@north.got", "Portland, Oregon", "LordCommander2");
 
+let users = [];
+
 class ProfileTable extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			selectedUser: null,
+			users: users,
+			loggedInUser: 'employee' //later we will turn this into being an object from the db
+		};
+		this.setUser = (index, user) => {
+			this.state.users[index] = user;
+		}
 	}
 
 	setSelectedUser(user) {
@@ -60,55 +70,107 @@ class ProfileTable extends React.Component {
 
 	render() {
 		const { classes, props } = this.props;
-		return (
-			<Paper className={classes.root}>
-				<Button onClick={() => this.props.returnToList()}>
-					<ArrowBack />
-					Back to the list
-				</Button>
-				{/* <Table className={classes.table}> */}
-				{/* <TableHead> */}
-				{/* <TableRow> */}
-				{/* <CustomTableCell align="left">Profile</CustomTableCell> */}
-				{/* <CustomTableCell align="left"></CustomTableCell> */}
-				{/* </TableRow> */}
-				{/* </TableHead> */}
-				{/* <TableBody> */}
-				{/* <TableRow>
-                            <CustomTableCell align="left">Name</CustomTableCell> {/*component="th" scope="row"*/}
-				{/* <CustomTableCell align="left">{this.props.user.firstName} {this.props.user.lastName}</CustomTableCell>
-                        </TableRow>
-                        <TableRow>
-                            <CustomTableCell align="left">Email</CustomTableCell> {/*component="th" scope="row"*/}
-				{/* <CustomTableCell align="left">{this.props.user.email}</CustomTableCell>
-                        </TableRow> */}
-				{/* <TableRow> */}
-				{/* <CustomTableCell align="left">Slack Name</CustomTableCell> component="th" scope="row" */}
-				{/* <CustomTableCell align="left">{this.props.user.slackUsername}</CustomTableCell> */}
-				{/* </TableRow> */}
-				{/* <TableRow> */}
-				{/* <CustomTableCell align="left">Location</CustomTableCell> component="th" scope="row" */}
-				{/* <CustomTableCell align="left">{this.props.user.officeId}</CustomTableCell> */}
-				{/* </TableRow> */}
-				{/* </TableBody> */}
-				{/* </Table> */}
-				<MaterialTable
-					columns={[
-						{ title: "First Name", field: "firstName" },
-						{ title: "Last Name", field: "lastName" },
-						{ title: "Email Address", field: "email" },
-						{ title: "Slack Username", field: "slackUsername" },
-						{ title: "Office ID", field: "officeId" }
-					]}
-					data={[this.props.user]}
-					title="User Profile"
-					options={{
-						toolbar: false,
-						paging: false
-					}}
-				/>
-			</Paper>
-		);
+		if(this.state.loggedInUser == 'admin'){
+			return (
+				<Paper className={classes.root}>
+					<Button onClick={() => this.props.returnToList()}>
+						<ArrowBack />
+						Back to the list
+					</Button>
+					<MaterialTable
+						columns={[
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={[this.props.user]}
+						title="User Profile"
+						options={{
+							toolbar: false,
+							paging: false
+						}}
+						editable={{
+							onRowAdd: newData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//TODO Add push to database
+											const data = this.state.users;
+											data.push(newData);
+											this.setState({ data }, () => resolve());
+
+											const request = new Request('/new_user', {
+												method: 'POST',
+												body: JSON.stringify(data),
+												headers: { "Content-Type": "application/json" }
+											});
+
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowUpdate: (newData, oldData) =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//TODO push changes to database
+											const data = this.state.users;
+											const index = data.indexOf(oldData);
+											data[index] = newData;
+											this.setState({ data }, () => resolve());
+											this.editUsers(index, newData);
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowDelete: oldData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//Push changes to DB
+											let data = this.state.users;
+											const index = data.indexOf(oldData);
+											data.splice(index, 1);
+											this.setState({ data }, () => resolve());
+										}
+										resolve()
+									}, 1000)
+								}),
+						}}
+					/>
+				</Paper>
+			);
+		}if(this.state.loggedInUser == 'employee'){
+			return (
+				<Paper className={classes.root}>
+					<Button onClick={() => this.props.returnToList()}>
+						<ArrowBack />
+						Back to the list
+					</Button>
+					<MaterialTable
+						columns={[
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={[this.props.user]}
+						title="User Profile"
+						options={{
+							toolbar: false,
+							paging: false
+						}}
+					/>
+				</Paper>
+			);
+		}else{
+			return (
+				<span> PLEASE LOG IN </span>
+			);
+		}
 	}
 }
 
