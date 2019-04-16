@@ -2,12 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\client",
-    "\\client\\public",
-    "\\client\\src",
     "\\client\\src\\components",
     "\\client\\src\\components\\Offices",
-    "\\client\\src\\components\\Offices\\Pages"
+    "\\client\\src\\components\\Offices\\Pages",
+    "\\routs"
   ],
-  "SelectedNode": "\\client\\src\\components\\Offices\\Pages\\Office.js",
+  "SelectedNode": "\\client\\package-lock.json",
   "PreviewInSolutionExplorer": false
 }
