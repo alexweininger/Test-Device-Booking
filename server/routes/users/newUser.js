@@ -49,16 +49,4 @@ function isValidUser(user) {
 	return err;
 }
 
-// user object:
-// {
-// lastName: '',
-// firstName: '',
-// slackUsername: '',
-// employID: '',
-// officeID: '',
-// username: '',
-// password: ''
-// }
-//
-
 module.exports = {router, isValidUser};
