@@ -66,6 +66,8 @@ app.use('/get_deviceByBrand', require('./routes/devices/get_deviceByBrand.js'));
 app.use('/get_deviceByLocation', require('./routes/devices/get_deviceByLocation.js'));
 app.use('/get_availableDevice', require('./routes/devices/get_availableDevice.js'));
 app.use("/get_device", require("./routes/devices/get_device.js"));
+app.use("/get_Booking", require("./routes/devices/get_Booking.js"));
+
 
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 
