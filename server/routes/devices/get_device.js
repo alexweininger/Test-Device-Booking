@@ -4,17 +4,16 @@ var router = express.Router();
 var db = require("../dbms.js");
 
 router.get("/", (req, res) => {
-  let brandQuery =
-    "SELECT DISTINCT Brand FROM Device_Booking.atbl_Device ORDER BY Brand ASC;";
+  let deviceQuery = "SELECT * FROM Device_Booking.atbl_Device LIMIT 20;";
 
-  db.dbqueryPromise(brandQuery)
+  db.dbqueryPromise(deviceQuery)
     .then(results => {
-      //console.log("======Brands======");
+      //console.log("======Devices======");
       //console.log(results);
 
       res.json({
         success: true,
-        brands: results
+        devices: results
       });
     })
     .catch(err => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -12,11 +12,12 @@ import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
 import { labeledStatement } from "@babel/types";
+import Reserve from "./Reserve.js";
 
 const styles = {
   card: {
     maxWidth: 300,
-    height: 360,
+    height: 420,
     marginRight: 20,
     marginBottom: 20
   },
@@ -27,64 +28,57 @@ const styles = {
   button: {
     margin: 5,
     padding: 10
-  },
+  }
 };
 
-
-function createMockOffice(i){
-	switch(i){
-		default:
-		case 1:
-			return {
-				Id : "497",
-				OS : "Android 7.0",
-				Location : "Kaunas"
+function createMockOffice(i) {
+  switch (i) {
+    default:
+    case 1:
+      return {
+        Id: "497",
+        OS: "Android 7.0",
+        Location: "Kaunas"
       };
-      case 2:
-			return {
-				Id : "453",
-				OS : "Android 7.0",
-				Location : "Portland"
-			};
-	}
+    case 2:
+      return {
+        Id: "453",
+        OS: "Android 7.0",
+        Location: "Portland"
+      };
+  }
 }
 
 function MediaCard(props) {
-  const { classes } = props;
+  const { classes, text, text2 } = props;
   return (
     <Card className={classes.card}>
-      <Button onClick={() => (ReactDOM.render(<DeviceInfo />, document.getElementById("root")))}>
-      <CardActionArea>
-        <CardMedia className={classes.media}
-          image={require("../Data/image.jpg")}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Samsung Galaxy
-          </Typography>
-          <Typography component="p">
-            jadajadajada
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <Button
+        onClick={() =>
+          ReactDOM.render(<DeviceInfo />, document.getElementById("root"))
+        }
+      >
+        <CardActionArea style={{ height: 320 }}>
+          <CardMedia
+            className={classes.media}
+            image={require("../Data/image.jpg")}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h6" component="h6">
+              {text}
+            </Typography>
+            <Typography component="p">{text2}</Typography>
+          </CardContent>
+        </CardActionArea>
       </Button>
-      
+
       <CardActions>
-        <Button 
-          style={{height: 50, marginRight: 15, marginLeft: 12}} 
-          size="large" 
-          variant="contained" 
-          color="inherit" 
-          className={classes.button}>
-          Reserve
-        </Button>
-        <BookDevice/>
+        <Reserve />
+        <BookDevice />
       </CardActions>
     </Card>
   );
 }
-
-
 
 MediaCard.propTypes = {
   classes: PropTypes.object.isRequired

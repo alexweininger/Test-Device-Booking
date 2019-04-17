@@ -1,7 +1,6 @@
-import React from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import React from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from "@material-ui/core/Checkbox";
 
 
 class Locations extends React.Component {

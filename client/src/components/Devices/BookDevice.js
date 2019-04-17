@@ -8,23 +8,10 @@ import { withStyles } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import BookingsTable from "./BookingsTable";
 
 const date = new Date();
 const time = timeArray(date);
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
 
 const styles = theme => ({
   dialog: {
@@ -40,20 +27,6 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: 10,
     width: 70
-  },
-  root: {
-    width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    marginTop: 30,
-    minWidth: 500
-  },
-  row: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
   }
 });
 
@@ -84,7 +57,7 @@ class BookDevice extends React.Component {
           color="inherit"
           className={classes.button}
           onClick={this.handleClickOpen}
-          style={{height: 50}}
+          style={{ height: 50 }}
         >
           Book device
         </Button>
@@ -97,7 +70,12 @@ class BookDevice extends React.Component {
             {"Book device"}
             <DialogContent className={classes.dialog}>
               <InputLabel className={classes.input}>
-                From {(date.getHours()<10?'0':'')+date.getHours()+":"+(date.getMinutes()<10?'0':'')+date.getMinutes()}
+                From{" "}
+                {(date.getHours() < 10 ? "0" : "") +
+                  date.getHours() +
+                  ":" +
+                  (date.getMinutes() < 10 ? "0" : "") +
+                  date.getMinutes()}
               </InputLabel>
               <InputLabel className={classes.input}>To</InputLabel>
               <Select
@@ -112,28 +90,15 @@ class BookDevice extends React.Component {
                     selected={index === "Pyxis"}
                     onClick={this.handleClose}
                   >
-                    {(t.getHours()<10?'0':'')+t.getHours()+":"+(t.getMinutes()<10?'0':'')+t.getMinutes()}
+                    {(t.getHours() < 10 ? "0" : "") +
+                      t.getHours() +
+                      ":" +
+                      (t.getMinutes() < 10 ? "0" : "") +
+                      t.getMinutes()}
                   </MenuItem>
                 ))}
               </Select>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    <CustomTableCell>Time</CustomTableCell>
-                    <CustomTableCell align="left">Reserved by</CustomTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map(row => (
-                    <TableRow className={classes.row} key={row.id}>
-                      <CustomTableCell align="left">{row.time}</CustomTableCell>
-                      <CustomTableCell align="left">
-                        {row.reservedBy}
-                      </CustomTableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <BookingsTable />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="inherit">
@@ -155,7 +120,7 @@ function timeArray(date) {
   var min = date.getMinutes();
   var time = [];
 
-  min = (Math.ceil(min /15)+1) * 15;
+  min = (Math.ceil(min / 15) + 1) * 15;
   if (min > 60) {
     min = 15;
     h++;
@@ -169,25 +134,13 @@ function timeArray(date) {
       min = 0;
       h++;
     }
-    var date = new Date();
-    date.setHours(h);
-    date.setMinutes(min);
-    time.push(date);
-    min += 15;    
+    var d = new Date();
+    d.setHours(h);
+    d.setMinutes(min);
+    time.push(d);
+    min += 15;
   }
   return time;
 }
-let id = 0;
-function createData(time, reservedBy) {
-  id += 1;
-  return { id, time, reservedBy };
-}
-
-const rows = [
-  createData("9:00-11:00", "Name Surname"),
-  createData("11:45-13:00", "Name Surname"),
-  createData("16:30-17:00", "Name Surname"),
-  createData("17:00-17:45", "Name Surname")
-];
 
 export default withStyles(styles)(BookDevice);
