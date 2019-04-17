@@ -16,7 +16,7 @@ const styles = theme => ({
     justifyContent: "space-around",
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing.unit * 8
   },
   icon: {
     color: "rgba(255, 255, 255, 0.54)"
@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-function TitlebarGridList(props) {
+/*function TitlebarGridList(props) {
   const { classes } = props;
 
   return (
@@ -51,19 +51,88 @@ function TitlebarGridList(props) {
 
         <Grid item xs={8}>
           <Grid item xs={2.5} container spacing={0}>
-            <Media />
-            <Media />
-            <Media />
-            <Media />
-            <Media />
-            <Media />
-            <Media />
-            <Media />
+            <Media text={"kazkas"} kakalis={"kazkas"} />
           </Grid>
         </Grid>
       </Grid>
     </div>
   );
+}
+
+TitlebarGridList.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(TitlebarGridList);*/
+
+class TitlebarGridList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      devices: []
+    };
+
+    this.getDevicesFromServer();
+  }
+
+  render() {
+    const { classes } = this.props;
+    const devices = this.state.devices || [];
+    return (
+      <div className={classes.root}>
+        <Fab
+          className={classes.fab}
+          color="primary"
+          aria-label="Add"
+          onClick={() =>
+            ReactDOM.render(<NewDevice />, document.getElementById("root"))
+          }
+          style={{ zIndex: 1 }}
+        >
+          <AddIcon />
+        </Fab>
+        <Grid container spacing={20}>
+          <Grid item xs={3}>
+            <Selection />
+          </Grid>
+
+          <Grid item xs={8}>
+            <Grid item xs={2.5} container spacing={0}>
+              {devices.map(device => (
+                <Media
+                  text={device.Brand + " " + device.Model}
+                  text2={
+                    "OS: " +
+                    device.OS +
+                    "\n Identification number:" +
+                    device.Serial_Number
+                  }
+                  //Serial_Number={device.Serial_Number}
+                />
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+  getDevicesFromServer() {
+    const request = new Request("/get_device", {
+      method: "GET"
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        console.log("result ", result);
+        if (result.success) {
+          this.setState({
+            devices: result.devices
+          });
+        }
+      });
+  }
 }
 
 TitlebarGridList.propTypes = {

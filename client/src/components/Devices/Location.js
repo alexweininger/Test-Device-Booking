@@ -1,7 +1,13 @@
-import React from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import React from "react";
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody
+} from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from "@material-ui/core/Checkbox";
 
 /*function LocationItem(props) {
 	return (
@@ -12,34 +18,33 @@ import Checkbox from '@material-ui/core/Checkbox';
 }*/
 
 class Locations extends React.Component {
+  constructor(props) {
+    super(props);
 
-	constructor(props) {
-		super(props);
+    this.state = {
+      offices: []
+    };
 
-		this.state= {
-            offices: []
-		}
+    this.getLocationsFromServer();
+  }
 
-		this.getLocationsFromServer();
-    }
-	
+  render() {
+    const offices = this.state.offices || [];
 
-	render(){
-		const offices = this.state.offices || [];
+    return (
+      <div>
+        {offices.map(office => (
+          <FormControlLabel
+            style={{ marginRight: 85 }}
+            control={<Checkbox value="checkedC" />}
+            label={office.city}
+          />
+        ))}
+      </div>
+    );
+  }
 
-		return (
-			<div>
-				{offices.map(office => 
-				
-				<FormControlLabel style={{marginRight: 85}} control={<Checkbox value="checkedC" />} label={office.city}>
-					
-				</FormControlLabel>
-				)}
-			</div>
-		)
-	}
-
-	/*updateState(changes){
+  /*updateState(changes){
 		//copy the state
 		var newState= {};
 
@@ -56,21 +61,23 @@ class Locations extends React.Component {
 		this.setState(newState);
 	}*/
 
-	getLocationsFromServer(){
-		const request = new Request('/get_officeLocation', {
-			method : 'GET'
-		});
+  getLocationsFromServer() {
+    const request = new Request("/get_officeLocation", {
+      method: "GET"
+    });
 
-		fetch(request).then(res => res.json()).then(result => {
-			console.log('result ', result);
-			if(result.success){
-				this.setState({
-					offices : result.offices
-				});
-			}
-		});
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        console.log("result ", result);
+        if (result.success) {
+          this.setState({
+            offices: result.offices
+          });
+        }
+      });
 
-		/*const request = new Request('/get_officeLocation', {
+    /*const request = new Request('/get_officeLocation', {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         });
@@ -100,7 +107,7 @@ class Locations extends React.Component {
             console.log(err);
         });
 	*/
-	}
+  }
 }
 
 export default Locations;
