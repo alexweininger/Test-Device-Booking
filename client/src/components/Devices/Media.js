@@ -73,15 +73,7 @@ function MediaCard(props) {
       </Button>
 
       <CardActions>
-        <Button
-          style={{ height: 50, marginRight: 15, marginLeft: 12 }}
-          size="large"
-          variant="contained"
-          color="inherit"
-          className={classes.button}
-        >
-          Reserve
-        </Button>
+        <Reserve />
         <BookDevice />
       </CardActions>
     </Card>

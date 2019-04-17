@@ -57,7 +57,7 @@ class BookDevice extends React.Component {
           color="inherit"
           className={classes.button}
           onClick={this.handleClickOpen}
-          style={{height: 50}}
+          style={{ height: 50 }}
         >
           Book device
         </Button>
@@ -70,7 +70,12 @@ class BookDevice extends React.Component {
             {"Book device"}
             <DialogContent className={classes.dialog}>
               <InputLabel className={classes.input}>
-                From {(date.getHours()<10?'0':'')+date.getHours()+":"+(date.getMinutes()<10?'0':'')+date.getMinutes()}
+                From{" "}
+                {(date.getHours() < 10 ? "0" : "") +
+                  date.getHours() +
+                  ":" +
+                  (date.getMinutes() < 10 ? "0" : "") +
+                  date.getMinutes()}
               </InputLabel>
               <InputLabel className={classes.input}>To</InputLabel>
               <Select
@@ -85,11 +90,15 @@ class BookDevice extends React.Component {
                     selected={index === "Pyxis"}
                     onClick={this.handleClose}
                   >
-                    {(t.getHours()<10?'0':'')+t.getHours()+":"+(t.getMinutes()<10?'0':'')+t.getMinutes()}
+                    {(t.getHours() < 10 ? "0" : "") +
+                      t.getHours() +
+                      ":" +
+                      (t.getMinutes() < 10 ? "0" : "") +
+                      t.getMinutes()}
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable/>
+              <BookingsTable />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="inherit">
@@ -111,7 +120,7 @@ function timeArray(date) {
   var min = date.getMinutes();
   var time = [];
 
-  min = (Math.ceil(min /15)+1) * 15;
+  min = (Math.ceil(min / 15) + 1) * 15;
   if (min > 60) {
     min = 15;
     h++;
@@ -129,7 +138,7 @@ function timeArray(date) {
     d.setHours(h);
     d.setMinutes(min);
     time.push(d);
-    min += 15;    
+    min += 15;
   }
   return time;
 }
