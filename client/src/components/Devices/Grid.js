@@ -108,6 +108,23 @@ class TitlebarGridList extends React.Component {
                     "\n Identification number:" +
                     device.Serial_Number
                   }
+                  //need to validate data properties
+                  brand1={device.Brand}
+                  model1={device.Model}
+                  os1={device.OS}
+                  location1={"Kaunas"}
+                  custody1={device.Vendor}
+                  available1={device.Available}
+                  active1={device.Active}
+                  sNumber1={device.Serial_Number}
+                  group1={device.Category}
+                  subgroup1={device.Subcategory}
+                  description1={device.Description}
+                  check_in1={device.Release_date}
+                  purchaseDate1={device.Purchased_on}
+                  vendor1={device.Vendor}
+                  taxRate1={device.Tax_rate}
+
                   //Serial_Number={device.Serial_Number}
                 />
               ))}
