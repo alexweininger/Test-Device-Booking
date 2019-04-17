@@ -4,7 +4,8 @@ var router = express.Router();
 var db = require("../dbms.js");
 
 router.get("/", (req, res) => {
-  let deviceQuery = "SELECT * FROM Device_Booking.atbl_Device LIMIT 20;";
+  let deviceQuery =
+    "SELECT Device_Booking.atbl_Device.*, Device_Booking.atbl_Office.City  FROM Device_Booking.atbl_Device, Device_Booking.atbl_Office WHERE Device_Booking.atbl_Device.fk_office_id = Device_Booking.atbl_Office.id_Office LIMIT 20;";
 
   db.dbqueryPromise(deviceQuery)
     .then(results => {

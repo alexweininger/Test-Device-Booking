@@ -75,7 +75,7 @@ class TitlebarGridList extends React.Component {
                   brand1={device.Brand}
                   model1={device.Model}
                   os1={device.OS}
-                  location1={"Kaunas"}
+                  location1={device.City}
                   custody1={device.Vendor}
                   available1={device.Available}
                   active1={device.Active}
@@ -87,8 +87,6 @@ class TitlebarGridList extends React.Component {
                   purchaseDate1={device.Purchased_on}
                   vendor1={device.Vendor}
                   taxRate1={device.Tax_rate}
-
-                  //Serial_Number={device.Serial_Number}
                 />
               ))}
             </Grid>

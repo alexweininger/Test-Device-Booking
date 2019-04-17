@@ -212,7 +212,7 @@ class DeviceInfo extends React.Component {
 
                     <TableRow style={style.row} key={4}>
                       <TableCell componets="th" scope="row">
-                        {"location"}
+                        {"Location"}
                       </TableCell>
                       <TableCell width="400" align="left">
                         {location}{" "}
