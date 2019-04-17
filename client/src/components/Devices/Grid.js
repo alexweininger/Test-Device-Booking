@@ -108,6 +108,7 @@ class TitlebarGridList extends React.Component {
                     "\n Identification number:" +
                     device.Serial_Number
                   }
+                  bookText={device.Serial_Number+""}
                   //Serial_Number={device.Serial_Number}
                 />
               ))}

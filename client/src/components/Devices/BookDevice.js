@@ -34,7 +34,8 @@ const styles = theme => ({
 class BookDevice extends React.Component {
   state = {
     open: false,
-    selectedTimeValue: 0
+    selectedTimeValue: 0,
+    booked: 0
   };
 
   handleClickOpen = () => {
@@ -45,12 +46,16 @@ class BookDevice extends React.Component {
     this.setState({ open: false });
   };
 
+  handleOk = event => {
+    this.setState({ booked: event.target.deviceId});
+
+  }
   handleTimeChange = event => {
     this.setState({ selectedTimeValue: event.target.value });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, deviceId } = this.props;
     return (
       <div>
         <Button
@@ -69,7 +74,7 @@ class BookDevice extends React.Component {
           onClose={this.handleClose}
         >
           <DialogTitle id="alert-dialog-title">
-            {"Book device"}
+            {"Book device"} {deviceId}
             <DialogContent className={classes.dialog}>
               <InputLabel className={classes.input}>
                 From{" "}
@@ -137,6 +142,8 @@ function timeArray(date) {
   }
   return time;
 }
+
+
 BookDevice.propTypes = {
   classes: PropTypes.object.isRequired,
 };
