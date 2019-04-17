@@ -53,6 +53,9 @@ app.use('/get_offices', require('./routes/offices/get_offices.js'));
 app.use('/get_officeLocation', require('./routes/offices/get_officeLocation.js'));
 
 app.use('/get_deviceBrands', require('./routes/devices/get_deviceBrands.js'));
+app.use('/get_deviceByBrand', require('./routes/devices/get_deviceByBrand.js'));
+app.use('/get_deviceByLocation', require('./routes/devices/get_deviceByLocation.js'));
+app.use('/get_availableDevice', require('./routes/devices/get_availableDevice.js'));
 
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 
