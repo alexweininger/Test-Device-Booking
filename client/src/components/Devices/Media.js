@@ -50,7 +50,7 @@ function createMockOffice(i) {
 }
 
 function MediaCard(props) {
-  const { classes, text, text2 } = props;
+  const { classes, text, text2, bookText } = props;
   return (
     <Card className={classes.card}>
       <Button
@@ -65,7 +65,7 @@ function MediaCard(props) {
           />
           <CardContent>
             <Typography gutterBottom variant="h6" component="h6">
-              {text}
+              {text}   
             </Typography>
             <Typography component="p">{text2}</Typography>
           </CardContent>
@@ -74,7 +74,7 @@ function MediaCard(props) {
 
       <CardActions>
         <Reserve />
-        <BookDevice />
+        <BookDevice deviceId={bookText} />
       </CardActions>
     </Card>
   );
