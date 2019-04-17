@@ -9,6 +9,7 @@ import Grid from '../Devices/Grid';
 import Office from '../Offices/Office';
 import User from "../Users/Pages/User";
 import profile from "../Users/Pages/UserList";
+import Location from "../Devices/Location";
 
 const styles = theme => ({
   root: {

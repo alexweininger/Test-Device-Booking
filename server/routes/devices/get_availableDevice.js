@@ -3,17 +3,18 @@ var router = express.Router();
 
 var db = require('../dbms.js');
 
-router.get('/', (req, res) => {
-    let officeQuery = "SELECT * FROM Device_Booking.atbl_Office;";
 
-    db.dbqueryPromise(officeQuery).then(results => {;
-        console.log("======Results======");
-        console.log(results);
-        //if the insert is successful, pull off the id that was given
-        //and send it to the client
+
+router.get('/', (req, res) => {
+    const availableQuery = "SELECT * FROM Device_Booking.atbl_Device WHERE Available='1';";
+
+    db.dbqueryPromise(availableQuery).then(results => {;
+        //console.log("======Available devices======");
+        //console.log(results);
+
         res.json({
             success: true,
-            offices: results
+            devices: results
         });
     }).catch(err => {
         console.log("There was an error getting the offices:");
@@ -21,7 +22,6 @@ router.get('/', (req, res) => {
         console.log(err);
         console.log("---------------------------------");
 
-        //if the insert is unsuccessful, notify the client
         res.json({
             success: false,
         });

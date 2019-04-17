@@ -13,7 +13,7 @@ var mysql = require('mysql'),
     async = require('async');
 
 var host = '35.185.195.184';  //from GCloud instance (this may change)
-var database = 'Devices';
+var database = 'Device_Booking';
 var user = 'student';
 var password = 'student';
 

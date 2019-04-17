@@ -23,11 +23,9 @@ const CustomTableCell = withStyles(theme => ({
 
 const styles = theme => ({
   root: {
-    backgroundColor: '#f2f2f2',
     width: '100%',
     overflowX: 'auto',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 5,
     [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
       width: 1100,
       marginLeft: 'auto',
@@ -36,7 +34,6 @@ const styles = theme => ({
     table: {
       width: 'auto',
       marginTop: "20%",
-
     },
   },
   row: {
@@ -68,7 +65,7 @@ function CustomizedTable(props) {
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.root}>
+      <Paper style={{backgroundColor: '#f2f2f2'}} className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
