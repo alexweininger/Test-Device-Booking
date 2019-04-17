@@ -4,7 +4,7 @@ var router = express.Router();
 var db = require("../dbms.js");
 
 router.get("/", (req, res) => {
-  let deviceQuery =
+  let brandQuery =
     "SELECT DISTINCT Brand FROM Device_Booking.atbl_Device ORDER BY Brand ASC;";
 
   db.dbqueryPromise(brandQuery)
