@@ -28,43 +28,6 @@ const styles = theme => ({
   }
 });
 
-/*function TitlebarGridList(props) {
-  const { classes } = props;
-
-  return (
-    <div className={classes.root}>
-      <Fab
-        className={classes.fab}
-        color="primary"
-        aria-label="Add"
-        onClick={() =>
-          ReactDOM.render(<NewDevice />, document.getElementById("root"))
-        }
-        style={{ zIndex: 1 }}
-      >
-        <AddIcon />
-      </Fab>
-      <Grid container spacing={20}>
-        <Grid item xs={3}>
-          <Selection />
-        </Grid>
-
-        <Grid item xs={8}>
-          <Grid item xs={2.5} container spacing={0}>
-            <Media text={"kazkas"} kakalis={"kazkas"} />
-          </Grid>
-        </Grid>
-      </Grid>
-    </div>
-  );
-}
-
-TitlebarGridList.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(TitlebarGridList);*/
-
 class TitlebarGridList extends React.Component {
   constructor(props) {
     super(props);

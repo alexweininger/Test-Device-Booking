@@ -9,6 +9,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
+import PropTypes from 'prop-types';
 
 const date = new Date();
 const time = timeArray(date);
@@ -33,7 +34,8 @@ const styles = theme => ({
 class BookDevice extends React.Component {
   state = {
     open: false,
-    selectedTimeValue: 0
+    selectedTimeValue: 0,
+    booked: 0
   };
 
   handleClickOpen = () => {
@@ -44,11 +46,16 @@ class BookDevice extends React.Component {
     this.setState({ open: false });
   };
 
-  handleTimeChange = (event, index, value) =>
-    this.setState({ selectedTimeValue: value });
+  handleOk = event => {
+    this.setState({ booked: event.target.deviceId});
+
+  }
+  handleTimeChange = event => {
+    this.setState({ selectedTimeValue: event.target.value });
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, deviceId } = this.props;
     return (
       <div>
         <Button
@@ -67,7 +74,7 @@ class BookDevice extends React.Component {
           onClose={this.handleClose}
         >
           <DialogTitle id="alert-dialog-title">
-            {"Book device"}
+            {"Book device"} {deviceId}
             <DialogContent className={classes.dialog}>
               <InputLabel className={classes.input}>
                 From{" "}
@@ -79,26 +86,19 @@ class BookDevice extends React.Component {
               </InputLabel>
               <InputLabel className={classes.input}>To</InputLabel>
               <Select
-                className={classes.input}
-                color="inherit"
                 value={this.state.selectedTimeValue}
                 onChange={this.handleTimeChange}
+                className={classes.input}
+                color="inherit"
               >
                 {time.map((t, index) => (
-                  <MenuItem
-                    key={index}
-                    selected={index === "Pyxis"}
-                    onClick={this.handleClose}
-                  >
-                    {(t.getHours() < 10 ? "0" : "") +
-                      t.getHours() +
-                      ":" +
-                      (t.getMinutes() < 10 ? "0" : "") +
-                      t.getMinutes()}
+                  <MenuItem key={index} selected={index === "Pyxis"} value={(t.getHours()<10?'0':'')+t.getHours()+":"+(t.getMinutes()<10?'0':'')+t.getMinutes()}>
+                    {(t.getHours()<10?'0':'')+t.getHours()+":"+(t.getMinutes()<10?'0':'')+t.getMinutes()}
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable />
+              
+              <BookingsTable/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="inherit">
@@ -143,4 +143,8 @@ function timeArray(date) {
   return time;
 }
 
+
+BookDevice.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 export default withStyles(styles)(BookDevice);
