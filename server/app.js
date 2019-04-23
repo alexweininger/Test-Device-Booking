@@ -67,7 +67,7 @@ app.use('/get_deviceByLocation', require('./routes/devices/get_deviceByLocation.
 app.use('/get_availableDevice', require('./routes/devices/get_availableDevice.js'));
 app.use("/get_device", require("./routes/devices/get_device.js"));
 app.use("/get_Booking", require("./routes/devices/get_Booking.js"));
-
+app.use("/get_dayBookings", require("./routes/devices/get_dayBookings.js"));
 
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 

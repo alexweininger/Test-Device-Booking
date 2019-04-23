@@ -5,11 +5,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
+import { ID } from "./BookDevice";
+//var {ID}= require("./BookDevice.js");
 const CustomTableCell = withStyles(theme => ({
     head: {
       backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white
+      color: theme.palette.common.white,
+      fontWeight: 'bold'
     },
     body: {
       fontSize: 14
@@ -19,7 +21,7 @@ const CustomTableCell = withStyles(theme => ({
   const styles = theme => ({
     table: {
       marginTop: 30,
-      minWidth: 500
+      minWidth: 400
     },
     row: {
       "&:nth-of-type(odd)": {
@@ -29,38 +31,35 @@ const CustomTableCell = withStyles(theme => ({
   });
 
 class BookingsTable extends React.Component {
-    state = {
-        open: false,
-        selectedTimeValue: 0
-      };
-    
-      handleClickOpen = () => {
-        this.setState({ open: true });
-      };
-    
-      handleClose = () => {
-        this.setState({ open: false });
-      };
-    
-      handleTimeChange = (event, index, value) =>
-        this.setState({ selectedTimeValue: value });
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bookings: []
+    };
+
+    this.getTodaysBookings();
+  }
+
     render() {
-        const { classes } = this.props;
+      const bookings = this.state.bookings || [];
+        const { classes, ID } = this.props;
         return (
             <div>
                 <Table className={classes.table}>
+                
                     <TableHead>
                     <TableRow>
-                        <CustomTableCell>Time</CustomTableCell>
+                        <CustomTableCell >Time</CustomTableCell>
                         <CustomTableCell align="left">Reserved by</CustomTableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map(row => (
-                    <TableRow className={classes.row} key={row.id}>
-                      <CustomTableCell align="left">{row.time}</CustomTableCell>
-                      <CustomTableCell align="left">
-                        {row.reservedBy}
+                    {bookings.map(b => (
+                    <TableRow key={b.Number}>
+                      <CustomTableCell align="left">{b.StartDate.substring(14,19)}-{b.FinishDate.substring(14,19)}</CustomTableCell>
+                      <CustomTableCell align="left"> {ID}
                       </CustomTableCell>
                     </TableRow>
                     ))}
@@ -69,18 +68,23 @@ class BookingsTable extends React.Component {
             </div>
         );
     }
+    getTodaysBookings() {
+      const request = new Request("/get_dayBookings", {
+        method: "GET"
+      });
+  
+      fetch(request)
+        .then(res => res.json())
+        .then(result => {
+          console.log("result ", result);
+          if (result.success) {
+            this.setState({
+              bookings: result.bookings
+            });
+          }
+        });
+    }
 }
 export default withStyles(styles)(BookingsTable);
 
-let id = 0;
-function createData(time, reservedBy) {
-  id += 1;
-  return { id, time, reservedBy };
-}
 
-const rows = [
-  createData("9:00-11:00", "Name Surname"),
-  createData("11:45-13:00", "Name Surname"),
-  createData("16:30-17:00", "Name Surname"),
-  createData("17:00-17:45", "Name Surname")
-];

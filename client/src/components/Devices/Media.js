@@ -101,7 +101,7 @@ class Media extends React.Component {
 
         <CardActions>
           <Reserve />
-          <BookDevice />
+          <BookDevice deviceId={sNumber1} />
         </CardActions>
       </Card>
     );
