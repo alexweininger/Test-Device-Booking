@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 import NewDevice from "./NewDevice.js";
 import Grid from "@material-ui/core/Grid";
 import Selection from "./Selection";
+import Progress from "./Progress";
 
 const styles = theme => ({
   root: {
@@ -55,6 +56,7 @@ class TitlebarGridList extends React.Component {
         >
           <AddIcon />
         </Fab>
+
         <Grid container spacing={20}>
           <Grid item xs={3}>
             <Selection />
@@ -72,24 +74,25 @@ class TitlebarGridList extends React.Component {
                     device.Serial_Number
                   }
                   //need to validate data properties
-                  brand1={device.Brand}
-                  model1={device.Model}
-                  os1={device.OS}
-                  location1={device.City}
-                  custody1={device.Vendor}
-                  available1={device.Available}
-                  active1={device.Active}
-                  sNumber1={device.Serial_Number}
-                  group1={device.Category}
-                  subgroup1={device.Subcategory}
-                  description1={device.Description}
-                  check_in1={device.Release_date}
-                  purchaseDate1={device.Purchased_on}
-                  vendor1={device.Vendor}
-                  taxRate1={device.Tax_rate}
+                  brand={device.Brand}
+                  model={device.Model}
+                  os={device.OS}
+                  location={device.City}
+                  custody={device.Vendor}
+                  available={device.Available}
+                  active={device.Active}
+                  sNumber={device.Serial_Number}
+                  group={device.Category}
+                  subgroup={device.Subcategory}
+                  description={device.Description}
+                  check_in={device.Release_date}
+                  purchaseDate={device.Purchased_on}
+                  vendor={device.Vendor}
+                  taxRate={device.Tax_rate}
                 />
               ))}
             </Grid>
+            <Progress />
           </Grid>
         </Grid>
       </div>

@@ -1,25 +1,24 @@
 var express = require("express");
 var router = express.Router();
+//StartDate >= NOW() AND
 
 var db = require("../dbms.js");
-
+//console.log(ID);
 router.get("/", (req, res) => {
-  let deviceQuery =
-    "SELECT Device_Booking.atbl_Device.*, Device_Booking.atbl_Office.City  FROM Device_Booking.atbl_Device, Device_Booking.atbl_Office" +
-    " WHERE Device_Booking.atbl_Device.fk_office_id = Device_Booking.atbl_Office.id_Office AND Device_Booking.atbl_Device.Status = '1' LIMIT 20;";
+  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE  FinishDate <= CURDATE() AND fk_user_id_reg>0";
 
-  db.dbqueryPromise(deviceQuery)
+  db.dbqueryPromise(availableQuery)
     .then(results => {
-      //console.log("======Devices======");
+      //console.log("======Available devices======");
       //console.log(results);
 
       res.json({
         success: true,
-        devices: results
+        bookings: results
       });
     })
     .catch(err => {
-      console.log("There was an error getting the devices:");
+      console.log("There was an error getting the Booking information:");
       console.log("---------------------------------");
       console.log(err);
       console.log("---------------------------------");
@@ -29,5 +28,6 @@ router.get("/", (req, res) => {
       });
     });
 });
+
 
 module.exports = router;

@@ -11,13 +11,18 @@ import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
 import PropTypes from 'prop-types';
 
-const date = new Date();
-const time = timeArray(date);
-
+var date = new Date();
+var time = [];
+var ID = "0";
 const styles = theme => ({
   dialog: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
+  },
+  content: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '90%'
   },
   input: {
     marginLeft: theme.spacing.unit,
@@ -35,11 +40,13 @@ class BookDevice extends React.Component {
   state = {
     open: false,
     selectedTimeValue: 0,
-    booked: 0
+    booked: 0,
   };
 
-  handleClickOpen = () => {
+  handleClickOpen = (deviceId) => {
     this.setState({ open: true });
+    timeArray();
+    ID=deviceId;
   };
 
   handleClose = () => {
@@ -57,14 +64,16 @@ class BookDevice extends React.Component {
   render() {
     const { classes, deviceId } = this.props;
     return (
+      
       <div>
         <Button
           size="large"
           variant="contained"
           color="inherit"
           className={classes.button}
-          onClick={this.handleClickOpen}
+          onClick={() => this.handleClickOpen(deviceId)}
           style={{ height: 50 }}
+          
         >
           Book device
         </Button>
@@ -74,8 +83,8 @@ class BookDevice extends React.Component {
           onClose={this.handleClose}
         >
           <DialogTitle id="alert-dialog-title">
-            {"Book device"} {deviceId}
-            <DialogContent className={classes.dialog}>
+            {"Book device"} {ID}
+            <DialogContent className={classes.content}>
               <InputLabel className={classes.input}>
                 From{" "}
                 {(date.getHours() < 10 ? "0" : "") +
@@ -98,7 +107,7 @@ class BookDevice extends React.Component {
                 ))}
               </Select>
               
-              <BookingsTable/>
+              <BookingsTable ID={ID}/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="inherit">
@@ -115,10 +124,12 @@ class BookDevice extends React.Component {
   }
 }
 
-function timeArray(date) {
+function timeArray() {
+  date = new Date();
+  time = [];
   var h = date.getHours();
   var min = date.getMinutes();
-  var time = [];
+  
 
   min = (Math.ceil(min / 15) + 1) * 15;
   if (min > 60) {
@@ -140,9 +151,10 @@ function timeArray(date) {
     time.push(d);
     min += 15;
   }
-  return time;
+ // return time;
 }
 
+export {ID};
 
 BookDevice.propTypes = {
   classes: PropTypes.object.isRequired,
