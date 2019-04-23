@@ -6,7 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { ID } from "./BookDevice";
-//var {ID}= require("./BookDevice.js");
+
 const CustomTableCell = withStyles(theme => ({
     head: {
       backgroundColor: theme.palette.common.black,
@@ -36,10 +36,11 @@ class BookingsTable extends React.Component {
     super(props);
 
     this.state = {
-      bookings: []
+      bookings: [],
+      Id: ID
     };
 
-    this.getTodaysBookings();
+    this.getTodaysBookings(this.state.Id);
   }
 
     render() {
@@ -47,6 +48,7 @@ class BookingsTable extends React.Component {
         const { classes, ID } = this.props;
         return (
             <div>
+           
                 <Table className={classes.table}>
                 
                     <TableHead>
@@ -58,7 +60,7 @@ class BookingsTable extends React.Component {
                     <TableBody>
                     {bookings.map(b => (
                     <TableRow key={b.Number}>
-                      <CustomTableCell align="left">{b.StartDate.substring(14,19)}-{b.FinishDate.substring(14,19)}</CustomTableCell>
+                      <CustomTableCell align="left">{b.StartDate.substring(11,16)}-{b.FinishDate.substring(11,16)}</CustomTableCell>
                       <CustomTableCell align="left"> {ID}
                       </CustomTableCell>
                     </TableRow>
@@ -70,7 +72,9 @@ class BookingsTable extends React.Component {
     }
     getTodaysBookings() {
       const request = new Request("/get_dayBookings", {
-        method: "GET"
+        method: "GET",
+        head: this.state.Id
+       // body: JSON.stringify(id)
       });
   
       fetch(request)

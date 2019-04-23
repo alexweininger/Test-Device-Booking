@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
 //StartDate >= NOW() AND
-import { ID } from "../../../client/src/components/Devices/BookDevice";
-var db = require("../dbms.js");
 
+var db = require("../dbms.js");
+//console.log(ID);
 router.get("/", (req, res) => {
-  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE  FinishDate <= CURDATE() AND fk_user_id_reg >0";
+  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE  FinishDate <= CURDATE() AND fk_user_id_reg>0";
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
@@ -28,5 +28,6 @@ router.get("/", (req, res) => {
       });
     });
 });
+
 
 module.exports = router;
