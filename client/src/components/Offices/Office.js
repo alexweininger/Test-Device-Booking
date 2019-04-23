@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Office.css';
+//import './Office.css';
 
 import OfficeInfo from './OfficeInfo.js';
 import NewOffice from './NewOffice';
@@ -12,6 +12,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
+
+import 'isomorphic-fetch';
 
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems

@@ -19,7 +19,7 @@
     "start": "react-scripts start",
     
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest --detectOpenHandles && codecov",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000",

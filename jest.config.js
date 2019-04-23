@@ -1,4 +1,4 @@
 module.exports = {
-	verbose: true,
-	modulePathIgnorePatterns: ["/client/"]
+	verbose: true/*,
+	modulePathIgnorePatterns: ["/client/"]*/
   };
