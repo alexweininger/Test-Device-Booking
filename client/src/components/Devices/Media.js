@@ -41,21 +41,21 @@ class Media extends React.Component {
       classes,
       text,
       text2,
-      brand1,
-      model1,
-      os1,
-      location1,
-      custody1,
-      available1,
-      active1,
-      sNumber1,
-      group1,
-      subgroup1,
-      description1,
-      check_in1,
-      purchaseDate1,
-      vendor1,
-      taxRate1
+      brand,
+      model,
+      os,
+      location,
+      custody,
+      available,
+      active,
+      sNumber,
+      group,
+      subgroup,
+      description,
+      check_in,
+      purchaseDate,
+      vendor,
+      taxRate
     } = this.props;
 
     return (
@@ -65,21 +65,21 @@ class Media extends React.Component {
             ReactDOM.render(
               <DeviceInfo
                 classes={classes}
-                brand={brand1}
-                model={model1}
-                os={os1}
-                location={location1}
-                custody={custody1}
-                available={available1}
-                active={active1}
-                sNumber={sNumber1}
-                group={group1}
-                subgroup={subgroup1}
-                description={description1}
-                check_in={check_in1}
-                purchaseDate={purchaseDate1}
-                vendor={vendor1}
-                taxRate={taxRate1}
+                brand={brand}
+                model={model}
+                os={os}
+                location={location}
+                custody={custody}
+                available={available}
+                active={active}
+                sNumber={sNumber}
+                group={group}
+                subgroup={subgroup}
+                description={description}
+                check_in={check_in}
+                purchaseDate={purchaseDate}
+                vendor={vendor}
+                taxRate={taxRate}
               />,
               document.getElementById("root")
             )
@@ -100,8 +100,8 @@ class Media extends React.Component {
         </Button>
 
         <CardActions>
-          <Reserve />
-          <BookDevice deviceId={sNumber1} />
+          <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
+          <BookDevice deviceId={sNumber}/>
         </CardActions>
       </Card>
     );
