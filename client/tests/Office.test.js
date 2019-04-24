@@ -11,7 +11,7 @@ test('Office component renders', () => {
 		<Offices />
 	);
 	
-	const office= component.toJSON();
+	const office= new Offices();
 	
 	console.log(office);
 	

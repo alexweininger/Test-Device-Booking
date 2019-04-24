@@ -1,6 +1,6 @@
 import React from 'react';
 
-//import './Office.css';
+require('./Office.css');
 
 import OfficeInfo from './OfficeInfo.js';
 import NewOffice from './NewOffice';
