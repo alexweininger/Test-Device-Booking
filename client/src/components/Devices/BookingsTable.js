@@ -61,7 +61,7 @@ class BookingsTable extends React.Component {
                     {bookings.map(b => (
                     <TableRow key={b.Number}>
                       <CustomTableCell align="left">{b.StartDate.substring(11,16)}-{b.FinishDate.substring(11,16)}</CustomTableCell>
-                      <CustomTableCell align="left"> {ID}
+                      <CustomTableCell align="left"> Name Surname
                       </CustomTableCell>
                     </TableRow>
                     ))}
@@ -73,7 +73,7 @@ class BookingsTable extends React.Component {
     getTodaysBookings() {
       const request = new Request("/get_dayBookings", {
         method: "GET",
-        head: this.state.Id
+       // headers: this.state.Id + ""
        // body: JSON.stringify(id)
       });
   

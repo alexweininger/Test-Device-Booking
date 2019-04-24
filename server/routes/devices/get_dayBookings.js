@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
 //StartDate >= NOW() AND
-
+const ID=2;
 var db = require("../dbms.js");
-//console.log(ID);
+
 router.get("/", (req, res) => {
-  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE  FinishDate <= CURDATE() AND fk_user_id_reg>0";
+
+//
+  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE StartDate>=NOW() AND StartDate<= CURDATE()+1 AND FinishDate >= NOW() AND FinishDate <= CURDATE()+1 AND fk_device_ser_nr=0048292044 ORDER BY StartDate ASC" ;
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
