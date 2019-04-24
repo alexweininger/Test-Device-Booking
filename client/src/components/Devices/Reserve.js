@@ -8,8 +8,8 @@ import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-
 import DateFnsUtils from "@date-io/date-fns";
+import ReservationsTable from "./ReservationsTable";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
@@ -53,8 +53,8 @@ class Reserve extends React.Component {
 
     this.state = {
       open: false,
-      selectedDate: new Date().setDate(today.getDate() + 1),
-      selectedDateTo: new Date().setDate(today.getDate() + 2),
+      selectedDate: new Date().setDate(today.getDate()),
+      selectedDateTo: new Date().setDate(today.getDate() + 1),
       selectedTimeValue: 0,
       reserved: {
         startDate:
@@ -62,7 +62,7 @@ class Reserve extends React.Component {
           "-" +
           (today.getMonth() + 1) +
           "-" +
-          (today.getDate() + 1) +
+          today.getDate() +
           " " +
           today.getHours() +
           ":" +
@@ -74,7 +74,7 @@ class Reserve extends React.Component {
           "-" +
           (today.getMonth() + 1) +
           "-" +
-          (today.getDate() + 2) +
+          (today.getDate() + 1) +
           " " +
           today.getHours() +
           ":" +
@@ -90,7 +90,7 @@ class Reserve extends React.Component {
 
   handleDateChange = date => {
     this.setState({ selectedDate: date });
-
+    this.state.selectedDateTo = date;
     //this.state.reserved.startDate =
     //  date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
     this.state.reserved.startDate = date
@@ -127,6 +127,20 @@ class Reserve extends React.Component {
   handleTimeChange = (event, index, value) =>
     this.setState({ selectedTimeValue: value });
 
+  disableRandomDates() {
+    return new Date(today.getFullYear(), 4, 29);
+  }
+  disableRandomDates() {
+    console.log(Math.random() > 0.7);
+    return Math.random() > 0.7;
+  }
+  disableWeekends(date) {
+    return (
+      (date.getDate() === 29 && date.getMonth() === 3) ||
+      (date.getDate() === 30 && date.getMonth() === 4)
+    );
+  }
+
   render() {
     const { classes, sNumber } = this.props;
     const { selectedDate, selectedDateTo } = this.state;
@@ -156,16 +170,24 @@ class Reserve extends React.Component {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <DatePicker
+                    hintStyle={{ color: "whitesmoke" }}
                     className={classes.textField}
                     margin="normal"
                     value={selectedDate}
                     onChange={this.handleDateChange}
+                    disablePast="true"
+                    //shouldDisableDate={this.disableRandomDates}
+                    //shouldDisableDate={this.disableWeekends}
+                    opentTo={"25"}
+                    initialFocusedDate={selectedDateTo}
                   />
                   <TimePicker
                     className={classes.textField}
                     margin="normal"
                     value={selectedDate}
                     onChange={this.handleDateChange}
+                    minutesStep={15}
+                    initialFocusedDate={selectedDateTo}
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
@@ -173,21 +195,23 @@ class Reserve extends React.Component {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <DatePicker
+                    minDate={selectedDate}
                     className={classes.textField}
                     margin="normal"
                     value={selectedDateTo}
                     onChange={this.handleDateChangeTo}
+                    //disablePast="true"
                   />
                   <TimePicker
                     className={classes.textField}
                     margin="normal"
                     value={selectedDateTo}
-                    inputProps={{
-                      step: 0 // 15 min
-                    }}
+                    minutesStep={15}
                     onChange={this.handleDateChangeTo}
+                    disablePast="true"
                   />
                 </Grid>
+                <ReservationsTable ID="2019-02-13 04:50:10" />
               </MuiPickersUtilsProvider>
             </DialogContent>
             <DialogActions>
