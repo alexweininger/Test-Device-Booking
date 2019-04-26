@@ -92,7 +92,7 @@ class CustomizedTable extends React.Component {
 					res.json().then(obj => {
 						console.log(obj);
 						obj.forEach(user => {
-							user.fullName = user.first_name + " " + user.last_name;
+							user.fullName = user.FirstName + " " + user.LastName;
 						});
 						this.setState({ users: obj });
 						console.log("loaded all users", this.state);

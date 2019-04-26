@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
 
 	//TODO make sure the office is unique
 
-	let query= "INSERT INTO office (Country, City, Address) " +
+	let query= "INSERT INTO atbl_Office (Country, City, Address) " +
 			   "VALUES ('{country}', '{city}', '{address}');";
 
 	query= query.replace('{country}', office.country)
