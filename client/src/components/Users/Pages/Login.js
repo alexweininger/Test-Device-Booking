@@ -136,12 +136,12 @@ class FullWidthTabs extends React.Component {
                                         Enter your details below to access your account:
                                     </h5>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="username">Username</InputLabel>
-                                        <Input id="username" name="username" autoComplete="username" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="email-login">Email</InputLabel>
+                                        <Input id="email-login" name="email-login" autoComplete="email-login" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="password-login">Password</InputLabel>
+                                        <Input name="password-login" type="password" id="password-login" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
                                         type=""
@@ -174,28 +174,24 @@ class FullWidthTabs extends React.Component {
                                         <Input value={this.state.lastName} id="lastName" name="lastName" autoComplete="lastName" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="email">Email</InputLabel>
-                                        <Input id="email" name="email" autoComplete="email" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="email-signup">Email</InputLabel>
+                                        <Input id="email-signup" name="email-signup" autoComplete="email-signup" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="slackUsername">Slack Username</InputLabel>
                                         <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="employID">Employee ID</InputLabel>
-                                        <Input id="employID" name="employID" autoComplete="employID" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="employeeId">Employee ID</InputLabel>
+                                        <Input id="employeeId" name="employeeId" autoComplete="employeeId" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="officeID">Office ID</InputLabel>
-                                        <Input id="officeID" name="officeID" autoComplete="officeID" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="officeId">Office ID</InputLabel>
+                                        <Input id="officeId" name="officeId" autoComplete="officeId" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="username">Username</InputLabel>
-                                        <Input id="username" name="username" autoComplete="username" onChange={this.handleInputChange} />
-                                    </FormControl>
-                                    <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleInputChange} />
+                                        <InputLabel htmlFor="password-signup">Password</InputLabel>
+                                        <Input name="password-signup" type="password" id="password-signup" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
                                         type=""
@@ -218,7 +214,9 @@ class FullWidthTabs extends React.Component {
 
     loginUser(user) {
 
-        var data = "username=nirajmali%40aol.com&password=*********&undefined=";
+        console.log(user);
+
+        var data = `username=${user.username}&password=${user.password}`;
 
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;

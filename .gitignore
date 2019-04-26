@@ -5,3 +5,4 @@ coverage/*
 /.vs
 ./.vs
 coverage/
+node_modules
