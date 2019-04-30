@@ -4,13 +4,17 @@ var router = express.Router();
 
 var db = require("../dbms.js");
 //console.log(ID);
-router.get("/", (req, res) => {
-  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking WHERE  FinishDate <= CURDATE() AND fk_user_id_reg>0";
+router.get("/:deviceId", (req, res) => {
+  console.log("req ", req.params);
+
+  const availableQuery = `SELECT * FROM Device_Booking.atbl_Booking WHERE StartDate>=NOW() AND  FinishDate <= CURDATE() AND fk_device_ser_nr=${
+    req.params.deviceId
+  }`;
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
-      //console.log("======Available devices======");
-      //console.log(results);
+      console.log("======Available devices======");
+      console.log(results);
 
       res.json({
         success: true,
@@ -28,6 +32,5 @@ router.get("/", (req, res) => {
       });
     });
 });
-
 
 module.exports = router;

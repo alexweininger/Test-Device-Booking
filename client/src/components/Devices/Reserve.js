@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
+
 import DateFnsUtils from "@date-io/date-fns";
 import ReservationsTable from "./ReservationsTable";
 import {
@@ -54,7 +55,7 @@ class Reserve extends React.Component {
     this.state = {
       open: false,
       selectedDate: new Date().setDate(today.getDate()),
-      selectedDateTo: new Date().setDate(today.getDate() + 1),
+      selectedDateTo: new Date().setDate(today.getDate()),
       selectedTimeValue: 0,
       reserved: {
         startDate:
@@ -74,7 +75,7 @@ class Reserve extends React.Component {
           "-" +
           (today.getMonth() + 1) +
           "-" +
-          (today.getDate() + 1) +
+          today.getDate() +
           " " +
           today.getHours() +
           ":" +
@@ -93,10 +94,19 @@ class Reserve extends React.Component {
     this.state.selectedDateTo = date;
     //this.state.reserved.startDate =
     //  date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    this.state.reserved.startDate = date
-      .toISOString()
-      .replace(/T/, " ")
-      .replace(/\..+/, "");
+    this.state.reserved.startDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes() +
+      ":" +
+      date.getSeconds();
+
     //this.state.reserved.sNumber = sNumber;
   };
   handleDateChangeTo = date => {
@@ -106,10 +116,18 @@ class Reserve extends React.Component {
 
     //this.state.reserved.startDate =
     //  date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-    this.state.reserved.finishDate = date
-      .toISOString()
-      .replace(/T/, " ")
-      .replace(/\..+/, "");
+    this.state.reserved.finishDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes() +
+      ":" +
+      date.getSeconds();
   };
   handleClickOpen = () => {
     this.setState({ open: true });
