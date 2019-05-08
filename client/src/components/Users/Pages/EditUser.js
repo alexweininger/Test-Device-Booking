@@ -49,7 +49,6 @@ class EditUser extends React.Component {
             slack_name: userInfo.slack_name,
             isAdmin: null,
             isMainUser: null,
-            isLoggedInUser: false
         }
     }
 
@@ -58,21 +57,16 @@ class EditUser extends React.Component {
       };
 
     renderCurrentUser() {
-        if(this.state.isAdmin || this.state.isLoggedInUser){
-            return (
-                <form className={"b"} noValidate autoComplete="off">
-                    {this.renderUserAttribute("first_name", "First Name", this.state.userInfo.first_name)}
-                    {this.renderUserAttribute("last_name", "Last Name", this.state.userInfo.last_name)}
-                    {this.renderUserAttribute("email", "Email", this.state.userInfo.email)}
-                    {this.renderUserAttribute("location", "Location", this.state.userInfo.location)}
-                    {this.renderUserAttribute("slack_name", "Slack Username", this.state.userInfo.slack_name)}
-                </form>
-            );
-        }else{
-            return (
-                <span> PLEASE LOG IN </span>
-            );
-        } 
+
+        return (
+            <form className={"b"} noValidate autoComplete="off">
+                {this.renderUserAttribute("first_name", "First Name", this.state.userInfo.first_name)}
+                {this.renderUserAttribute("last_name", "Last Name", this.state.userInfo.last_name)}
+                {this.renderUserAttribute("email", "Email", this.state.userInfo.email)}
+                {this.renderUserAttribute("location", "Location", this.state.userInfo.location)}
+                {this.renderUserAttribute("slack_name", "Slack Username", this.state.userInfo.slack_name)}
+            </form>
+        );
     }
 
     renderUserAttribute(attName, label, value) {
