@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 import NewDevice from "./NewDevice.js";
 import Grid from "@material-ui/core/Grid";
 import Selection from "./Selection";
+import Progress from "./Progress";
 
 const styles = theme => ({
   root: {
@@ -27,43 +28,6 @@ const styles = theme => ({
     right: theme.spacing.unit * 10
   }
 });
-
-/*function TitlebarGridList(props) {
-  const { classes } = props;
-
-  return (
-    <div className={classes.root}>
-      <Fab
-        className={classes.fab}
-        color="primary"
-        aria-label="Add"
-        onClick={() =>
-          ReactDOM.render(<NewDevice />, document.getElementById("root"))
-        }
-        style={{ zIndex: 1 }}
-      >
-        <AddIcon />
-      </Fab>
-      <Grid container spacing={20}>
-        <Grid item xs={3}>
-          <Selection />
-        </Grid>
-
-        <Grid item xs={8}>
-          <Grid item xs={2.5} container spacing={0}>
-            <Media text={"kazkas"} kakalis={"kazkas"} />
-          </Grid>
-        </Grid>
-      </Grid>
-    </div>
-  );
-}
-
-TitlebarGridList.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(TitlebarGridList);*/
 
 class TitlebarGridList extends React.Component {
   constructor(props) {
@@ -92,6 +56,7 @@ class TitlebarGridList extends React.Component {
         >
           <AddIcon />
         </Fab>
+
         <Grid container spacing={20}>
           <Grid item xs={3}>
             <Selection />
@@ -108,10 +73,26 @@ class TitlebarGridList extends React.Component {
                     "\n Identification number:" +
                     device.Serial_Number
                   }
-                  //Serial_Number={device.Serial_Number}
+                  //need to validate data properties
+                  brand={device.Brand}
+                  model={device.Model}
+                  os={device.OS}
+                  location={device.City}
+                  custody={device.Vendor}
+                  available={device.Available}
+                  active={device.Active}
+                  sNumber={device.Serial_Number}
+                  group={device.Category}
+                  subgroup={device.Subcategory}
+                  description={device.Description}
+                  check_in={device.Release_date}
+                  purchaseDate={device.Purchased_on}
+                  vendor={device.Vendor}
+                  taxRate={device.Tax_rate}
                 />
               ))}
             </Grid>
+            <Progress />
           </Grid>
         </Grid>
       </div>
@@ -136,7 +117,8 @@ class TitlebarGridList extends React.Component {
 }
 
 TitlebarGridList.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  device: Media.propTypes.device
 };
 
 export default withStyles(styles)(TitlebarGridList);

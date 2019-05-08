@@ -6,10 +6,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
-import "date-fns";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
+
 import DateFnsUtils from "@date-io/date-fns";
+import ReservationsTable from "./ReservationsTable";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
@@ -48,14 +49,85 @@ const styles = theme => ({
 });
 
 class Reserve extends React.Component {
-  state = {
-    open: false,
-    selectedDate: new Date().setDate(today.getDate() + 1),
-    selectedTimeValue: 0
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+      selectedDate: new Date().setDate(today.getDate()),
+      selectedDateTo: new Date().setDate(today.getDate()),
+      selectedTimeValue: 0,
+      reserved: {
+        startDate:
+          today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1) +
+          "-" +
+          today.getDate() +
+          " " +
+          today.getHours() +
+          ":" +
+          today.getMinutes() +
+          ":" +
+          today.getSeconds(),
+        finishDate:
+          today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1) +
+          "-" +
+          today.getDate() +
+          " " +
+          today.getHours() +
+          ":" +
+          today.getMinutes() +
+          ":" +
+          today.getSeconds(),
+        ID: "2",
+        sNumber: this.props.sNumber
+      },
+      message: null
+    };
+  }
 
   handleDateChange = date => {
     this.setState({ selectedDate: date });
+    this.state.selectedDateTo = date;
+    //this.state.reserved.startDate =
+    //  date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    this.state.reserved.startDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes() +
+      ":" +
+      date.getSeconds();
+
+    //this.state.reserved.sNumber = sNumber;
+  };
+  handleDateChangeTo = date => {
+    this.setState({
+      selectedDateTo: date
+    });
+
+    //this.state.reserved.startDate =
+    //  date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    this.state.reserved.finishDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes() +
+      ":" +
+      date.getSeconds();
   };
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -65,16 +137,37 @@ class Reserve extends React.Component {
     this.setState({ open: false });
   };
 
+  handleAddNewReserved = () => {
+    this.setState({ open: false });
+    this.addReserved(this.state.reserved);
+  };
+
   handleTimeChange = (event, index, value) =>
     this.setState({ selectedTimeValue: value });
 
+  disableRandomDates() {
+    return new Date(today.getFullYear(), 4, 29);
+  }
+  disableRandomDates() {
+    console.log(Math.random() > 0.7);
+    return Math.random() > 0.7;
+  }
+  disableWeekends(date) {
+    return (
+      (date.getDate() === 29 && date.getMonth() === 3) ||
+      (date.getDate() === 30 && date.getMonth() === 4)
+    );
+  }
+
   render() {
-    const { classes } = this.props;
-    const { selectedDate } = this.state;
+    const { classes, sNumber } = this.props;
+    const { selectedDate, selectedDateTo } = this.state;
+    var sNumber2 = { sNumber };
     return (
       <div>
         <Button
           size="large"
+          style={{ height: 50, marginRight: 10, marginLeft: 5 }}
           variant="contained"
           color="inherit"
           className={classes.button}
@@ -95,16 +188,24 @@ class Reserve extends React.Component {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <DatePicker
+                    hintStyle={{ color: "whitesmoke" }}
                     className={classes.textField}
                     margin="normal"
                     value={selectedDate}
                     onChange={this.handleDateChange}
+                    disablePast="true"
+                    //shouldDisableDate={this.disableRandomDates}
+                    //shouldDisableDate={this.disableWeekends}
+                    opentTo={"25"}
+                    initialFocusedDate={selectedDateTo}
                   />
                   <TimePicker
                     className={classes.textField}
                     margin="normal"
                     value={selectedDate}
                     onChange={this.handleDateChange}
+                    minutesStep={15}
+                    initialFocusedDate={selectedDateTo}
                   />
                 </Grid>
               </MuiPickersUtilsProvider>
@@ -112,25 +213,27 @@ class Reserve extends React.Component {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                   <DatePicker
+                    minDate={selectedDate}
                     className={classes.textField}
                     margin="normal"
-                    value={selectedDate}
-                    onChange={this.handleDateChange}
+                    value={selectedDateTo}
+                    onChange={this.handleDateChangeTo}
+                    //disablePast="true"
                   />
                   <TimePicker
                     className={classes.textField}
                     margin="normal"
-                    value={selectedDate}
-                    inputProps={{
-                      step: 900 // 15 min
-                    }}
-                    onChange={this.handleDateChange}
+                    value={selectedDateTo}
+                    minutesStep={15}
+                    onChange={this.handleDateChangeTo}
+                    disablePast="true"
                   />
                 </Grid>
+                <ReservationsTable ID="2019-02-13 04:50:10" />
               </MuiPickersUtilsProvider>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="inherit">
+              <Button onClick={this.handleAddNewReserved} color="inherit">
                 OK
               </Button>
               <Button onClick={this.handleClose} color="inherit" autoFocus>
@@ -141,6 +244,39 @@ class Reserve extends React.Component {
         </Dialog>
       </div>
     );
+  }
+
+  /* add the given office to the database
+   */
+  addReserved(reserved) {
+    console.log("callded_");
+    //if(!this.officeCanBeAdded(office)){
+    //	return false;
+    //}
+
+    //send office to the DB
+    const request = new Request("/new_reserve", {
+      method: "POST",
+      body: JSON.stringify(reserved),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        //if we successfully updated the DB
+
+        if (result.success) {
+          //add the office
+          reserved.number = result.Number;
+          this.state.reserved[result.Number] = reserved;
+          /* this.updateState({
+            reserved: this.state.reserved
+          });*/
+        }
+      });
+
+    return true;
   }
 }
 

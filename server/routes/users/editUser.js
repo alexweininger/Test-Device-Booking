@@ -11,15 +11,17 @@ router.post('/', function (req, res) {
 	// in the request body of edit user should be the entire updated user object as keys and values
 	const user = req.body.user;
 	const adminId = req.body.id; // some how check if admin???
-
+	console.log("user: " + user);
+	console.log("body: " + req.body)
+	
 	let err = isValidUser(user);
 
 	if (err) {
 		res.status(400).send(err);
 	} else {
-		const insert = 'INSERT INTO atbl_Users (firstName, lastName, email, slackUsername, id, officeId, role)';
-		const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${user.Email}', '${user.SlackUsername}', '${user.ID}', '${user.OfficeId}', '${user.Role}');`
-		dbms.dbquery(insert + values, (err, results) => {
+		const update = `UPDATE Users Set firstName='${user.firstName}', lastName='${user.lastName}', email='${user.email}', slackUsername='${user.slackUsername}', officeId='${user.officeId}', role='${user.role}' WHERE id='${user.id}'`;
+		console.log("email: " + user.email);
+		dbms.dbquery(update, (err, results) => {
 			if (err) {
 				res.status(400).send(err);
 			} else {
@@ -27,13 +29,6 @@ router.post('/', function (req, res) {
 			}
 		});
 	}
-
-	// Update Users
-	const update = `
-	UPDATE atbl_Users
-	Set FirstName='${user.FirstName}', LastName='${user.LastName}', Email='${user.Email}', SlackUsername='${user.SlackUsername}', OfficeId='${user.OfficeId}, Role='${user.Role}'
-	WHERE ID='${user.ID}';
-	`;
 
 });
 
@@ -50,7 +45,7 @@ function isValidUser(user) {
 	if (!user) {
 		return 'User is not defined.';
 	}
-	const keys = ['lastName', 'firstName', ];
+	const keys = ['lastName', 'firstName',];
 	let err;
 	keys.forEach(key => {
 		if (!user[key]) {

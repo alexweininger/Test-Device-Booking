@@ -30,20 +30,20 @@ const styles = theme => ({
   }
 });
 
-class BookingsTable extends React.Component {
+class reservationsTable extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      bookings: [],
+      reservations: [],
       Id: ID
     };
 
-    this.getTodaysBookings(this.state.Id);
+    this.getSelectedDayReservations(this.state.Id);
   }
 
   render() {
-    const bookings = this.state.bookings || [];
+    const reservations = this.state.reservations || [];
     const { classes, ID } = this.props;
     return (
       <div>
@@ -55,7 +55,7 @@ class BookingsTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {bookings.map(b => (
+            {reservations.map(b => (
               <TableRow key={b.Number}>
                 <CustomTableCell align="left">
                   {b.StartDate.substring(11, 16)}-
@@ -69,9 +69,11 @@ class BookingsTable extends React.Component {
       </div>
     );
   }
-  getTodaysBookings() {
-    const request = new Request(`/get_dayBookings/${this.state.Id}`, {
-      method: "GET"
+  getSelectedDayReservations(ID) {
+    const request = new Request("/get_selectedDay", {
+      method: "GET",
+      //body: JSON.stringify(ID),
+      headers: { "Content-Type": "application/json" }
     });
 
     fetch(request)
@@ -80,10 +82,10 @@ class BookingsTable extends React.Component {
         console.log("result ", result);
         if (result.success) {
           this.setState({
-            bookings: result.bookings
+            reservations: result.reservations
           });
         }
       });
   }
 }
-export default withStyles(styles)(BookingsTable);
+export default withStyles(styles)(reservationsTable);

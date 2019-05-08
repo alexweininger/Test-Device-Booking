@@ -4,13 +4,11 @@ var router = express.Router();
 var db = require("../dbms.js");
 
 router.get("/", (req, res) => {
-  let deviceQuery =
-    "SELECT Device_Booking.atbl_Device.*, Device_Booking.atbl_Office.City  FROM Device_Booking.atbl_Device, Device_Booking.atbl_Office" +
-    " WHERE Device_Booking.atbl_Device.fk_office_id = Device_Booking.atbl_Office.id_Office AND Device_Booking.atbl_Device.Status = '1' LIMIT 20;";
+  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking";
 
-  db.dbqueryPromise(deviceQuery)
+  db.dbqueryPromise(availableQuery)
     .then(results => {
-      //console.log("======Devices======");
+      //console.log("======Available devices======");
       //console.log(results);
 
       res.json({
@@ -19,7 +17,7 @@ router.get("/", (req, res) => {
       });
     })
     .catch(err => {
-      console.log("There was an error getting the devices:");
+      console.log("There was an error getting the Booking information:");
       console.log("---------------------------------");
       console.log(err);
       console.log("---------------------------------");

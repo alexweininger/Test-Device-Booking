@@ -31,57 +31,86 @@ const styles = {
   }
 };
 
-function createMockOffice(i) {
-  switch (i) {
-    default:
-    case 1:
-      return {
-        Id: "497",
-        OS: "Android 7.0",
-        Location: "Kaunas"
-      };
-    case 2:
-      return {
-        Id: "453",
-        OS: "Android 7.0",
-        Location: "Portland"
-      };
+class Media extends React.Component {
+  state = {
+    value: ""
+  };
+
+  render() {
+    const {
+      classes,
+      text,
+      text2,
+      brand,
+      model,
+      os,
+      location,
+      custody,
+      available,
+      active,
+      sNumber,
+      group,
+      subgroup,
+      description,
+      check_in,
+      purchaseDate,
+      vendor,
+      taxRate
+    } = this.props;
+
+    return (
+      <Card className={classes.card}>
+        <Button
+          onClick={() =>
+            ReactDOM.render(
+              <DeviceInfo
+                classes={classes}
+                brand={brand}
+                model={model}
+                os={os}
+                location={location}
+                custody={custody}
+                available={available}
+                active={active}
+                sNumber={sNumber}
+                group={group}
+                subgroup={subgroup}
+                description={description}
+                check_in={check_in}
+                purchaseDate={purchaseDate}
+                vendor={vendor}
+                taxRate={taxRate}
+              />,
+              document.getElementById("root")
+            )
+          }
+        >
+          <CardActionArea style={{ height: 320 }}>
+            <CardMedia
+              className={classes.media}
+              image={require("../Data/image.jpg")}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h6">
+                {text}
+              </Typography>
+              <Typography component="p">{text2}</Typography>
+            </CardContent>
+          </CardActionArea>
+        </Button>
+
+        <CardActions>
+          <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
+          <BookDevice deviceId={sNumber} />
+        </CardActions>
+      </Card>
+    );
   }
 }
 
-function MediaCard(props) {
-  const { classes, text, text2 } = props;
-  return (
-    <Card className={classes.card}>
-      <Button
-        onClick={() =>
-          ReactDOM.render(<DeviceInfo />, document.getElementById("root"))
-        }
-      >
-        <CardActionArea style={{ height: 320 }}>
-          <CardMedia
-            className={classes.media}
-            image={require("../Data/image.jpg")}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="h6">
-              {text}
-            </Typography>
-            <Typography component="p">{text2}</Typography>
-          </CardContent>
-        </CardActionArea>
-      </Button>
-
-      <CardActions>
-        <Reserve />
-        <BookDevice />
-      </CardActions>
-    </Card>
-  );
-}
-
-MediaCard.propTypes = {
-  classes: PropTypes.object.isRequired
+Media.propTypes = {
+  classes: PropTypes.object.isRequired,
+  device: DeviceInfo.propTypes.device.isRequired
 };
 
-export default withStyles(styles)(MediaCard);
+export default withStyles(styles)(Media);
