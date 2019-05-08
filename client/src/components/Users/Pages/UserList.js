@@ -60,20 +60,22 @@ function createData(first_name, last_name, email, location, slack_name) {
 	return { first_name, last_name, email, location, slack_name };
 }
 
-let users = [createData("John", "Snow", "knows.nothing@north.got", "Portland, Oregon", "LordCommander2"), createData("Bronius", null, null, null, null)];
+let users = [];
 
 class CustomizedTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedUser: null,
-			users: users
+			users: users,
+			loggedInUser: 'admin' //later we will turn this into being an object from the db
 		};
-		this.getUsers();
 		this.setUser = (index, user) => {
 			this.state.users[index] = user;
 		}
-		this.state.users = this.getUsers(); // later we will get this from the server
+		if (this.state.loggedInUser == 'admin' || this.state.loggedInUser == 'employee') {
+			this.state.users = this.getUsers(); // later we will get this from the server
+		}
 	}
 	getUsers = () => {
 		console.log("getting all users");
@@ -109,27 +111,45 @@ class CustomizedTable extends React.Component {
 	editUsers = (index, newData) => {
 		console.log("editing users ");
 
-		const request = new Request("http://localhost:5000/users", {
-			method: "POST"
-		});
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
 
-		fetch(request)
-			.then(res => {
-				//if we successfully updated the DB
-				if (res.ok) {
-					//add the office
-					res.json().then(obj => {
-						this.setUser(index, newData);
-						console.log("updated edited user", this.state.users[index]);
-						return obj;
-					});
-				}
-			})
-			.catch(err => {
-				//if we successfully updated the DB
-				console.log("Error in editUsers", err);
-				console.log("post failed");
-			});
+		xhr.addEventListener("readystatechange", function () {
+			if (this.readyState === 4) {
+				console.log('request response text: ', this.response);
+			}
+		});
+		console.log(this.state.users[index]);
+		xhr.open("POST", "http://localhost:5000/edit_user");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("cache-control", "no-cache");
+		xhr.setRequestHeader('mode', 'no-cors');
+		xhr.setRequestHeader('credentials', 'omit');
+		xhr.setRequestHeader('redirecnt', 'follow');
+		xhr.getResponseHeader('Set-Cookie');
+		xhr.send(JSON.stringify({user: this.state.users[index]}));
+	};
+
+	deleteUsers = (index, newData) => {
+		console.log("editing users ");
+
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+
+		xhr.addEventListener("readystatechange", function () {
+			if (this.readyState === 4) {
+				console.log('request response text: ', this.response);
+			}
+		});
+		console.log(this.state.users[index]);
+		xhr.open("POST", "http://localhost:5000/delete_user");
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("cache-control", "no-cache");
+		xhr.setRequestHeader('mode', 'no-cors');
+		xhr.setRequestHeader('credentials', 'omit');
+		xhr.setRequestHeader('redirecnt', 'follow');
+		xhr.getResponseHeader('Set-Cookie');
+		xhr.send(JSON.stringify({id: this.state.users[index].id}));
 	};
 
 	render() {
@@ -137,89 +157,154 @@ class CustomizedTable extends React.Component {
 		if (this.state.selectedUser) {
 			return <ProfileTable user={this.state.selectedUser} returnToList={() => this.setSelectedUser(null)} />;
 		} else if (this.state.users) {
-			return (
-				<MaterialTable
-					columns={[
-						{
-							title: "Profile",
-							field: "fullName",
-							render: rowData => {
-								return (
-									<Avatar
-										className={classes.hover}
-										name={rowData.FirstName + " " + rowData.LastName}
-										round={true}
-										size={35}
-										textSizeRatio={2}
-										onClick={() => {
-											this.setSelectedUser(rowData);
-										}}
-									/>
-								);
-							}
-						},
-						{ title: "First Name", field: "FirstName" },
-						{ title: "Last Name", field: "LastName" },
-						{ title: "Email Address", field: "Email" },
-						{ title: "Slack Username", field: "SlackUsername" },
-						{ title: "Office ID", field: "OfficeId" }
-					]}
-					data={this.state.users}
-					title="User List"
-					options={{
-						columnsButton: true,
-						exportButton: true
-					}}
-					editable={{
-						onRowAdd: newData =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//TODO Add push to database
-										const data = this.state.users;
-										data.push(newData);
-										this.setState({ data }, () => resolve());
+			if (this.state.loggedInUser == 'admin') {
+				return (
+					<MaterialTable
+						columns={[
+							{
+								title: "Profile",
+								field: "fullName",
+								render: rowData => {
+									return (
+										<Avatar
+											className={classes.hover}
+											name={rowData.firstName + " " + rowData.lastName}
+											round={true}
+											size={35}
+											textSizeRatio={2}
+											onClick={() => {
+												this.setSelectedUser(rowData);
+											}}
+										/>
+									);
+								}
+							},
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={this.state.users}
+						title="User List"
+						options={{
+							columnsButton: true,
+							exportButton: true
+						}}
+						editable={{
+							onRowAdd: newData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//TODO Add push to database
+											const data = this.state.users;
+											data.push(newData);
+											this.setState({ data }, () => resolve());
 
-										const request = new Request('/new_user', {
-											method: 'POST',
-											body: JSON.stringify(data),
-											headers: { "Content-Type": "application/json" }
-										});
+											const request = new Request('/new_user', {
+												method: 'POST',
+												body: JSON.stringify(data),
+												headers: { "Content-Type": "application/json" }
+											});
 
-									}
-									resolve()
-								}, 1000)
-							}),
-						onRowUpdate: (newData, oldData) =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//TODO push changes to database
-										const data = this.state.users;
-										const index = data.indexOf(oldData);
-										data[index] = newData;
-										this.setState({ data }, () => resolve());
-										this.editUsers(index, newData);
-									}
-									resolve()
-								}, 1000)
-							}),
-						onRowDelete: oldData =>
-							new Promise((resolve, reject) => {
-								setTimeout(() => {
-									{
-										//Push changes to DB
-										let data = this.state.users;
-										const index = data.indexOf(oldData);
-										data.splice(index, 1);
-										this.setState({ data }, () => resolve());
-									}
-									resolve()
-								}, 1000)
-							}),
-					}}
-				/>
-			);
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowUpdate: (newData, oldData) =>
+								new Promise((resolve, reject) => {
+
+									setTimeout(() => {
+										{
+											//TODO push changes to database
+											const data = this.state.users;
+											const index = data.indexOf(oldData);
+											data[index] = newData;
+											this.setState({ data }, () => resolve());
+											this.editUsers(index, newData);
+											console.log("tittie fuck");
+											// send post request to edit_user with newData
+
+
+											// var xhr = new XMLHttpRequest();
+											// xhr.withCredentials = true;
+
+											// xhr.addEventListener("readystatechange", function () {
+											// 	if (this.readyState === 4) {
+											// 		console.log('request response text: ', this.response);
+											// 	}
+											// });
+
+											// xhr.open("POST", "http://localhost:5000/edit_user");
+											// xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+											// xhr.setRequestHeader("cache-control", "no-cache");
+											// xhr.setRequestHeader('mode', 'no-cors');
+											// xhr.setRequestHeader('credentials', 'omit');
+											// xhr.setRequestHeader('redirecnt', 'follow');
+											// xhr.getResponseHeader('Set-Cookie');
+											// xhr.send(newData);
+										}
+										resolve()
+									}, 1000)
+								}),
+							onRowDelete: oldData =>
+								new Promise((resolve, reject) => {
+									setTimeout(() => {
+										{
+											//Push changes to DB
+											let data = this.state.users;
+											const index = data.indexOf(oldData);
+											data.splice(index, 1);
+											this.setState({ data }, () => resolve());
+											this.deleteUsers(index, oldData);
+										}
+										resolve()
+									}, 1000)
+								}),
+						}}
+					/>
+				);
+			} else if (this.state.loggedInUser == 'employee') {
+				return (
+					<MaterialTable
+						columns={[
+							{
+								title: "Profile",
+								field: "fullName",
+								render: rowData => {
+									return (
+										<Avatar
+											className={classes.hover}
+											name={rowData.firstName + " " + rowData.lastName}
+											round={true}
+											size={35}
+											textSizeRatio={2}
+											onClick={() => {
+												this.setSelectedUser(rowData);
+											}}
+										/>
+									);
+								}
+							},
+							{ title: "First Name", field: "firstName" },
+							{ title: "Last Name", field: "lastName" },
+							{ title: "Email Address", field: "email" },
+							{ title: "Slack Username", field: "slackUsername" },
+							{ title: "Office ID", field: "officeId" }
+						]}
+						data={this.state.users}
+						title="User List"
+						options={{
+							columnsButton: true,
+						}}
+					/>
+				);
+			} else { //when user is not logged in
+				return (
+					<span> PLEASE LOG IN </span>
+				);
+			}
+
 		} else {
 			return <h1>Loading...</h1>;
 		}
