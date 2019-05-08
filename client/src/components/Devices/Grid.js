@@ -117,7 +117,8 @@ class TitlebarGridList extends React.Component {
 }
 
 TitlebarGridList.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  brand: Media.propTypes.brand.isRequired
 };
 
 export default withStyles(styles)(TitlebarGridList);

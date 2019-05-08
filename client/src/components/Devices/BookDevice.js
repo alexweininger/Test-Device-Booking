@@ -49,9 +49,10 @@ class BookDevice extends React.Component {
   };
 
   handleClickOpen = deviceId => {
+    var date = new Date();
     this.setState({ open: true });
-    this.setState({ booked: { startDate: new Date() } });
-    timeArray();
+    this.setState({ booked: { startDate: date } });
+    time = timeArray(date);
     ID = deviceId;
   };
 
@@ -179,9 +180,8 @@ class BookDevice extends React.Component {
   }
 }
 
-function timeArray() {
-  date = new Date();
-  time = [];
+function timeArray(date) {
+  var newTime = [];
   var h = date.getHours();
   var min = date.getMinutes();
 
@@ -190,7 +190,7 @@ function timeArray() {
     var d = new Date();
     d.setHours(h);
     d.setMinutes(min);
-    time.push(d);
+    newTime.push(d);
   }
   if (min > 60) {
     min = 15;
@@ -208,10 +208,10 @@ function timeArray() {
     var d = new Date();
     d.setHours(h);
     d.setMinutes(min);
-    time.push(d);
+    newTime.push(d);
     min += 15;
   }
-  // return time;
+  return newTime;
 }
 
 export { ID };

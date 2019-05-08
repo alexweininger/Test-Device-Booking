@@ -358,6 +358,8 @@ class DeviceInfo extends React.Component {
 }
 
 DeviceInfo.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  brand: PropTypes.string.isRequired,
+  device: PropTypes.shape({})
 };
 export default DeviceInfo;

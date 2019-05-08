@@ -101,7 +101,7 @@ class Media extends React.Component {
 
         <CardActions>
           <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
-          <BookDevice deviceId={sNumber}/>
+          <BookDevice deviceId={sNumber} />
         </CardActions>
       </Card>
     );
@@ -109,7 +109,8 @@ class Media extends React.Component {
 }
 
 Media.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  device: DeviceInfo.propTypes.device.isRequired
 };
 
 export default withStyles(styles)(Media);
