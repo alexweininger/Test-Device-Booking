@@ -1,7 +1,9 @@
 /node_modules
 /coverage
 coverage/*
-
+./server/config/database.js
+./server/config/routes/dmbs.js
+./server/config/routes/dmbsTest.js
 /.vs
 ./.vs
 coverage/
