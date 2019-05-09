@@ -20,7 +20,7 @@ router.post("/", (req, res) => {
     }
 
     const insert =
-      "INSERT INTO Users (firstName, lastName, email, slackUsername, id, officeId, role, password)";
+      "INSERT INTO atbl_Users (firstName, lastName, email, slackUsername, id, officeId, role, password)";
     const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${
       user.email
     }', '${user.slackUsername}', '${user.employeeId}', '${user.officeId}', '${
