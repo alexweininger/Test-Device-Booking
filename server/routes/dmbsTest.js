@@ -14,7 +14,7 @@ var mysql = require("mysql"),
 var host = "35.185.195.184"; //from GCloud instance (this may change)
 var database = "Device_Booking_Test";
 var user = "student";
-var password = "student";
+var password = "Ktustudent";
 
 /**
  * dbquery
