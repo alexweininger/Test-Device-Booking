@@ -215,6 +215,7 @@ function timeArray(date) {
 }
 
 export { ID };
+export { timeArray };
 
 BookDevice.propTypes = {
   classes: PropTypes.object.isRequired

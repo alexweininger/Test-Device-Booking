@@ -15,17 +15,17 @@ router.post("/", (req, res) => {
   if (err) {
     res.status(400).send(err);
   } else {
-    if (user.role === undefined) {
-      user.role = 0;
+    if (user.Role === undefined) {
+      user.Role = 0;
     }
 
     const insert =
-      "INSERT INTO atbl_Users (firstName, lastName, email, slackUsername, id, officeId, role, password)";
-    const values = ` VALUES ('${user.firstName}', '${user.lastName}', '${
-      user.email
-    }', '${user.slackUsername}', '${user.employeeId}', '${user.officeId}', '${
-      user.role
-    }', '${user.password}');`;
+      "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, ID, OfficeId, Role, Password)";
+    const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${
+      user.Email
+    }', '${user.SlackUsername}', '${user.ID}', '${user.OfficeId}', '${
+      user.Role
+    }', '${user.Password}');`;
     dbms.dbquery(insert + values, (err, results) => {
       if (err) {
         res.status(400).send(err);
@@ -41,14 +41,7 @@ function isValidUser(user) {
   if (!user) {
     return "User is not defined.";
   }
-  const keys = [
-    "lastName",
-    "firstName",
-    "email",
-    "employeeId",
-    "officeId",
-    "password"
-  ];
+  const keys = ["LastName", "FirstName", "Email", "ID", "OfficeId", "Password"];
   let err;
   keys.forEach(key => {
     if (!user[key]) {

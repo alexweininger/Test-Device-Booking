@@ -8,29 +8,29 @@ var newUser = require("../server/routes/users/newUser");
 
 describe("test the isValidUser function", () => {
   let userMissingEmail = {
-    firstName: "John",
-    lastName: "Doe",
-    officeId: "1",
-    employeeId: "1234",
-    role: "0",
-    password: "a;lskdjf"
+    FirstName: "John",
+    LastName: "Doe",
+    OfficeId: "1",
+    ID: "1234",
+    Role: "0",
+    Password: "a;lskdjf"
   };
 
   test("isValidUser returns an error that says the user object is missing the email property.", () => {
     console.log(newUser.isValidUser(userMissingEmail));
     expect(newUser.isValidUser(userMissingEmail)).toEqual(
-      expect.stringContaining("email")
+      expect.stringContaining("Email")
     );
   });
 
   let validUser = {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@hotmail.com",
-    officeId: "1",
-    employeeId: "1234",
-    role: "0",
-    password: "aksldj"
+    FirstName: "John",
+    LastName: "Doe",
+    Email: "john.doe@hotmail.com",
+    OfficeId: "1",
+    ID: "1234",
+    Role: "0",
+    Password: "aksldj"
   };
 
   test("isValidUser returns no error string.", () => {
@@ -41,12 +41,12 @@ describe("test the isValidUser function", () => {
 
 describe("test the new user route to add a user to the database", () => {
   let userMissingEmail = {
-    firstName: "test",
-    lastName: "test",
-    officeId: "1",
-    employeeId: "453",
-    role: "0",
-    password: "*******"
+    FirstName: "test",
+    LastName: "test",
+    OfficeId: "1",
+    ID: "453",
+    Role: "0",
+    Password: "*******"
   };
 
   test("/new_user post request with invalid user in the body returns a 400 status.", () => {
@@ -59,13 +59,13 @@ describe("test the new user route to add a user to the database", () => {
   });
 
   let validUser = {
-    firstName: "test2",
-    lastName: "test2",
-    email: "test2.tes2t@hotmail.com",
-    officeId: "1",
-    employeeId: "13370",
-    role: "0",
-    password: "********"
+    FirstName: "test2",
+    LastName: "test2",
+    Email: "test2.tes2t@hotmail.com",
+    OfficeId: "1",
+    ID: "13370",
+    Role: "0",
+    Password: "********"
   };
 
   test("/new_user post request with a valid user in body returns a 200 status.", () => {

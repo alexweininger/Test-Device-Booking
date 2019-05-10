@@ -59,6 +59,7 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
+    "test:coverage": "react-scripts test --coverage",
     "collectCoverage": true
   }
 }
