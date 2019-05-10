@@ -10,6 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
 import PropTypes from "prop-types";
+import { setMonth } from "date-fns/esm";
 
 var date = new Date();
 var time = [];
@@ -27,7 +28,7 @@ const styles = theme => ({
   input: {
     marginLeft: theme.spacing.unit,
     marginRight: 10,
-    width: 80
+    width: 90
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -37,45 +38,75 @@ const styles = theme => ({
 });
 
 class BookDevice extends React.Component {
-  state = {
-    open: false,
-    date: new Date(),
-    booked: {
-      startDate: new Date(),
-      finishDate: "",
-      ID: "2",
-      sNumber: this.props.deviceId
-    }
-  };
-
-  handleClickOpen = deviceId => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      selectedTime: "",
+      booked: {
+        startDate: new Date().setMonth(date.getMonth + 1),
+        finishDate: new Date().setMonth(date.getMonth + 1),
+        ID: "2",
+        sNumber: this.props.sNumber
+      }
+    };
+  }
+  handleClickOpen = sNumber => {
     var date = new Date();
     this.setState({ open: true });
-    this.setState({ booked: { startDate: date } });
+    this.state.booked.startDate = 
+    date.getFullYear() +
+    "-" +
+    (date.getMonth()+1) +
+    "-" +
+    date.getDate() +
+    " " +
+    date.getHours() +
+    ":" +
+    date.getMinutes() +
+    ":" +
+    date.getSeconds();
+    this.state.booked.sNumber = sNumber;
     time = timeArray(date);
-    ID = deviceId;
+    ID = sNumber;
+    console.log(this.state.booked.sNumber + "  sNumber");
+    console.log(this.state.booked.startDate + "  sdate");
+    console.log(this.state.booked.finishDate + "  fdate");
   };
 
   handleClose = () => {
     this.setState({ open: false });
-    this.addReserved();
   };
 
   handleOk = event => {
-    this.setState({ booked: { sNumber: event.target.deviceId } });
+    this.setState({ open: false });
     this.addReserved(this.state.booked);
   };
   handleTimeChange = event => {
+    var d = event.target.value;
     console.log(event.target.value);
-    this.setState({ date: event.target.value });
-    this.setState({ booked: { finishDate: event.target.value } });
+    this.setState({selectedTime : event.target.value});
+    this.state.booked.finishDate = 
+      d.getFullYear() +
+      "-" +
+      (date.getMonth()+1) +
+      "-" +
+      d.getDate() +
+      " " +
+      d.getHours() +
+      ":" +
+      d.getMinutes() +
+      ":" +
+      d.getSeconds();
 
     // console.log(finish+" converted f");
+    console.log(this.state.booked.sNumber + "  sNumber");
+    console.log(this.state.booked.startDate + "  sdate");
     console.log(this.state.booked.finishDate + "  fdate");
   };
 
   render() {
-    const { classes, deviceId } = this.props;
+    const { classes, sNumber } = this.props;
     return (
       <div>
         <Button
@@ -83,7 +114,7 @@ class BookDevice extends React.Component {
           variant="contained"
           color="inherit"
           className={classes.button}
-          onClick={() => this.handleClickOpen(deviceId)}
+          onClick={() => this.handleClickOpen(sNumber)}
           style={{ height: 50 }}
         >
           Book device
@@ -106,7 +137,7 @@ class BookDevice extends React.Component {
               </InputLabel>
               <InputLabel className={classes.input}>To</InputLabel>
               <Select
-                value={this.state.booked.finishDate}
+                value={this.state.selectedTime}
                 onChange={this.handleTimeChange}
                 className={classes.input}
                 color="inherit"
@@ -136,7 +167,7 @@ class BookDevice extends React.Component {
               <BookingsTable ID={ID} />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="inherit">
+              <Button onClick={this.handleOk} color="inherit">
                 OK
               </Button>
               <Button onClick={this.handleClose} color="inherit" autoFocus>
@@ -149,12 +180,7 @@ class BookDevice extends React.Component {
     );
   }
   addReserved(reserved) {
-    console.log("callded_");
-    //if(!this.officeCanBeAdded(office)){
-    //	return false;
-    //}
-
-    //send office to the DB
+    console.log("called_");
     const request = new Request("/new_reserve", {
       method: "POST",
       body: JSON.stringify(reserved),
@@ -167,16 +193,27 @@ class BookDevice extends React.Component {
         //if we successfully updated the DB
 
         if (result.success) {
-          //add the office
-          reserved.number = result.Number;
-          this.state.reserved[result.Number] = reserved;
-          /* this.updateState({
-            reserved: this.state.reserved
-          });*/
+          console.log("Reservation successfully added");
         }
       });
 
     return true;
+  }
+  getTodaysBookings() {
+    const request = new Request(`/get_dayBookings/${this.state.Id}`, {
+      method: "GET"
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        console.log("result ", result);
+        if (result.success) {
+          this.setState({
+            bookings: result.bookings
+          });
+        }
+      });
   }
 }
 

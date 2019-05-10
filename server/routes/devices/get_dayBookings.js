@@ -7,9 +7,15 @@ var db = require("../dbms.js");
 router.get("/:deviceId", (req, res) => {
   console.log("req ", req.params);
 
-  const availableQuery = `SELECT * FROM Device_Booking.atbl_Booking WHERE StartDate>=NOW() AND  FinishDate <= CURDATE() AND fk_device_ser_nr=${
-    req.params.deviceId
-  }`;
+  const availableQuery = `SELECT * FROM Device_Booking.atbl_Booking 
+                            WHERE year(StartDate)=year(now()) 
+                              AND month(StartDate)=month(now()) 
+                              AND day(StartDate)=day(now()) 
+                              AND year(FinishDate)=year(now()) 
+                              AND month(FinishDate)=month(now()) 
+                              AND day(FinishDate)=day(now()) 
+                              AND fk_device_ser_nr=${req.params.deviceId}
+                              `;
 
   db.dbqueryPromise(availableQuery)
     .then(results => {

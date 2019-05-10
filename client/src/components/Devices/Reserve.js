@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 
 import DateFnsUtils from "@date-io/date-fns";
-import ReservationsTable from "./ReservationsTable";
+//import ReservationsTable from "./ReservationsTable";
 import {
   MuiPickersUtilsProvider,
   TimePicker,
@@ -141,9 +141,7 @@ class Reserve extends React.Component {
     this.setState({ open: false });
     this.addReserved(this.state.reserved);
   };
-
-  handleTimeChange = (event, index, value) =>
-    this.setState({ selectedTimeValue: value });
+    
 
   disableRandomDates() {
     return new Date(today.getFullYear(), 4, 29);
@@ -229,7 +227,7 @@ class Reserve extends React.Component {
                     disablePast="true"
                   />
                 </Grid>
-                <ReservationsTable ID="2019-02-13 04:50:10" />
+           
               </MuiPickersUtilsProvider>
             </DialogContent>
             <DialogActions>

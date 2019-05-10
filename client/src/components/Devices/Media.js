@@ -101,7 +101,7 @@ class Media extends React.Component {
 
         <CardActions>
           <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
-          <BookDevice deviceId={sNumber} />
+          <BookDevice sNumber={sNumber} />
         </CardActions>
       </Card>
     );
