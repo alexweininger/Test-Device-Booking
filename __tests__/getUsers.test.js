@@ -1,6 +1,7 @@
 module.exports = require("babel-jest").createTransformer({
   rootMode: "upward"
 });
+process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 const app = require("../server/app");
@@ -33,11 +34,18 @@ describe("test the /getUsers route that returns a json array of all users", () =
       });
   });
 
-  test("getUsers request returns a an array with a length of at least 1", () => {
+  test("getUsers request returns a an array with a length equal 13", () => {
     return request(app)
       .post("/users")
       .then(response => {
-        expect(response.body.length).toBeGreaterThan(0);
+        expect(response.body.length).toBe(13);
+      });
+  });
+  test("getUsers request returns a value equal FirstName = Ainsley", () => {
+    return request(app)
+      .post("/users")
+      .then(response => {
+        expect(response.body[0].FirstName).toContain("Ainsley");
       });
   });
 });

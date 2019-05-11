@@ -104,14 +104,22 @@ class TitlebarGridList extends React.Component {
     });
 
     fetch(request)
-      .then(res => res.json())
-      .then(result => {
-        console.log("result ", result);
-        if (result.success) {
-          this.setState({
-            devices: result.devices
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ devices: obj });
+            console.log("loaded all users", this.state);
+            return obj;
           });
         }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
       });
   }
 }

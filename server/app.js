@@ -95,9 +95,15 @@ app.get('/Offices', (req, res) => {
 
 let getUsersRouter = require("./routes/users/getUsers");
 let newUserRouter = require("./routes/users/newUser");
+let getDevicesRouter = require("./routes/devices/get_device.js");
+let newDeviceRouter = require("./routes/devices/get_device.js");
+let getDayRouter = require("./routes/devices/get_dayBookings.js");
 
 app.use("/users", getUsersRouter);
-app.use("/new_user", newUserRouter);
+app.use("/users", newUserRouter);
+app.use("/devices", getDevicesRouter);
+app.use("/devices", newDeviceRouter);
+app.use("/devices", getDayRouter);
 
 // parse cookies from the browser
 app.use(cookieParser());
@@ -131,6 +137,12 @@ require("./routes/users/passportRoute.js")(app, passport);
 
 app.get("/helloWorld", (req, res) => {
   res.status(200).send("Hello World!");
+});
+app.get("/get_device", (req, res) => {
+  return res.json(devices);
+});
+app.get("/get_dayBookings", (req, res) => {
+  return res.json(days);
 });
 
 module.exports = app;

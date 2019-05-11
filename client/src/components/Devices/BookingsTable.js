@@ -75,14 +75,22 @@ class BookingsTable extends React.Component {
     });
 
     fetch(request)
-      .then(res => res.json())
-      .then(result => {
-        console.log("result ", result);
-        if (result.success) {
-          this.setState({
-            bookings: result.bookings
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ bookings: obj });
+            console.log("loaded all days", this.state);
+            return obj;
           });
         }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDaysBookings", err);
+        console.log("get failed");
       });
   }
 }

@@ -1,6 +1,10 @@
 const bodyParser = require("body-parser");
 var express = require("express");
-const dbms = require("../dbms");
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
+
+var dbms = require(`../${dataBase}`);
+
+//const dbms = require("../dbmsTest");
 const router = express.Router();
 
 function SQLArrayToJSON(sql, callback) {
