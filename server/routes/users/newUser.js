@@ -20,10 +20,10 @@ router.post("/", (req, res) => {
     }
 
     const insert =
-      "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, ID, OfficeId, Role, Password)";
+      "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, ID, OfficeID, Role, Password)";
     const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${
       user.Email
-    }', '${user.SlackUsername}', '${user.ID}', '${user.OfficeId}', '${
+    }', '${user.SlackUsername}', '${user.ID}', '${user.OfficeID}', '${
       user.Role
     }', '${user.Password}');`;
     dbms.dbquery(insert + values, (err, results) => {

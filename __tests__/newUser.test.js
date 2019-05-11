@@ -63,7 +63,7 @@ describe("test the new user route to add a user to the database", () => {
     LastName: "test2",
     Email: "test2.tes2t@hotmail.com",
     OfficeId: "1",
-    ID: "13370",
+    ID: "13372",
     Role: "0",
     Password: "********"
   };
