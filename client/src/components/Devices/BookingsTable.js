@@ -35,16 +35,16 @@ class BookingsTable extends React.Component {
     super(props);
 
     this.state = {
-      bookings: [],
+     // bookings: [],
       Id: ID
     };
 
-    this.getTodaysBookings(this.state.Id);
+  // this.getTodaysBookings(this.state.Id);
   }
 
   render() {
-    const bookings = this.state.bookings || [];
-    const { classes, ID } = this.props;
+   // const bookings = this.state.bookings || [];
+    const { classes, ID, bookings } = this.props;
     return (
       <div>
         <Table className={classes.table}>

@@ -15,6 +15,7 @@ router.get("/:deviceId", (req, res) => {
                               AND month(FinishDate)=month(now()) 
                               AND day(FinishDate)=day(now()) 
                               AND fk_device_ser_nr=${req.params.deviceId}
+                              ORDER BY StartDate ASC
                               `;
 
   db.dbqueryPromise(availableQuery)
