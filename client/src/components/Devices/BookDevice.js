@@ -52,6 +52,7 @@ class BookDevice extends React.Component {
         sNumber: this.props.sNumber
       }
     };
+    
   }
   handleClickOpen = sNumber => {
     date = new Date();
@@ -70,11 +71,10 @@ class BookDevice extends React.Component {
       date.getSeconds();
     this.state.booked.sNumber = sNumber;
     this.getTodaysBookings();
-    setTimeout(this.getClosestBooking, 1500);
-    ID = sNumber;
     bkngs = this.state.bookings;
-
+    setTimeout(this.getClosestBooking, 900);
     setTimeout(this.timeArray, 3000);
+    ID = sNumber;
   };
 
 
