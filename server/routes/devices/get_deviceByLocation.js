@@ -1,33 +1,39 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-var db = require('../dbms.js');
+//var db = require('../dbms.js');
 
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
+var db = require(`../${dataBase}`);
 
-
-router.get('/', (req, res) => {
-    let location = 'London';
-    const locationQuery = "SELECT * FROM atbl_Device " +
+router.get("/", (req, res) => {
+  let location = "London";
+  const locationQuery =
+    "SELECT * FROM atbl_Device " +
     "INNER JOIN atbl_Office ON atbl_Device.`fk_office_id`= atbl_Office.`id_Office`" +
-    "WHERE atbl_Office.`City`='" + location + "';";
+    "WHERE atbl_Office.`City`='" +
+    location +
+    "';";
 
-    db.dbqueryPromise(locationQuery).then(results => {;
-        //console.log("======Devices By Location======");
-        //console.log(results);
+  db.dbqueryPromise(locationQuery)
+    .then(results => {
+      //console.log("======Devices By Location======");
+      //console.log(results);
 
-        res.json({
-            success: true,
-            devices: results
-        });
-    }).catch(err => {
-        console.log("There was an error getting the offices:");
-        console.log("---------------------------------");
-        console.log(err);
-        console.log("---------------------------------");
+      res.json({
+        success: true,
+        devices: results
+      });
+    })
+    .catch(err => {
+      console.log("There was an error getting the offices:");
+      console.log("---------------------------------");
+      console.log(err);
+      console.log("---------------------------------");
 
-        res.json({
-            success: false,
-        });
+      res.json({
+        success: false
+      });
     });
 });
 

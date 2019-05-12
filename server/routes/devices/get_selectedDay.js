@@ -2,7 +2,11 @@ var express = require("express");
 var router = express.Router();
 //StartDate >= NOW() AND
 
-var db = require("../dbms.js");
+//var db = require("../dbms.js");
+
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
+var db = require(`../${dataBase}`);
+
 //console.log(ID);
 router.post("/", (req, res) => {
   const reservations = req.body;

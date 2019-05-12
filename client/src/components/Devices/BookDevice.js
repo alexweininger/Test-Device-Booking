@@ -10,7 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
 import PropTypes from "prop-types";
-import { setMonth } from "date-fns/esm";
 
 var date = new Date();
 var time = [];
@@ -54,18 +53,18 @@ class BookDevice extends React.Component {
   handleClickOpen = sNumber => {
     var date = new Date();
     this.setState({ open: true });
-    this.state.booked.startDate = 
-    date.getFullYear() +
-    "-" +
-    (date.getMonth()+1) +
-    "-" +
-    date.getDate() +
-    " " +
-    date.getHours() +
-    ":" +
-    date.getMinutes() +
-    ":" +
-    date.getSeconds();
+    this.state.booked.startDate =
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes() +
+      ":" +
+      date.getSeconds();
     this.state.booked.sNumber = sNumber;
     time = timeArray(date);
     ID = sNumber;
@@ -85,11 +84,11 @@ class BookDevice extends React.Component {
   handleTimeChange = event => {
     var d = event.target.value;
     console.log(event.target.value);
-    this.setState({selectedTime : event.target.value});
-    this.state.booked.finishDate = 
+    this.setState({ selectedTime: event.target.value });
+    this.state.booked.finishDate =
       d.getFullYear() +
       "-" +
-      (date.getMonth()+1) +
+      (date.getMonth() + 1) +
       "-" +
       d.getDate() +
       " " +
