@@ -7,8 +7,17 @@ import Fab from "@material-ui/core/Fab";
 import ReactDOM from "react-dom";
 import NewDevice from "./NewDevice.js";
 import Grid from "@material-ui/core/Grid";
-import Selection from "./Selection";
 import Progress from "./Progress";
+import Checkbox from "./Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Location from "./Location";
+import Brands from "./Brands";
+
+var locationSet = new Set();
+var brandSet = new Set();
+var availabilitySet = new Set();
 
 const styles = theme => ({
   root: {
@@ -26,7 +35,25 @@ const styles = theme => ({
     position: "absolute",
     top: theme.spacing.unit * 20,
     right: theme.spacing.unit * 10
-  }
+  },
+  formControl: {
+    width: "100%",
+    margin: theme.spacing.unit * 3,
+    overflowY: "auto",
+    height: "7cm"
+  },
+  formControl2: {
+    width: "100%",
+    margin: theme.spacing.unit * 3,
+    overflowY: "auto",
+    height: "3cm"
+  },
+  selection: {
+    backgroundColor: "#F6F6F6",
+    marginLeft: theme.spacing.unit * 4,
+    marginRight: theme.spacing.unit * 4,
+    height: 820
+  },
 });
 
 class TitlebarGridList extends React.Component {
@@ -37,7 +64,28 @@ class TitlebarGridList extends React.Component {
       devices: []
     };
 
+    this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.getDevicesFromServer();
+  }
+
+  handleBrandChange = event => {
+    brandSet = handleChecks(event.target.value, brandSet);
+
+    for (const checkbox of brandSet) {
+      console.log(checkbox, 'is selected brand ***.');
+    }
+  }
+
+  handleLocationChange = event => {
+    locationSet = handleChecks(event.target.value, locationSet);
+
+    for (const checkbox of locationSet) {
+      console.log(checkbox, 'is selected location ***.');
+    }
+  }
+
+  handleAvailabilityChange = event => {
+    availabilitySet = handleChecks(event.target.value, availabilitySet);
   }
 
   render() {
@@ -58,15 +106,44 @@ class TitlebarGridList extends React.Component {
         </Fab>
 
         <Grid container spacing={20}>
-          <Grid item xs={3}>
-            <Selection />
+          <Grid item xs={3} className={classes.selection}>
+             
+          <FormControl onChange={this.handleBrandChange} component="fieldset" className={classes.formControl}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
+            BRANDS
+          </FormLabel>
+          <Brands />
+        </FormControl>
+
+        <FormControl onChange={this.handleLocationChange} component="fieldset" className={classes.formControl}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
+            LOCATION
+          </FormLabel>
+          <Location />
+        </FormControl>
+        <FormControl onChange={this.handleAvailabilityChange} component="fieldset" className={classes.formControl2}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959"}} disabled>
+            AVAILABILITY
+          </FormLabel>
+          <FormControlLabel
+            control={<Checkbox onClick={this.getDevicesFromServer} label="Show all" />}
+          />
+          <FormControlLabel
+            control={<Checkbox label="Available" />}
+          />
+        </FormControl>
+
+
+        <button style={{marginLeft: 10}} onClick={this.getDevicesByFilter}>
+          Save changes
+        </button>
           </Grid>
 
           <Grid item xs={8}>
             <Grid item xs={2.5} container spacing={0}>
               {devices.map(device => (
                 <Media
-                  text={device.Brand + " " + device.Model}
+                  text={device.Brand + " " + device.Model + " " + device.Available}
                   text2={
                     "OS: " +
                     device.OS +
@@ -104,16 +181,93 @@ class TitlebarGridList extends React.Component {
     });
 
     fetch(request)
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ devices: obj });
+            console.log("loaded all devices", this.state);
+            return obj;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
+      });
+  }
+
+  getDevicesByFilter() {
+    let query = createQuery(locationSet, brandSet, availabilitySet);
+
+    const request = new Request(("/get_deviceByFilter/" + query), {
+      method: "GET"
+    });
+
+    fetch(request)
       .then(res => res.json())
       .then(result => {
-        console.log("result ", result);
+        console.log("Devices by filter", result);
         if (result.success) {
-          this.setState({
-            devices: result.devices
-          });
+          this.setState({devices: result.devices});
         }
       });
   }
+}
+
+function createQuery(locationSet, brandSet, availabilitySet){
+  let locations = Array.from(locationSet);
+  let brands = Array.from(brandSet);
+  let i = 0;
+  
+  let query = "";
+  if(locations.length != 0) {
+    locations.map(location => {
+      if(i == 0) query += "WHERE (atbl_Office.`City`=\"" + location + "\"";
+      else query += " OR atbl_Office.`City`=\"" + location + "\"";
+      i++;
+    })
+    query += ")";
+    if(brands.length != 0){
+      i = 0;
+      brands.map(brand => {
+        if(i == 0) query += " AND (atbl_Device.`Brand`=\"" + brand + "\"";
+        else query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        i++;
+      })
+      query += ")";
+    }
+    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
+      query += " AND atbl_Device.`Available`=\"1\"";
+    }
+  }
+  else{
+    if(brands.length != 0){
+      i = 0;
+      brands.map(brand => {
+        if(i == 0)  query += "WHERE (atbl_Device.`Brand`=\"" + brand + "\"";
+        else query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        i++;
+      })
+      query += ")";
+    }
+    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
+      query += " AND atbl_Device.`Available`=\"1\"";
+    }
+  }
+  return query;
+}
+
+function handleChecks(value, set){
+  if (set.has(value)) {
+    set.delete(value);
+  } else {
+    set.add(value);
+  }
+  return set;
 }
 
 TitlebarGridList.propTypes = {
@@ -121,4 +275,5 @@ TitlebarGridList.propTypes = {
   device: Media.propTypes.device
 };
 
+export { createQuery, handleChecks };
 export default withStyles(styles)(TitlebarGridList);

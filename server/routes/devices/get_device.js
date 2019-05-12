@@ -1,21 +1,25 @@
 var express = require("express");
 var router = express.Router();
 
-var db = require("../dbms.js");
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
+
+var db = require(`../${dataBase}`);
+
+//var db = require("../dbmsTest.js");
 
 router.get("/", (req, res) => {
   let deviceQuery =
-    "SELECT Device_Booking.atbl_Device.*, Device_Booking.atbl_Office.City  FROM Device_Booking.atbl_Device, Device_Booking.atbl_Office" +
-    " WHERE Device_Booking.atbl_Device.fk_office_id = Device_Booking.atbl_Office.id_Office AND Device_Booking.atbl_Device.Status = '1' LIMIT 20;";
+    "SELECT atbl_Device.*, .atbl_Office.City  FROM atbl_Device, atbl_Office" +
+    " WHERE atbl_Device.fk_office_id = atbl_Office.id_Office AND atbl_Device.Status = '1' LIMIT 20;";
 
   db.dbqueryPromise(deviceQuery)
     .then(results => {
       //console.log("======Devices======");
       //console.log(results);
 
-      res.json({
-        success: true,
-        devices: results
+      res.setHeader("Content-Type", "application/json");
+      SQLArrayToJSON(results, json => {
+        res.status(200).json(json);
       });
     })
     .catch(err => {
@@ -28,6 +32,18 @@ router.get("/", (req, res) => {
         success: false
       });
     });
+  function SQLArrayToJSON(sql, callback) {
+    const arr = [];
+    Object.keys(sql).forEach(key => {
+      const rowObj = {};
+      const row = sql[key];
+      Object.keys(row).forEach(keyc => {
+        rowObj[keyc] = row[keyc];
+      });
+      arr.push(rowObj);
+    });
+    callback(arr);
+  }
 });
 
 module.exports = router;

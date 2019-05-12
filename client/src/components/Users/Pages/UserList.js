@@ -55,9 +55,9 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(FirstName, LastName, Email, location, SlackUsername) {
+function createData(FirstName, LastName, Email, OfficeID, SlackUsername) {
   //   id += 1;
-  return { FirstName, LastName, Email, location, SlackUsername };
+  return { FirstName, LastName, Email, OfficeID, SlackUsername };
 }
 
 let users = [];
@@ -190,7 +190,7 @@ class CustomizedTable extends React.Component {
               { title: "Last Name", field: "LastName" },
               { title: "Email Address", field: "Email" },
               { title: "Slack Username", field: "SlackUsername" },
-              { title: "Office ID", field: "OfficeId" }
+              { title: "Office ID", field: "OfficeID" }
             ]}
             data={this.state.users}
             title="User List"
@@ -294,7 +294,7 @@ class CustomizedTable extends React.Component {
               { title: "Last Name", field: "LastName" },
               { title: "Email Address", field: "Email" },
               { title: "Slack Username", field: "SlackUsername" },
-              { title: "Office ID", field: "OfficeId" }
+              { title: "Office ID", field: "OfficeID" }
             ]}
             data={this.state.users}
             title="User List"
