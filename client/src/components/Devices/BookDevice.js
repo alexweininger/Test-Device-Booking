@@ -52,7 +52,6 @@ class BookDevice extends React.Component {
         sNumber: this.props.sNumber
       }
     };
-    //this.getClosestBooking();
   }
   handleClickOpen = sNumber => {
     date = new Date();
@@ -70,13 +69,12 @@ class BookDevice extends React.Component {
       ":" +
       date.getSeconds();
     this.state.booked.sNumber = sNumber;
-   // this.getTodaysBookings();
-  //  setTimeout(this.getClosestBooking, 1500);
+    this.getTodaysBookings();
+    setTimeout(this.getClosestBooking, 1500);
     ID = sNumber;
     bkngs = this.state.bookings;
 
- //   setTimeout(this.timeArray, 3000);
-    //setTimeout(this.render, 4000);
+    setTimeout(this.timeArray, 3000);
   };
 
 
@@ -107,7 +105,7 @@ class BookDevice extends React.Component {
   };
 
   render() {
-    var bookings = this.state.bookings || [];
+    const bookings = this.state.bookings || [];
     const { classes, sNumber } = this.props;
     return (
       <div>
@@ -166,7 +164,7 @@ class BookDevice extends React.Component {
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable ID={ID}/>
+              <BookingsTable ID={ID} bookings={bookings}/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleOk} color="inherit">
@@ -187,16 +185,24 @@ class BookDevice extends React.Component {
       method: "GET"
     });
 
-    fetch(request)
-      .then(res => res.json())
-      .then(result => {
-        console.log("result ", result);
-        if (result.success) {
-          this.setState({
-            bookings: result.bookings
+      fetch(request)
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ bookings: obj });
+            bkngs = obj;
+            console.log("loaded all bookings");
+            return obj;
           });
-          bkngs = this.state.bookings;
         }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
       });
   }
   addReserved(reserved) {
@@ -224,18 +230,22 @@ class BookDevice extends React.Component {
     for(var e = 0; e < bkngs.length; e++)
     {
       var element = bkngs[e];
-      var bS = element.StartDate;
-      var bF = element.FinishDate;
-      console.log(bS);
-      console.log(bF);
-      if(bS <= date && bF > date){
+      var start = element.StartDate;
+      var finish = element.FinishDate;
+      var s = new Date();
+      var f = new Date();
+      s.setHours(start.substring(11,13), start.substring(14,16));
+      f.setHours(finish.substring(11,13), finish.substring(14,16));
+      console.log(s," booking Start");
+      console.log(f," booking Finish");
+      if(s <= date && f > date){
         console.log("0");
         closestBooking = 0;
         return;
       }
-      if(bS >=date){
-        console.log(bS);
-        closestBooking = bS;
+      if(s >=date){
+        console.log(s);
+        closestBooking = s;
         return;
       }
     }
@@ -249,52 +259,42 @@ class BookDevice extends React.Component {
     
     console.log("closestBooking ", closestBooking);
     console.log("");
-    var h = date.getHours();
-    var min = date.getMinutes();
-  
-    var bookingDate = new Date();
-    bookingDate.setDate(date.getDate()+1);
-    bookingDate.setHours(0);
-    bookingDate.setMinutes(0);
+    var currentDate = date;
+    var bookingUntilDate = new Date();
   
     if (closestBooking == 0)
     {
       return time;
     }
     if (closestBooking == 1){
-      bookingDate.setHours(0);
-      bookingDate.setMinutes(0);
-      console.log("booking until: ",bookingDate);
+      bookingUntilDate.setDate(date.getDate()+1);
+      bookingUntilDate.setHours(0);
+      bookingUntilDate.setMinutes(0);
+      console.log("booking until: ",bookingUntilDate);
       console.log("");
     }
-
+    else{
+      bookingUntilDate = closestBooking;
+      console.log("booking until: ",bookingUntilDate);
+      console.log("");
+    }
+    var min = currentDate.getMinutes();
     min = (Math.ceil(min / 15) + 1) * 15;
-    if (h == 24 || h == bookingDate.getHours()) {
-      var d = new Date();
-      d.setHours(h);
-      d.setMinutes(min);
-      time.push(d);
+    if(min > 60)
+    {
+      currentDate.setHours(currentDate.getHours()+1, 15);
     }
-    if (min > 60) {
-      min = 15;
-      h++;
+    else{
+      currentDate.setMinutes(min);
     }
-    if (min == 60) {
-      min = 0;
-      h++;
+    
+
+    while(bookingUntilDate-currentDate > 0)
+    {
+      time.push(currentDate);
+      currentDate = new Date(currentDate.getTime() + 15 * 60000);
     }
-    while (h < 24 && date < bookingDate) {
-      if (min >= 60) {
-        min = 0;
-        h++;
-      }
-      var d = new Date();
-      d.setHours(h);
-      d.setMinutes(min);
-      console.log(d);
-      time.push(d);
-      min += 15;
-    }
+    
     console.log("timearray created");
     for(var i = 0; i < time.length; i++){
       console.log(time[i]);
