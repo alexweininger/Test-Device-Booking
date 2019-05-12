@@ -8,16 +8,16 @@ var db = require(`../${dataBase}`);
 
 router.get("/", (req, res) => {
   const availableQuery =
-    "SELECT * FROM Device_Booking.atbl_Device WHERE Available='1';";
+    "SELECT * FROM atbl_Device WHERE Available='1' AND Status='1';";
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
       //console.log("======Available devices======");
       //console.log(results);
 
-      res.json({
-        success: true,
-        devices: results
+      res.setHeader("Content-Type", "application/json");
+      SQLArrayToJSON(results, json => {
+        res.status(200).json(json);
       });
     })
     .catch(err => {
@@ -30,6 +30,19 @@ router.get("/", (req, res) => {
         success: false
       });
     });
+
+  function SQLArrayToJSON(sql, callback) {
+    const arr = [];
+    Object.keys(sql).forEach(key => {
+      const rowObj = {};
+      const row = sql[key];
+      Object.keys(row).forEach(keyc => {
+        rowObj[keyc] = row[keyc];
+      });
+      arr.push(rowObj);
+    });
+    callback(arr);
+  }
 });
 
 module.exports = router;

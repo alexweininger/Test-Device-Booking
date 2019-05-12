@@ -40,7 +40,7 @@ describe("test the /get_dayBookings route that returns a json array of all days"
         expect(response.body.length).toBeGreaterThanOrEqual(0);
       });
   });
-  test("get_dayBooking request returns a value (device ID=0030037972) equal StartDate = 2019-05-11 06:45:36", () => {
+  test("get_dayBooking request returns a value (device ID=0030037972) equal StartDate = 2019-05-12 09:12:36", () => {
     var Id = "0030037972";
     var date = new Date();
 
@@ -48,7 +48,7 @@ describe("test the /get_dayBookings route that returns a json array of all days"
       .get(`/get_dayBookings/${Id}`)
       .then(response => {
         expect(response.body[1].StartDate).toContain(
-          "2019-05-11T06:45:36.000Z"
+          "2019-05-12T09:12:36.000Z"
         );
       });
   });
