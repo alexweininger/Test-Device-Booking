@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
-//StartDate >= NOW() AND
+
 const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
 
 var db = require(`../${dataBase}`);
-//console.log(ID);
+
 router.get("/:deviceId", (req, res) => {
   console.log("req ", req.params);
 
