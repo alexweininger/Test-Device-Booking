@@ -9,6 +9,17 @@ import NewDevice from "./NewDevice.js";
 import Grid from "@material-ui/core/Grid";
 import Selection from "./Selection";
 import Progress from "./Progress";
+import Checkbox from "./Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import Location from "./Location";
+import Brands from "./Brands";
+
+var locationSet = new Set();
+var brandSet = new Set();
+var available = false;
+var showAll = false;
 
 const styles = theme => ({
   root: {
@@ -26,7 +37,25 @@ const styles = theme => ({
     position: "absolute",
     top: theme.spacing.unit * 20,
     right: theme.spacing.unit * 10
-  }
+  },
+  formControl: {
+    width: "100%",
+    margin: theme.spacing.unit * 3,
+    overflowY: "auto",
+    height: "7cm"
+  },
+  formControl2: {
+    width: "100%",
+    margin: theme.spacing.unit * 3,
+    overflowY: "auto",
+    height: "3cm"
+  },
+  selection: {
+    backgroundColor: "#F6F6F6",
+    marginLeft: theme.spacing.unit * 4,
+    marginRight: theme.spacing.unit * 4,
+    height: 820
+  },
 });
 
 class TitlebarGridList extends React.Component {
@@ -37,7 +66,37 @@ class TitlebarGridList extends React.Component {
       devices: []
     };
 
+    this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.getDevicesFromServer();
+  }
+
+  handleBrandChange = event => {
+    if (brandSet.has(event.target.value)) {
+      brandSet.delete(event.target.value);
+    } else {
+      brandSet.add(event.target.value);
+    }
+    for (const checkbox of brandSet) {
+      console.log(checkbox, 'is selected brand ***.');
+    }
+  }
+
+  handleLocationChange = event => {
+    if (locationSet.has(event.target.value)) {
+      locationSet.delete(event.target.value);
+    } else {
+      locationSet.add(event.target.value);
+    }
+    for (const checkbox of locationSet) {
+      console.log(checkbox, 'is selected location ***.');
+    }
+  }
+
+  handleAvailabilityChange = event => {
+    if(event.target.value == "Show all"){
+      showAll = !showAll;
+    }
+    else available = !available;
   }
 
   render() {
@@ -58,15 +117,44 @@ class TitlebarGridList extends React.Component {
         </Fab>
 
         <Grid container spacing={20}>
-          <Grid item xs={3}>
-            <Selection />
+          <Grid item xs={3} className={classes.selection}>
+             
+          <FormControl onChange={this.handleBrandChange} component="fieldset" className={classes.formControl}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
+            BRANDS
+          </FormLabel>
+          <Brands />
+        </FormControl>
+
+        <FormControl onChange={this.handleLocationChange} component="fieldset" className={classes.formControl}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
+            LOCATION
+          </FormLabel>
+          <Location />
+        </FormControl>
+        <FormControl onChange={this.handleAvailabilityChange} component="fieldset" className={classes.formControl2}>
+          <FormLabel style={{ fontWeight: "bold", color: "#595959"}} disabled>
+            AVAILABILITY
+          </FormLabel>
+          <FormControlLabel
+            control={<Checkbox onClick={this.getDevicesFromServer} label="Show all" />}
+          />
+          <FormControlLabel
+            control={<Checkbox label="Available" />}
+          />
+        </FormControl>
+
+
+        <button style={{marginLeft: 10}} onClick={this.ifShowAll}>
+          Save changes
+        </button>
           </Grid>
 
           <Grid item xs={8}>
             <Grid item xs={2.5} container spacing={0}>
               {devices.map(device => (
                 <Media
-                  text={device.Brand + " " + device.Model}
+                  text={device.Brand + " " + device.Model + " " + device.Available}
                   text2={
                     "OS: " +
                     device.OS +
@@ -111,7 +199,7 @@ class TitlebarGridList extends React.Component {
             console.log(obj);
 
             this.setState({ devices: obj });
-            console.log("loaded all users", this.state);
+            console.log("loaded all devices", this.state);
             return obj;
           });
         }
@@ -120,6 +208,65 @@ class TitlebarGridList extends React.Component {
         //if we successfully updated the DB
         console.log("Error in getDevices", err);
         console.log("get failed");
+      });
+  }
+
+  ifShowAll = () => {
+    if(showAll){
+      console.log(showAll);
+      this.getDevicesFromServer();
+    }
+    else this.getDevicesByFilter();
+  }
+
+  getDevicesByFilter() {
+    let locations = Array.from(locationSet);
+    let brands = Array.from(brandSet);
+    
+    let query = "";
+    if(locations.length != 0) {
+      query = "WHERE (atbl_Office.`City`=\"" + locations[0] + "\"";
+      locations.map(location => {
+        query += " OR atbl_Office.`City`=\"" + location + "\"";
+      })
+      query += ")";
+      if(brands.length != 0){
+        query += " AND (atbl_Device.`Brand`=\"" + brands[0] + "\"";
+        brands.map(brand => {
+          query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        })
+        query += ")";
+      }
+      if(available){
+        query += " AND atbl_Device.`Available`=\"1\"";
+      }
+    }
+    else{
+      if(brands.length != 0){
+        query = "WHERE (atbl_Device.`Brand`=\"" + brands[0] + "\"";
+        brands.map(brand => {
+          query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        })
+        query += ")";
+      }
+      if(available){
+        query += " AND atbl_Device.`Available`=\"1\"";
+      }
+    }
+
+    console.log(query);
+
+    const request = new Request(("/get_deviceByFilter/" + query), {
+      method: "GET"
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        console.log("Devices by filter", result);
+        if (result.success) {
+          this.setState({devices: result.devices});
+        }
       });
   }
 }

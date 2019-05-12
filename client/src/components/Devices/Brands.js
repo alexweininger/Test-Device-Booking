@@ -1,6 +1,5 @@
 import React from 'react';
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from "./Checkbox";
 
 
 class Brands extends React.Component {
@@ -9,24 +8,28 @@ class Brands extends React.Component {
 		super(props);
 
 		this.state= {
-            brands: []
+						brands: []
 		}
 
 		this.getBrands();
-    }
+    }	
+	
+		createCheckboxes = () => (
+			this.state.brands.map(brand => 
+				(<Checkbox
+					    label={brand.Brand}
+						key={brand.Brand}
+				/>))
+		)
 	
 
 	render(){
-		const brands = this.state.brands || [];
-
 		return (
 			<div>
-				{brands.map(brand => 
-				
-				<FormControlLabel style={{marginRight: 90}} control={<Checkbox value="checkedC" />} label={brand.Brand}>
-				</FormControlLabel>
-				)}
-			</div>
+				<form>
+					{this.createCheckboxes()}
+				</form>
+		</div>
 		)
 	}
 
