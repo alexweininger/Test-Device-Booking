@@ -35,16 +35,16 @@ class BookingsTable extends React.Component {
     super(props);
 
     this.state = {
-     // bookings: [],
+      bookings: [],
       Id: ID
     };
 
-  // this.getTodaysBookings(this.state.Id);
+    this.getTodaysBookings(this.state.Id);
   }
 
   render() {
-   // const bookings = this.state.bookings || [];
-    const { classes, ID, bookings } = this.props;
+    var bookings = this.state.bookings || [];
+    const { classes, ID } = this.props;
     return (
       <div>
         <Table className={classes.table}>
@@ -75,22 +75,14 @@ class BookingsTable extends React.Component {
     });
 
     fetch(request)
-      .then(res => {
-        if (res.ok) {
-          //add the office
-          res.json().then(obj => {
-            console.log(obj);
-
-            this.setState({ bookings: obj });
-            console.log("loaded all days", this.state);
-            return obj;
+      .then(res => res.json())
+      .then(result => {
+        console.log("result ", result);
+        if (result.success) {
+          this.setState({
+            bookings: result.bookings
           });
         }
-      })
-      .catch(err => {
-        //if we successfully updated the DB
-        console.log("Error in getDaysBookings", err);
-        console.log("get failed");
       });
   }
 }

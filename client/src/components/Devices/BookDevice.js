@@ -70,12 +70,12 @@ class BookDevice extends React.Component {
       ":" +
       date.getSeconds();
     this.state.booked.sNumber = sNumber;
-    this.getTodaysBookings();
-    setTimeout(this.getClosestBooking, 1500);
+   // this.getTodaysBookings();
+  //  setTimeout(this.getClosestBooking, 1500);
     ID = sNumber;
     bkngs = this.state.bookings;
 
-    setTimeout(this.timeArray, 3000);
+ //   setTimeout(this.timeArray, 3000);
     //setTimeout(this.render, 4000);
   };
 
@@ -107,6 +107,7 @@ class BookDevice extends React.Component {
   };
 
   render() {
+    var bookings = this.state.bookings || [];
     const { classes, sNumber } = this.props;
     return (
       <div>
@@ -165,7 +166,7 @@ class BookDevice extends React.Component {
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable ID={ID} bookings={this.state.bookings}/>
+              <BookingsTable ID={ID}/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleOk} color="inherit">
@@ -181,7 +182,7 @@ class BookDevice extends React.Component {
     );
   }
   
-  async getTodaysBookings() {
+  getTodaysBookings() {
     const request = new Request(`/get_dayBookings/${this.state.booked.sNumber}`, {
       method: "GET"
     });
@@ -295,13 +296,16 @@ class BookDevice extends React.Component {
       min += 15;
     }
     console.log("timearray created");
+    for(var i = 0; i < time.length; i++){
+      console.log(time[i]);
+    }
     return time;
   }
       
 }
 
 export { ID };
-export { timeArray };
+export { time };
 
 BookDevice.propTypes = {
   classes: PropTypes.object.isRequired
