@@ -253,8 +253,7 @@ function createQuery(locationSet, brandSet, availabilitySet){
       query += " AND atbl_Device.`Available`=\"1\"";
     }
   }
-  else{
-    if(brands.length != 0){
+  else if(brandSet.size != 0){
       i = 0;
       brands.map(brand => {
         if(i == 0)  query += "WHERE (atbl_Device.`Brand`=\"" + brand + "\"";
@@ -262,9 +261,13 @@ function createQuery(locationSet, brandSet, availabilitySet){
         i++;
       })
       query += ")";
-    }
     if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
       query += " AND atbl_Device.`Available`=\"1\"";
+    }
+  }
+  else{
+    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
+      query += " WHERE atbl_Device.`Available`=\"1\"";
     }
   }
   return query;
