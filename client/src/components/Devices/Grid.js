@@ -64,6 +64,7 @@ class TitlebarGridList extends React.Component {
       devices: []
     };
 
+    
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.getDevicesFromServer();
   }
