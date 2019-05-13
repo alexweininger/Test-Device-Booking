@@ -18,6 +18,9 @@ import Brands from "./Brands";
 var locationSet = new Set();
 var brandSet = new Set();
 var availabilitySet = new Set();
+var isCheckedLocation = [];
+var isCheckedBrand = [];
+var isCheckedAvailability = [];
 
 const styles = theme => ({
   root: {
@@ -65,11 +68,11 @@ class TitlebarGridList extends React.Component {
     };
 
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
-    this.getDevicesFromServer();
+    this.handleChange();
   }
 
   handleBrandChange = event => {
-    brandSet = handleChecks(event.target.value, brandSet);
+    brandSet = handleChecks(event.target.value, brandSet, isCheckedBrand);
 
     for (const checkbox of brandSet) {
       console.log(checkbox, 'is selected brand ***.');
@@ -77,7 +80,7 @@ class TitlebarGridList extends React.Component {
   }
 
   handleLocationChange = event => {
-    locationSet = handleChecks(event.target.value, locationSet);
+    locationSet = handleChecks(event.target.value, locationSet, isCheckedLocation);
 
     for (const checkbox of locationSet) {
       console.log(checkbox, 'is selected location ***.');
@@ -85,7 +88,17 @@ class TitlebarGridList extends React.Component {
   }
 
   handleAvailabilityChange = event => {
-    availabilitySet = handleChecks(event.target.value, availabilitySet);
+    availabilitySet = handleChecks(event.target.value, availabilitySet, isCheckedAvailability);
+  }
+
+  handleChange = () => {
+    let locations = Array.from(locationSet);
+    let brands = Array.from(brandSet);
+    let availability = Array.from(availabilitySet);
+    if(locations.length == 0 && brands.length == 0 && availability.length == 0){
+      this.getDevicesFromServer();
+    }
+    else this.getDevicesByFilter();
   }
 
   render() {
@@ -106,37 +119,33 @@ class TitlebarGridList extends React.Component {
         </Fab>
 
         <Grid container spacing={20}>
-          <Grid item xs={3} className={classes.selection}>
+          <Grid onChange={this.handleChange} item xs={3} className={classes.selection}>
              
           <FormControl onChange={this.handleBrandChange} component="fieldset" className={classes.formControl}>
           <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
             BRANDS
           </FormLabel>
-          <Brands />
+          <Brands checked={isCheckedBrand}/>
         </FormControl>
 
         <FormControl onChange={this.handleLocationChange} component="fieldset" className={classes.formControl}>
           <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
             LOCATION
           </FormLabel>
-          <Location />
+          <Location checked={isCheckedLocation}/>
         </FormControl>
         <FormControl onChange={this.handleAvailabilityChange} component="fieldset" className={classes.formControl2}>
           <FormLabel style={{ fontWeight: "bold", color: "#595959"}} disabled>
             AVAILABILITY
           </FormLabel>
           <FormControlLabel
-            control={<Checkbox onClick={this.getDevicesFromServer} label="Show all" />}
+            control={<Checkbox onClick={this.getDevicesFromServer} label="Show all" isChecked={isCheckedAvailability["Show all"]} />}
           />
           <FormControlLabel
-            control={<Checkbox label="Available" />}
+            control={<Checkbox label="Available" isChecked={isCheckedAvailability["Available"]}/>}
           />
         </FormControl>
 
-
-        <button style={{marginLeft: 10}} onClick={this.getDevicesByFilter}>
-          Save changes
-        </button>
           </Grid>
 
           <Grid item xs={8}>
@@ -261,10 +270,12 @@ function createQuery(locationSet, brandSet, availabilitySet){
   return query;
 }
 
-function handleChecks(value, set){
+function handleChecks(value, set, isChecked){
   if (set.has(value)) {
+    isChecked[value] = false;
     set.delete(value);
   } else {
+    isChecked[value] = true;
     set.add(value);
   }
   return set;
