@@ -13,11 +13,11 @@ class Checkbox extends Component {
         isChecked: !isChecked,
       }
     ));
+    //ISch = this.state.isChecked;
   }
 
   render() {
-    const { label } = this.props;
-    const { isChecked } = this.state;
+    const { label, isChecked } = this.props;
 
     return (
       <div className="checkbox">
