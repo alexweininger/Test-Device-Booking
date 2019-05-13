@@ -88,6 +88,16 @@ class TitlebarGridList extends React.Component {
     availabilitySet = handleChecks(event.target.value, availabilitySet);
   }
 
+  handleButtonClick = () => {
+    let locations = Array.from(locationSet);
+    let brands = Array.from(brandSet);
+    let availability = Array.from(availabilitySet);
+    if(locations.length == 0 && brands.length == 0 && availability.length == 0){
+      this.getDevicesFromServer();
+    }
+    else this.getDevicesByFilter();
+  }
+
   render() {
     const { classes } = this.props;
     const devices = this.state.devices || [];
@@ -134,7 +144,7 @@ class TitlebarGridList extends React.Component {
         </FormControl>
 
 
-        <button style={{marginLeft: 10}} onClick={this.getDevicesByFilter}>
+        <button style={{marginLeft: 10}} onClick={this.handleButtonClick}>
           Save changes
         </button>
           </Grid>

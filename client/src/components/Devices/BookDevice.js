@@ -297,18 +297,75 @@ class BookDevice extends React.Component {
     }
     console.log("timearray created");
     for(var i = 0; i < time.length; i++){
-      console.log(time[i]);
+      //console.log(time[i]);
+    }
+    return time;
+  }
+
+}
+  
+  function TimeArray(date, closestBooking) {
+    time = [];
+    
+    console.log("closestBooking ", closestBooking);
+    console.log("");
+    var h = date.getHours();
+    var min = date.getMinutes();
+  
+    var bookingDate = new Date();
+    bookingDate.setDate(date.getDate()+1);
+    bookingDate.setHours(0);
+    bookingDate.setMinutes(0);
+  
+    if (closestBooking == 0)
+    {
+      return time;
+    }
+    if (closestBooking == 1){
+      bookingDate.setHours(0);
+      bookingDate.setMinutes(0);
+      console.log("booking until: ",bookingDate);
+      console.log("");
+    }
+
+    min = (Math.ceil(min / 15) + 1) * 15;
+    if (h == 24 || h == bookingDate.getHours()) {
+      var d = new Date();
+      d.setHours(h);
+      d.setMinutes(min);
+      time.push(d);
+    }
+    if (min > 60) {
+      min = 15;
+      h++;
+    }
+    if (min == 60) {
+      min = 0;
+      h++;
+    }
+    while (h < 24 && date < bookingDate) {
+      if (min >= 60) {
+        min = 0;
+        h++;
+      }
+      var d = new Date();
+      d.setHours(h);
+      d.setMinutes(min);
+      console.log(d);
+      time.push(d);
+      min += 15;
+    }
+    console.log("timearray created");
+    for(var i = 0; i < time.length; i++){
+      //console.log(time[i]);
     }
     return time;
   }
       
-}
 
 export { ID };
 export { time };
+export {TimeArray};
 
-BookDevice.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(BookDevice);
