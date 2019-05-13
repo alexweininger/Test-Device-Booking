@@ -54,7 +54,10 @@ class BookDevice extends React.Component {
     };
     
   }
-  handleClickOpen = sNumber => {
+  handleClickOpen = () => {
+    this.getTodaysBookings();
+    setTimeout(this.getClosestBooking, 800);
+    setTimeout(this.timeArray, 1500);
     date = new Date();
     this.setState({ open: true });
     this.state.booked.startDate =
@@ -69,12 +72,8 @@ class BookDevice extends React.Component {
       date.getMinutes() +
       ":" +
       date.getSeconds();
-    this.state.booked.sNumber = sNumber;
-    this.getTodaysBookings();
-    bkngs = this.state.bookings;
-    setTimeout(this.getClosestBooking, 900);
-    setTimeout(this.timeArray, 3000);
-    ID = sNumber;
+    ID = this.state.booked.sNumber;
+    console.log(ID+" ID");
   };
 
 
@@ -88,8 +87,8 @@ class BookDevice extends React.Component {
     this.addReserved(this.state.booked);
   };
   handleTimeChange = event => {
-    var d = event.target.value;
     this.setState({selectedTime : event.target.value});
+    var d = event.target.value;
     this.state.booked.finishDate = 
       d.getFullYear() +
       "-" +
