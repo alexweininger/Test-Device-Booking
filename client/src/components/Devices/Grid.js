@@ -56,7 +56,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 4,
     marginRight: theme.spacing.unit * 4,
     height: 820
-  },
+  }
 });
 
 class TitlebarGridList extends React.Component {
@@ -75,31 +75,42 @@ class TitlebarGridList extends React.Component {
     brandSet = handleChecks(event.target.value, brandSet, isCheckedBrand);
 
     for (const checkbox of brandSet) {
-      console.log(checkbox, 'is selected brand ***.');
+      console.log(checkbox, "is selected brand ***.");
     }
-  }
+  };
 
   handleLocationChange = event => {
-    locationSet = handleChecks(event.target.value, locationSet, isCheckedLocation);
+    locationSet = handleChecks(
+      event.target.value,
+      locationSet,
+      isCheckedLocation
+    );
 
     for (const checkbox of locationSet) {
-      console.log(checkbox, 'is selected location ***.');
+      console.log(checkbox, "is selected location ***.");
     }
-  }
+  };
 
   handleAvailabilityChange = event => {
-    availabilitySet = handleChecks(event.target.value, availabilitySet, isCheckedAvailability);
-  }
+    availabilitySet = handleChecks(
+      event.target.value,
+      availabilitySet,
+      isCheckedAvailability
+    );
+  };
 
   handleChange = () => {
     let locations = Array.from(locationSet);
     let brands = Array.from(brandSet);
     let availability = Array.from(availabilitySet);
-    if(locations.length == 0 && brands.length == 0 && availability.length == 0){
+    if (
+      locations.length == 0 &&
+      brands.length == 0 &&
+      availability.length == 0
+    ) {
       this.getDevicesFromServer();
-    }
-    else this.getDevicesByFilter();
-  }
+    } else this.getDevicesByFilter();
+  };
 
   render() {
     const { classes } = this.props;
@@ -119,40 +130,75 @@ class TitlebarGridList extends React.Component {
         </Fab>
 
         <Grid container spacing={20}>
-          <Grid onChange={this.handleChange} item xs={3} className={classes.selection}>
-             
-          <FormControl onChange={this.handleBrandChange} component="fieldset" className={classes.formControl}>
-          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
-            BRANDS
-          </FormLabel>
-          <Brands checked={isCheckedBrand}/>
-        </FormControl>
+          <Grid
+            onChange={this.handleChange}
+            item
+            xs={3}
+            className={classes.selection}
+          >
+            <FormControl
+              onChange={this.handleBrandChange}
+              component="fieldset"
+              className={classes.formControl}
+            >
+              <FormLabel
+                style={{ fontWeight: "bold", color: "#595959" }}
+                disabled
+              >
+                BRANDS
+              </FormLabel>
+              <Brands checked={isCheckedBrand} />
+            </FormControl>
 
-        <FormControl onChange={this.handleLocationChange} component="fieldset" className={classes.formControl}>
-          <FormLabel style={{ fontWeight: "bold", color: "#595959" }} disabled>
-            LOCATION
-          </FormLabel>
-          <Location checked={isCheckedLocation}/>
-        </FormControl>
-        <FormControl onChange={this.handleAvailabilityChange} component="fieldset" className={classes.formControl2}>
-          <FormLabel style={{ fontWeight: "bold", color: "#595959"}} disabled>
-            AVAILABILITY
-          </FormLabel>
-          <FormControlLabel
-            control={<Checkbox onClick={this.getDevicesFromServer} label="Show all" isChecked={isCheckedAvailability["Show all"]} />}
-          />
-          <FormControlLabel
-            control={<Checkbox label="Available" isChecked={isCheckedAvailability["Available"]}/>}
-          />
-        </FormControl>
-
+            <FormControl
+              onChange={this.handleLocationChange}
+              component="fieldset"
+              className={classes.formControl}
+            >
+              <FormLabel
+                style={{ fontWeight: "bold", color: "#595959" }}
+                disabled
+              >
+                LOCATION
+              </FormLabel>
+              <Location checked={isCheckedLocation} />
+            </FormControl>
+            <FormControl
+              onChange={this.handleAvailabilityChange}
+              component="fieldset"
+              className={classes.formControl2}
+            >
+              <FormLabel
+                style={{ fontWeight: "bold", color: "#595959" }}
+                disabled
+              >
+                AVAILABILITY
+              </FormLabel>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onClick={this.getDevicesFromServer}
+                    label="Show all"
+                    isChecked={isCheckedAvailability["Show all"]}
+                  />
+                }
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    label="Available"
+                    isChecked={isCheckedAvailability["Available"]}
+                  />
+                }
+              />
+            </FormControl>
           </Grid>
 
           <Grid item xs={8}>
             <Grid item xs={2.5} container spacing={0}>
               {devices.map(device => (
                 <Media
-                  text={device.Brand + " " + device.Model + " " + device.Available}
+                  text={device.Brand + " " + device.Model + " "}
                   text2={
                     "OS: " +
                     device.OS +
@@ -212,54 +258,64 @@ class TitlebarGridList extends React.Component {
   getDevicesByFilter() {
     let query = createQuery(locationSet, brandSet, availabilitySet);
 
-    const request = new Request(("/get_deviceByFilter/" + query), {
+    const request = new Request("/get_deviceByFilter/" + query, {
       method: "GET"
     });
 
     fetch(request)
-      .then(res => res.json())
-      .then(result => {
-        console.log("Devices by filter", result);
-        if (result.success) {
-          this.setState({devices: result.devices});
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ devices: obj });
+            console.log("loaded all devices", this.state);
+            return obj;
+          });
         }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
       });
   }
 }
 
-function createQuery(locationSet, brandSet, availabilitySet){
+function createQuery(locationSet, brandSet, availabilitySet) {
   let locations = Array.from(locationSet);
   let brands = Array.from(brandSet);
   let i = 0;
-  
+
   let query = "";
-  if(locations.length != 0) {
+  if (locations.length != 0) {
     locations.map(location => {
-      if(i == 0) query += "WHERE (atbl_Office.`City`=\"" + location + "\"";
-      else query += " OR atbl_Office.`City`=\"" + location + "\"";
+      if (i == 0) query += 'WHERE (atbl_Office.`City`="' + location + '"';
+      else query += ' OR atbl_Office.`City`="' + location + '"';
       i++;
-    })
+    });
     query += ")";
-    if(brands.length != 0){
+    if (brands.length != 0) {
       i = 0;
       brands.map(brand => {
-        if(i == 0) query += " AND (atbl_Device.`Brand`=\"" + brand + "\"";
-        else query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        if (i == 0) query += ' AND (atbl_Device.`Brand`="' + brand + '"';
+        else query += ' OR atbl_Device.`Brand`="' + brand + '"';
         i++;
-      })
+      });
       query += ")";
     }
-    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
-      query += " AND atbl_Device.`Available`=\"1\"";
+    if (availabilitySet.has("Available") && !availabilitySet.has("Show all")) {
+      query += ' AND atbl_Device.`Available`="1"';
     }
   }
   else if(brands.length != 0){
       i = 0;
       brands.map(brand => {
-        if(i == 0)  query += "WHERE (atbl_Device.`Brand`=\"" + brand + "\"";
-        else query += " OR atbl_Device.`Brand`=\"" + brand + "\"";
+        if (i == 0) query += 'WHERE (atbl_Device.`Brand`="' + brand + '"';
+        else query += ' OR atbl_Device.`Brand`="' + brand + '"';
         i++;
-      })
+      });
       query += ")";
     if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
       query += " AND atbl_Device.`Available`=\"1\"";
@@ -273,7 +329,7 @@ function createQuery(locationSet, brandSet, availabilitySet){
   return query;
 }
 
-function handleChecks(value, set, isChecked){
+function handleChecks(value, set, isChecked) {
   if (set.has(value)) {
     isChecked[value] = false;
     set.delete(value);

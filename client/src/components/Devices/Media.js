@@ -35,7 +35,7 @@ class Media extends React.Component {
   state = {
     value: ""
   };
-
+  
   render() {
     const {
       classes,
@@ -101,7 +101,7 @@ class Media extends React.Component {
 
         <CardActions>
           <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
-          <BookDevice sNumber={sNumber} />
+          <BookDevice sNumber={sNumber} available={available} />
         </CardActions>
       </Card>
     );
