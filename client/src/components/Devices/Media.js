@@ -35,7 +35,7 @@ class Media extends React.Component {
   state = {
     value: ""
   };
-  
+
   render() {
     const {
       classes,
@@ -48,6 +48,7 @@ class Media extends React.Component {
       custody,
       available,
       active,
+      images,
       sNumber,
       group,
       subgroup,
@@ -57,6 +58,8 @@ class Media extends React.Component {
       vendor,
       taxRate
     } = this.props;
+
+    console.log(images);
 
     return (
       <Card className={classes.card}>
@@ -73,6 +76,7 @@ class Media extends React.Component {
                 available={available}
                 active={active}
                 sNumber={sNumber}
+                images={images}
                 group={group}
                 subgroup={subgroup}
                 description={description}
@@ -86,10 +90,7 @@ class Media extends React.Component {
           }
         >
           <CardActionArea style={{ height: 320 }}>
-            <CardMedia
-              className={classes.media}
-              image={require("../Data/image.jpg")}
-            />
+            <CardMedia className={classes.media} image={images} />
             <CardContent>
               <Typography gutterBottom variant="h6" component="h6">
                 {text}
