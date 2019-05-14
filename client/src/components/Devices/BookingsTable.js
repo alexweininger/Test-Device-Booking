@@ -43,7 +43,7 @@ class BookingsTable extends React.Component {
   }
 
   render() {
-    var bookings = this.state.bookings || [];
+    const bookings = this.state.bookings || [];
     const { classes, ID } = this.props;
     return (
       <div>
@@ -82,7 +82,7 @@ class BookingsTable extends React.Component {
             console.log(obj);
 
             this.setState({ bookings: obj });
-            console.log("loaded all devices", this.state);
+            console.log("loaded all bookings");
             return obj;
           });
         }

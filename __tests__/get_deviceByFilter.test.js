@@ -29,6 +29,7 @@ describe("test the get_deviceByFilter route that returns a json array of all ava
     const response = await request(app).get(
       "/get_deviceByFilter/WHERE atbl_Device.`Brand`='Samsung'"
     );
+    expect(response.body[0].Brand).toContain("Samsung");
     return expect(response.body.length).toBe(2);
   });
   test("get_deviceByFilter request returns an array with a lenght equal 5 (location is Kaunas) ", async () => {
