@@ -82,7 +82,7 @@ class Reserve extends React.Component {
           today.getMinutes() +
           ":" +
           today.getSeconds(),
-        ID: "2",
+        userID: "2",
         sNumber: this.props.sNumber
       },
       message: null
@@ -140,7 +140,7 @@ class Reserve extends React.Component {
   handleAddNewReserved = () => {
     this.setState({ open: false });
     this.addReserved(this.state.reserved);
-    window.location.reload();
+    
   };
     
 
@@ -269,6 +269,7 @@ class Reserve extends React.Component {
           //add the office
           reserved.number = result.Number;
           this.state.reserved[result.Number] = reserved;
+          window.location.reload();
           /* this.updateState({
             reserved: this.state.reserved
           });*/

@@ -84,7 +84,6 @@ class BookDevice extends React.Component {
     }
     else{
       this.returnDevice(this.state.booked);
-      window.location.reload();
     }
     ID = this.state.booked.sNumber;
     console.log(ID + " ID");
@@ -97,7 +96,7 @@ class BookDevice extends React.Component {
   handleOk = event => {
     this.setState({ open: false });
     this.addReserved(this.state.booked);
-    window.location.reload();
+    
   };
   handleTimeChange = event => {
     this.setState({ selectedTime: event.target.value });
@@ -241,6 +240,7 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Device successfully returned");
+          window.location.reload();
         }
       });
     return true;
@@ -260,6 +260,7 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Reservation successfully added");
+          window.location.reload();
           //this.getTodaysBookings();
           // this.ReturnBack();
         }

@@ -15,6 +15,7 @@ import Header from "../Layout/Header";
 import tlf from "../Data/image.jpg";
 import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
+import BookingsTable from "./BookingsTable";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -331,6 +332,7 @@ class DeviceInfo extends React.Component {
             >
               BOOK DEVICE
               <plusBox />
+              
             </Button>
             <Button
               size="large"
@@ -350,6 +352,7 @@ class DeviceInfo extends React.Component {
             >
               CHANGE LOCATION
             </Button>
+            <BookingsTable ID={sNumber}/>
           </div>
         </Grid>
       </form>

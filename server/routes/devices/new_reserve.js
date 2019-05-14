@@ -18,7 +18,7 @@ router.post("/", (req, res) => {
   query = query
     .replace("{startDate}", reserved.startDate)
     .replace("{finishDate}", reserved.finishDate)
-    .replace("{ID}", reserved.ID)
+    .replace("{ID}", reserved.userID)
     .replace("{sNumber}", reserved.sNumber);
 
   db.dbqueryPromise(query)
