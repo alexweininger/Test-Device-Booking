@@ -9,10 +9,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
-import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
+import App from "../../App";
 
 var date = new Date();
-var time = [];
+//var time = [];
 var ID = "0";
 var bkngs = [];
 var closestBooking;
@@ -42,26 +43,33 @@ class BookDevice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      time: [],
       buttonText: "Book Device",
       bookings: [],
       open: false,
       selectedTime: "",
+      date: new Date(),
       booked: {
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
-        ID: "2",
+        userID: "2",
         sNumber: this.props.sNumber
       }
     };
-    if (this.props.available == 0) {
-      this.state.buttonText = "Return Device";
+    if(this.props.available == 0)
+    {
+      this.state.buttonText="Return Device";
+    }
+    else{
+      this.getTodaysBookings();
     }
   }
   handleClickOpen = () => {
-    this.getTodaysBookings();
-    date = new Date();
-    this.setState({ open: true });
-    this.state.booked.startDate =
+    if (this.props.available)
+    {
+      date = new Date();
+      this.setState({ open: true });
+      this.state.booked.startDate =
       date.getFullYear() +
       "-" +
       (date.getMonth() + 1) +
@@ -73,6 +81,11 @@ class BookDevice extends React.Component {
       date.getMinutes() +
       ":" +
       date.getSeconds();
+    }
+    else{
+      this.returnDevice(this.state.booked);
+      window.location.reload();
+    }
     ID = this.state.booked.sNumber;
     console.log(ID + " ID");
   };
@@ -84,6 +97,7 @@ class BookDevice extends React.Component {
   handleOk = event => {
     this.setState({ open: false });
     this.addReserved(this.state.booked);
+    window.location.reload();
   };
   handleTimeChange = event => {
     this.setState({ selectedTime: event.target.value });
@@ -106,7 +120,8 @@ class BookDevice extends React.Component {
     const bookings = this.state.bookings || [];
     const { classes, sNumber, available } = this.props;
     return (
-      <div>
+     
+        <div>
         <Button
           size="large"
           variant="contained"
@@ -117,6 +132,9 @@ class BookDevice extends React.Component {
         >
           {this.state.buttonText}
         </Button>
+
+        { available ? (
+          
         <Dialog
           className={classes.dialog}
           open={this.state.open}
@@ -140,7 +158,7 @@ class BookDevice extends React.Component {
                 className={classes.input}
                 color="inherit"
               >
-                {time.map((t, index) => (
+                {this.state.time.map((t, index) => (
                   <MenuItem
                     key={index}
                     value={t}
@@ -172,8 +190,10 @@ class BookDevice extends React.Component {
               </Button>
             </DialogActions>
           </DialogTitle>
-        </Dialog>
+        </Dialog>) : ""}
       </div>
+
+      
     );
   }
 
@@ -206,6 +226,25 @@ class BookDevice extends React.Component {
         console.log("get failed");
       });
   }
+  returnDevice(reserved) {
+    console.log("called_");
+    const request = new Request("/return_device", {
+      method: "POST",
+      body: JSON.stringify(reserved),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        //if we successfully updated the DB
+
+        if (result.success) {
+          console.log("Device successfully returned");
+        }
+      });
+    return true;
+  }
   addReserved(reserved) {
     console.log("called_");
     const request = new Request("/new_reserve", {
@@ -221,6 +260,8 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Reservation successfully added");
+          //this.getTodaysBookings();
+          // this.ReturnBack();
         }
       });
     return true;
@@ -241,28 +282,28 @@ class BookDevice extends React.Component {
       if (s <= date && f > date) {
         console.log("0");
         closestBooking = 0;
-        this.timeArray();
+        this.state.time = this.timeArray();
         return;
       }
       if (s >= date) {
         console.log(s);
         closestBooking = s;
-        this.timeArray();
+        this.state.time = this.timeArray();
         return;
       }
     }
     console.log("1");
     closestBooking = 1;
-    this.timeArray();
-    return;
+    this.state.time = this.timeArray();
+      return;
   }
 
   timeArray() {
-    time = [];
+     var time = [];
 
     console.log("closestBooking ", closestBooking);
     console.log("");
-    var currentDate = date;
+    var currentDate = new Date();
     var bookingUntilDate = new Date();
 
     if (closestBooking == 0) {
@@ -293,72 +334,18 @@ class BookDevice extends React.Component {
     }
 
     console.log("timearray created");
-    for (var i = 0; i < time.length; i++) {
-      //console.log(time[i]);
+    for(var i = 0; i < time.length; i++){
+      console.log(time[i]);
     }
     return time;
   }
 }
-
-function TimeArray(date, closestBooking) {
-  time = [];
-
-  console.log("closestBooking ", closestBooking);
-  console.log("");
-  var h = date.getHours();
-  var min = date.getMinutes();
-
-  var bookingDate = new Date();
-  bookingDate.setDate(date.getDate() + 1);
-  bookingDate.setHours(0);
-  bookingDate.setMinutes(0);
-
-  if (closestBooking == 0) {
-    return time;
-  }
-  if (closestBooking == 1) {
-    bookingDate.setHours(0);
-    bookingDate.setMinutes(0);
-    console.log("booking until: ", bookingDate);
-    console.log("");
-  }
-
-  min = (Math.ceil(min / 15) + 1) * 15;
-  if (h == 24 || h == bookingDate.getHours()) {
-    var d = new Date();
-    d.setHours(h);
-    d.setMinutes(min);
-    time.push(d);
-  }
-  if (min > 60) {
-    min = 15;
-    h++;
-  }
-  if (min == 60) {
-    min = 0;
-    h++;
-  }
-  while (h < 24 && date < bookingDate) {
-    if (min >= 60) {
-      min = 0;
-      h++;
-    }
-    var d = new Date();
-    d.setHours(h);
-    d.setMinutes(min);
-    console.log(d);
-    time.push(d);
-    min += 15;
-  }
-  console.log("timearray created");
-  for (var i = 0; i < time.length; i++) {
-    //console.log(time[i]);
-  }
-  return time;
-}
+  
+      
 
 export { ID };
-export { time };
-export { TimeArray };
+//export { time };
+//export {TimeArray};
+
 
 export default withStyles(styles)(BookDevice);

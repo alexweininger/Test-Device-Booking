@@ -140,6 +140,7 @@ class Reserve extends React.Component {
   handleAddNewReserved = () => {
     this.setState({ open: false });
     this.addReserved(this.state.reserved);
+    window.location.reload();
   };
     
 
