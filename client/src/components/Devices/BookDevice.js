@@ -52,7 +52,7 @@ class BookDevice extends React.Component {
       booked: {
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
-        ID: "2",
+        userID: "2",
         sNumber: this.props.sNumber
       }
     };
@@ -65,9 +65,11 @@ class BookDevice extends React.Component {
     }
   }
   handleClickOpen = () => {
-    date = new Date();
-    this.setState({ open: true });
-    this.state.booked.startDate =
+    if (this.props.available)
+    {
+      date = new Date();
+      this.setState({ open: true });
+      this.state.booked.startDate =
       date.getFullYear() +
       "-" +
       (date.getMonth() + 1) +
@@ -79,6 +81,11 @@ class BookDevice extends React.Component {
       date.getMinutes() +
       ":" +
       date.getSeconds();
+    }
+    else{
+      this.returnDevice(this.state.booked);
+      window.location.reload();
+    }
     ID = this.state.booked.sNumber;
     console.log(ID + " ID");
   };
@@ -90,6 +97,7 @@ class BookDevice extends React.Component {
   handleOk = event => {
     this.setState({ open: false });
     this.addReserved(this.state.booked);
+    window.location.reload();
   };
   handleTimeChange = event => {
     this.setState({ selectedTime: event.target.value });
@@ -107,9 +115,6 @@ class BookDevice extends React.Component {
       ":" +
       d.getSeconds();
   };
-  ReturnBack() {
-    ReactDOM.render(<App />, document.getElementById("root"));
-  }
 
   render() {
     const bookings = this.state.bookings || [];
@@ -127,7 +132,9 @@ class BookDevice extends React.Component {
         >
           {this.state.buttonText}
         </Button>
+
         { available ? (
+          
         <Dialog
           className={classes.dialog}
           open={this.state.open}
@@ -218,6 +225,25 @@ class BookDevice extends React.Component {
         console.log("Error in getDevices", err);
         console.log("get failed");
       });
+  }
+  returnDevice(reserved) {
+    console.log("called_");
+    const request = new Request("/return_device", {
+      method: "POST",
+      body: JSON.stringify(reserved),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        //if we successfully updated the DB
+
+        if (result.success) {
+          console.log("Device successfully returned");
+        }
+      });
+    return true;
   }
   addReserved(reserved) {
     console.log("called_");
