@@ -9,8 +9,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
-import ReactDOM from "react-dom";
-import App from "../../App";
 
 var date = new Date();
 //var time = [];
