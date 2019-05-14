@@ -9,10 +9,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
-import PropTypes from "prop-types";
+import ReactDOM from "react-dom";
+import App from "../../App";
 
 var date = new Date();
-var time = [];
+//var time = [];
 var ID = "0";
 var bkngs = [];
 var closestBooking;
@@ -42,10 +43,12 @@ class BookDevice extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      time: [],
       buttonText: "Book Device",
       bookings: [],
       open: false,
       selectedTime: "",
+      date: new Date(),
       booked: {
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
@@ -57,9 +60,11 @@ class BookDevice extends React.Component {
     {
       this.state.buttonText="Return Device";
     }
+    else{
+      this.getTodaysBookings();
+    }
   }
   handleClickOpen = () => {
-    this.getTodaysBookings();
     date = new Date();
     this.setState({ open: true });
     this.state.booked.startDate =
@@ -75,11 +80,9 @@ class BookDevice extends React.Component {
       ":" +
       date.getSeconds();
     ID = this.state.booked.sNumber;
-    console.log(ID+" ID");
+    console.log(ID + " ID");
   };
 
-
-  
   handleClose = () => {
     this.setState({ open: false });
   };
@@ -89,12 +92,12 @@ class BookDevice extends React.Component {
     this.addReserved(this.state.booked);
   };
   handleTimeChange = event => {
-    this.setState({selectedTime : event.target.value});
+    this.setState({ selectedTime: event.target.value });
     var d = event.target.value;
-    this.state.booked.finishDate = 
+    this.state.booked.finishDate =
       d.getFullYear() +
       "-" +
-      (d.getMonth()+1) +
+      (d.getMonth() + 1) +
       "-" +
       d.getDate() +
       " " +
@@ -104,12 +107,16 @@ class BookDevice extends React.Component {
       ":" +
       d.getSeconds();
   };
+  ReturnBack() {
+    ReactDOM.render(<App />, document.getElementById("root"));
+  }
 
   render() {
     const bookings = this.state.bookings || [];
     const { classes, sNumber, available } = this.props;
     return (
-      <div>
+     
+        <div>
         <Button
           size="large"
           variant="contained"
@@ -120,6 +127,7 @@ class BookDevice extends React.Component {
         >
           {this.state.buttonText}
         </Button>
+        { available ? (
         <Dialog
           className={classes.dialog}
           open={this.state.open}
@@ -138,13 +146,12 @@ class BookDevice extends React.Component {
               </InputLabel>
               <InputLabel className={classes.input}>To</InputLabel>
               <Select
-                
                 value={this.state.selectedTime}
                 onChange={this.handleTimeChange}
                 className={classes.input}
                 color="inherit"
               >
-                {time.map((t, index) => (
+                {this.state.time.map((t, index) => (
                   <MenuItem
                     key={index}
                     value={t}
@@ -165,7 +172,7 @@ class BookDevice extends React.Component {
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable ID={ID} bookings={bookings}/>
+              <BookingsTable ID={ID} bookings={bookings} />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleOk} color="inherit">
@@ -176,17 +183,22 @@ class BookDevice extends React.Component {
               </Button>
             </DialogActions>
           </DialogTitle>
-        </Dialog>
+        </Dialog>) : ""}
       </div>
+
+      
     );
   }
-  
-  getTodaysBookings() {
-    const request = new Request(`/get_dayBookings/${this.state.booked.sNumber}`, {
-      method: "GET"
-    });
 
-      fetch(request)
+  getTodaysBookings() {
+    const request = new Request(
+      `/get_dayBookings/${this.state.booked.sNumber}`,
+      {
+        method: "GET"
+      }
+    );
+
+    fetch(request)
       .then(res => {
         if (res.ok) {
           //add the office
@@ -222,155 +234,92 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Reservation successfully added");
+          //this.getTodaysBookings();
+          // this.ReturnBack();
         }
       });
     return true;
   }
-  getClosestBooking(){
+  getClosestBooking() {
     console.log("Getting Closest Booking");
     console.log(bkngs.length);
-    for(var e = 0; e < bkngs.length; e++)
-    {
+    for (var e = 0; e < bkngs.length; e++) {
       var element = bkngs[e];
       var start = element.StartDate;
       var finish = element.FinishDate;
       var s = new Date();
       var f = new Date();
-      s.setHours(start.substring(11,13), start.substring(14,16));
-      f.setHours(finish.substring(11,13), finish.substring(14,16));
-      console.log(s," booking Start");
-      console.log(f," booking Finish");
-      if(s <= date && f > date){
+      s.setHours(start.substring(11, 13), start.substring(14, 16));
+      f.setHours(finish.substring(11, 13), finish.substring(14, 16));
+      console.log(s, " booking Start");
+      console.log(f, " booking Finish");
+      if (s <= date && f > date) {
         console.log("0");
         closestBooking = 0;
-        this.timeArray();
+        this.state.time = this.timeArray();
         return;
       }
-      if(s >=date){
+      if (s >= date) {
         console.log(s);
         closestBooking = s;
-        this.timeArray();
+        this.state.time = this.timeArray();
         return;
       }
     }
     console.log("1");
     closestBooking = 1;
-    this.timeArray();
+    this.state.time = this.timeArray();
       return;
   }
 
   timeArray() {
-    time = [];
-    
+     var time = [];
+
     console.log("closestBooking ", closestBooking);
     console.log("");
-    var currentDate = date;
+    var currentDate = new Date();
     var bookingUntilDate = new Date();
-  
-    if (closestBooking == 0)
-    {
+
+    if (closestBooking == 0) {
       return time;
     }
-    if (closestBooking == 1){
-      bookingUntilDate.setDate(date.getDate()+1);
+    if (closestBooking == 1) {
+      bookingUntilDate.setDate(date.getDate() + 1);
       bookingUntilDate.setHours(0);
       bookingUntilDate.setMinutes(0);
-      console.log("booking until: ",bookingUntilDate);
+      console.log("booking until: ", bookingUntilDate);
       console.log("");
-    }
-    else{
+    } else {
       bookingUntilDate = closestBooking;
-      console.log("booking until: ",bookingUntilDate);
+      console.log("booking until: ", bookingUntilDate);
       console.log("");
     }
     var min = currentDate.getMinutes();
     min = (Math.ceil(min / 15) + 1) * 15;
-    if(min > 60)
-    {
-      currentDate.setHours(currentDate.getHours()+1, 15);
-    }
-    else{
+    if (min > 60) {
+      currentDate.setHours(currentDate.getHours() + 1, 15);
+    } else {
       currentDate.setMinutes(min);
     }
-    
 
-    while(bookingUntilDate-currentDate > 0)
-    {
+    while (bookingUntilDate - currentDate > 0) {
       time.push(currentDate);
       currentDate = new Date(currentDate.getTime() + 15 * 60000);
     }
-    
+
     console.log("timearray created");
     for(var i = 0; i < time.length; i++){
-      //console.log(time[i]);
+      console.log(time[i]);
     }
     return time;
   }
-
 }
   
-  function TimeArray(date, closestBooking) {
-    time = [];
-    
-    console.log("closestBooking ", closestBooking);
-    console.log("");
-    var h = date.getHours();
-    var min = date.getMinutes();
-  
-    var bookingDate = new Date();
-    bookingDate.setDate(date.getDate()+1);
-    bookingDate.setHours(0);
-    bookingDate.setMinutes(0);
-  
-    if (closestBooking == 0)
-    {
-      return time;
-    }
-    if (closestBooking == 1){
-      bookingDate.setHours(0);
-      bookingDate.setMinutes(0);
-      console.log("booking until: ",bookingDate);
-      console.log("");
-    }
-
-    min = (Math.ceil(min / 15) + 1) * 15;
-    if (h == 24 || h == bookingDate.getHours()) {
-      var d = new Date();
-      d.setHours(h);
-      d.setMinutes(min);
-      time.push(d);
-    }
-    if (min > 60) {
-      min = 15;
-      h++;
-    }
-    if (min == 60) {
-      min = 0;
-      h++;
-    }
-    while (h < 24 && date < bookingDate) {
-      if (min >= 60) {
-        min = 0;
-        h++;
-      }
-      var d = new Date();
-      d.setHours(h);
-      d.setMinutes(min);
-      console.log(d);
-      time.push(d);
-      min += 15;
-    }
-    console.log("timearray created");
-    for(var i = 0; i < time.length; i++){
-      //console.log(time[i]);
-    }
-    return time;
-  }
       
 
 export { ID };
-export { time };
-export {TimeArray};
+//export { time };
+//export {TimeArray};
 
 
 export default withStyles(styles)(BookDevice);

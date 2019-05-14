@@ -74,7 +74,7 @@ class BookingsTable extends React.Component {
       method: "GET"
     });
 
-      fetch(request)
+    fetch(request)
       .then(res => {
         if (res.ok) {
           //add the office
