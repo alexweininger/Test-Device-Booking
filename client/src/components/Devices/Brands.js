@@ -14,20 +14,16 @@ class Brands extends React.Component {
 		this.getBrands();
     }	
 	
-		createCheckboxes = () => (
-			this.state.brands.map(brand => 
-				(<Checkbox
-					    label={brand.Brand}
-						key={brand.Brand}
-				/>))
-		)
-	
-
 	render(){
+		const { checked } = this.props;
 		return (
 			<div>
 				<form>
-					{this.createCheckboxes()}
+					{this.state.brands.map(brand => 
+					(<Checkbox
+								label={brand.Brand}
+								isChecked={ checked[brand.Brand] }
+					/>))}
 				</form>
 		</div>
 		)

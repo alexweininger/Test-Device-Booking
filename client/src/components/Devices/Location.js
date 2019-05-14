@@ -1,6 +1,5 @@
 import React from "react";
 import Checkbox from "./Checkbox";
-
 class Locations extends React.Component {
 
 	constructor(props) {
@@ -13,21 +12,17 @@ class Locations extends React.Component {
 		this.getLocationsFromServer();
 		}
 	
-	
-		createCheckboxes = () => (
-			this.state.offices.map(office => 
-				(<Checkbox
-					    label={office.city}
-						key={office.city}
-				/>))
-		)
-	
 
 	render(){
+		const { checked } = this.props;
 		return (
 			<div>
 				<form>
-					{this.createCheckboxes()}
+					{this.state.offices.map(office => 
+					(<Checkbox
+					    label={ office.city }
+						isChecked={ checked[office.city] }
+					/>))}
 				</form>
 		</div>
 		)
