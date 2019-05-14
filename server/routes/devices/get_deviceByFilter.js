@@ -12,7 +12,7 @@ router.get("/:filter", (req, res) => {
     "SELECT * FROM atbl_Device " +
     "LEFT JOIN atbl_Office ON atbl_Device.`fk_office_id`= atbl_Office.`id_Office` " +
     filterQuery +
-    "LIMIT 20;";
+    ";";
 
   db.dbqueryPromise(Query)
     .then(results => {

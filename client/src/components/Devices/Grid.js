@@ -101,17 +101,14 @@ class TitlebarGridList extends React.Component {
   };
 
   handleChange = () => {
-    let locations = Array.from(locationSet);
-    let brands = Array.from(brandSet);
-    let availability = Array.from(availabilitySet);
     if (
-      locations.length == 0 &&
-      brands.length == 0 &&
-      availability.length == 0
+      locationSet.size == 0 &&
+      brandSet.size == 0 &&
+      availabilitySet.size == 0
     ) {
       this.getDevicesFromServer();
     } else this.getDevicesByFilter();
-  };
+      };
 
   render() {
     const { classes } = this.props;
@@ -240,7 +237,6 @@ class TitlebarGridList extends React.Component {
     fetch(request)
       .then(res => {
         if (res.ok) {
-          //add the office
           res.json().then(obj => {
             console.log(obj);
 
@@ -267,7 +263,6 @@ class TitlebarGridList extends React.Component {
     fetch(request)
       .then(res => {
         if (res.ok) {
-          //add the office
           res.json().then(obj => {
             console.log(obj);
 
