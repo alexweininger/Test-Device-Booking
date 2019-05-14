@@ -214,6 +214,7 @@ class TitlebarGridList extends React.Component {
                   custody={device.Vendor}
                   available={device.Available}
                   active={device.Active}
+                  images={device.Image}
                   sNumber={device.Serial_Number}
                   group={device.Category}
                   subgroup={device.Subcategory}
