@@ -95,7 +95,7 @@ class BookDevice extends React.Component {
 
   handleOk = event => {
     this.setState({ open: false });
-    this.addReserved(this.state.booked);
+    this.addBooking(this.state.booked);
     
   };
   handleTimeChange = event => {
@@ -127,7 +127,7 @@ class BookDevice extends React.Component {
           color="inherit"
           className={classes.button}
           onClick={() => this.handleClickOpen(sNumber)}
-          style={{ height: 50 }}
+          style={{ height: 60 }}
         >
           {this.state.buttonText}
         </Button>
@@ -245,11 +245,11 @@ class BookDevice extends React.Component {
       });
     return true;
   }
-  addReserved(reserved) {
+  addBooking(booked) {
     console.log("called_");
-    const request = new Request("/new_reserve", {
+    const request = new Request("/new_booking", {
       method: "POST",
-      body: JSON.stringify(reserved),
+      body: JSON.stringify(booked),
       headers: { "Content-Type": "application/json" }
     });
 
@@ -259,10 +259,8 @@ class BookDevice extends React.Component {
         //if we successfully updated the DB
 
         if (result.success) {
-          console.log("Reservation successfully added");
+          console.log("Booking successfully added");
           window.location.reload();
-          //this.getTodaysBookings();
-          // this.ReturnBack();
         }
       });
     return true;
@@ -329,7 +327,7 @@ class BookDevice extends React.Component {
       currentDate.setMinutes(min);
     }
 
-    while (bookingUntilDate - currentDate > 0) {
+    while (bookingUntilDate - currentDate >= 0) {
       time.push(currentDate);
       currentDate = new Date(currentDate.getTime() + 15 * 60000);
     }

@@ -76,7 +76,7 @@ app.use(
   require("./routes/devices/get_deviceByFilter.js")
 );
 app.use("/return_device", require("./routes/devices/return_device.js"));
-
+app.use("/new_booking", require("./routes/devices/new_booking.js"));
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 
 app.get('/Offices', (req, res) => {

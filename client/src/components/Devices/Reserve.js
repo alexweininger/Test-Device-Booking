@@ -166,7 +166,7 @@ class Reserve extends React.Component {
       <div>
         <Button
           size="large"
-          style={{ height: 50, marginRight: 10, marginLeft: 5 }}
+          style={{ height: 60, marginRight: 10, marginLeft: 5 }}
           variant="contained"
           color="inherit"
           className={classes.button}
