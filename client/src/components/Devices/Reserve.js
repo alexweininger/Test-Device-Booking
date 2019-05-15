@@ -8,8 +8,9 @@ import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-
+import NewDevice from "../../App";
 import DateFnsUtils from "@date-io/date-fns";
+import ReactDOM from 'react-dom';
 //import ReservationsTable from "./ReservationsTable";
 import {
   MuiPickersUtilsProvider,
@@ -269,7 +270,8 @@ class Reserve extends React.Component {
           //add the office
           reserved.number = result.Number;
           this.state.reserved[result.Number] = reserved;
-          window.location.reload();
+          ReactDOM.render(<NewDevice />, document.getElementById("root"))
+        //  window.location.reload();
           /* this.updateState({
             reserved: this.state.reserved
           });*/
