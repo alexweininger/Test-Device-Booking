@@ -15,42 +15,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { withStyles } from "@material-ui/core/styles";
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.common.white
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
 
 const styles = theme => ({
   root: {
     width: "auto",
     marginTop: theme.spacing.unit * 3,
     overflowX: "auto",
-    marginLeft: "auto",
-    marginRight: "auto"
+    marginLeft: 50,
+    marginRight: 50
   },
   table: {
     minWidth: 700
-  },
-  row: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
-  },
-  tableRowHover: {
-    "&:hover": {
-      backgroundColor: theme.palette.grey[200],
-      cursor: "pointer"
-    }
-  },
-  hover: {
-    "&:hover": {
-      cursor: "pointer"
-    }
   }
 });
 
@@ -166,6 +141,7 @@ class CustomizedTable extends React.Component {
     } else if (this.state.users) {
       if (this.state.loggedInUser == "admin") {
         return (
+          <div className={classes.root}>
           <MaterialTable
             columns={[
               {
@@ -267,9 +243,11 @@ class CustomizedTable extends React.Component {
                 })
             }}
           />
+          </div>
         );
       } else if (this.state.loggedInUser == "employee") {
         return (
+          <div className={classes.root}>
           <MaterialTable
             columns={[
               {
@@ -302,13 +280,14 @@ class CustomizedTable extends React.Component {
               columnsButton: true
             }}
           />
+          </div>
         );
       } else {
         //when user is not logged in
         return <span> PLEASE LOG IN </span>;
       }
     } else {
-      return <h1>Loading...</h1>;
+      return <h1></h1>;
     }
   }
 
