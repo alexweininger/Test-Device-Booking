@@ -258,8 +258,7 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Booking successfully added");
-          ReactDOM.render(<NewDevice />, document.getElementById("root"))
-        //  window.location.reload();
+          window.location.reload();
         }
       });
     return true;
