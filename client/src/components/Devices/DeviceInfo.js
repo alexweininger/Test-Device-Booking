@@ -16,7 +16,7 @@ import tlf from "../Data/image.jpg";
 import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import BookingsTable from "./BookingsTable";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const style = {
   head: {
@@ -56,23 +56,22 @@ const style = {
 
   buttom: {
     marginBottom: 30
-  },
+  }
 };
-
 
 class DeviceInfo extends React.Component {
   ReturnBack() {
     ReactDOM.render(<App />, document.getElementById("root"));
   }
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       value: "",
       devices: [{}]
-    }
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getDevicesFromServer();
   }
 
@@ -85,6 +84,7 @@ class DeviceInfo extends React.Component {
       Vendor,
       Available,
       Active,
+      Image,
       Serial_Number,
       Category,
       Subcategory,
@@ -117,7 +117,7 @@ class DeviceInfo extends React.Component {
           <div>
             <Grid itme>
               <Paper style={style.Paper1}>
-                <img alt="Device picture" src={tlf} style={{ height: 400 }} />
+                <img alt="Device picture" src={Image} />
               </Paper>
             </Grid>
           </div>
@@ -278,7 +278,6 @@ class DeviceInfo extends React.Component {
             >
               BOOK DEVICE
               <plusBox />
-              
             </Button>
             <Button
               size="large"
@@ -298,7 +297,7 @@ class DeviceInfo extends React.Component {
             >
               CHANGE LOCATION
             </Button>
-            <BookingsTable ID={Serial_Number}/>
+            <BookingsTable ID={Serial_Number} />
           </div>
         </Grid>
       </form>
@@ -306,9 +305,12 @@ class DeviceInfo extends React.Component {
   }
 
   getDevicesFromServer() {
-    const request = new Request("/get_device/" + this.props.match.params.sNumber, {
-      method: "GET"
-    });
+    const request = new Request(
+      "/get_device/" + this.props.match.params.sNumber,
+      {
+        method: "GET"
+      }
+    );
 
     fetch(request)
       .then(res => {
