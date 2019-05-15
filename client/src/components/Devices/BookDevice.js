@@ -9,7 +9,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
-
+import NewDevice from "../../App";
+import ReactDOM from 'react-dom';
 var date = new Date();
 //var time = [];
 var ID = "0";
@@ -258,7 +259,8 @@ class BookDevice extends React.Component {
 
         if (result.success) {
           console.log("Booking successfully added");
-          window.location.reload();
+          ReactDOM.render(<NewDevice />, document.getElementById("root"))
+        //  window.location.reload();
         }
       });
     return true;
