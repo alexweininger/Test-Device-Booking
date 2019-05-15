@@ -12,15 +12,9 @@ router.post("/", (req, res) => {
   //TODO make sure the reserve is unique
 
   let query =
-    "INSERT INTO atbl_Booking (StartDate, FinishDate, fk_user_id_reg, fk_device_ser_nr) " +
-    "VALUES ('{startDate}', '{finishDate}', '{ID}', '{sNumber}');";
-    
-    
-  query = query
-    .replace("{startDate}", booked.startDate)
-    .replace("{finishDate}", booked.finishDate)
-    .replace("{ID}", booked.userID)
-    .replace("{sNumber}", booked.sNumber);
+  `UPDATE atbl_Device
+        SET Available=0
+        WHERE Serial_Number="${booked.sNumber}"`;
 
   db.dbqueryPromise(query)
     .then(results => {
@@ -32,7 +26,7 @@ router.post("/", (req, res) => {
       });
     })
     .catch(err => {
-      console.log("There was an error inserting a new booking:");
+      console.log("There was an error updating availability:");
       console.log("---------------------------------");
       console.log(err);
       console.log("---------------------------------");

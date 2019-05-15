@@ -21,7 +21,7 @@ router.get("/:deviceId", (req, res) => {
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
-      console.log("======Available devices======");
+      console.log("======Today's bookings======"+req.params.deviceId);
       console.log(results);
 
       res.setHeader("Content-Type", "application/json");
