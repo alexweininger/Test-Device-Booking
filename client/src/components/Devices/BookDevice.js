@@ -93,8 +93,7 @@ class BookDevice extends React.Component {
 
   handleOk = event => {
     this.setState({ open: false });
-    this.addBooking(this.state.booked);
-    
+    this.updateAvailability(this.state.booked);    
   };
   handleTimeChange = event => {
     this.setState({ selectedTime: event.target.value });
@@ -259,6 +258,26 @@ class BookDevice extends React.Component {
         if (result.success) {
           console.log("Booking successfully added");
           window.location.reload();
+        }
+      });
+    return true;
+  }
+  updateAvailability(booked) {
+    console.log("called_");
+    const request = new Request("/update_DeviceAvailability", {
+      method: "POST",
+      body: JSON.stringify(booked),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        //if we successfully updated the DB
+
+        if (result.success) {
+          console.log("Availability updated");
+          this.addBooking(booked);
         }
       });
     return true;
