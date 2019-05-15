@@ -332,7 +332,7 @@ class BookDevice extends React.Component {
 
     console.log("timearray created");
     for(var i = 0; i < time.length; i++){
-      console.log(time[i]);
+      //console.log(time[i]);
     }
     return time;
   }

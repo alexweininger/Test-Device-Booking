@@ -3,13 +3,14 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Reports from '../Devices/Reports';
 import Grid from '../Devices/Grid';
 import Office from '../Offices/Office';
 import User from "../Users/Pages/User";
 import profile from "../Users/Pages/UserList";
 import Location from "../Devices/Location";
+import DeviceInfo from "../Devices/DeviceInfo";
 
 const styles = theme => ({
   root: {
@@ -58,10 +59,13 @@ class FullWidthTabs extends React.Component {
             </div>
 
           </AppBar>
+          <Switch>
           <Route path="/" exact component={Grid} />
           <Route path="/Reports/" component={Reports} />
           <Route path="/Offices/" component={Office} />
           <Route path="/UserList/" component={profile} />
+          <Route path="/:sNumber/" component={DeviceInfo}/>
+          </Switch>
         </Router>
       </div>
     );

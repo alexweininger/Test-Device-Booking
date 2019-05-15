@@ -16,17 +16,7 @@ import tlf from "../Data/image.jpg";
 import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import BookingsTable from "./BookingsTable";
-
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.common.black,
-    fontSize: 50
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
+import {NavLink} from "react-router-dom";
 
 const style = {
   head: {
@@ -66,107 +56,63 @@ const style = {
 
   buttom: {
     marginBottom: 30
-  }
+  },
 };
 
-let id = 0;
-function createData(name, info) {
-  id += 1;
-  return { id, name, info };
-}
-/*
-const rows2 = [
-  createData("brand", "Samsung"),
-  createData("model", "SM-G930F"),
-  createData("Os", "Android 7.0"),
-  createData("location", "Wilno"),
-  createData("custody", "John Snow"),
-  createData("available", "true"),
-  createData("actice", "3000-01-01 11:11:11.123"),
-  createData("id", 497),
-  createData("group", "Tablet Apple"),
-  createData("subgroup", "Soup"),
-  createData(
-    "description",
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-  ),
-  createData("check_in_due", null),
-  createData("pruchase_date", "2018-01-01 11:11:11.123"),
-  createData("vendor", "Ka randu ta jamu"),
-  createData("tax_rate", "Demo Tax: 10.0%")
-];
-*/
+
 class DeviceInfo extends React.Component {
   ReturnBack() {
     ReactDOM.render(<App />, document.getElementById("root"));
   }
+  constructor(props){
+    super(props);
+    this.state = {
+      value: "",
+      devices: [{}]
+    }
+  }
 
-  state = {
-    value: ""
-  };
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
+  componentDidMount(){
+    this.getDevicesFromServer();
+  }
 
-  state = {};
   render() {
     const {
-      classes1,
-      brand,
-      model,
-      os,
-      location,
-      custody,
-      available,
-      active,
-      sNumber,
-      group,
-      subgroup,
-      description,
-      check_in,
-      purchaseDate,
-      vendor,
-      taxRate
-    } = this.props;
+      Brand,
+      Model,
+      OS,
+      City,
+      Vendor,
+      Available,
+      Active,
+      Serial_Number,
+      Category,
+      Subcategory,
+      Description,
+      Release_date,
+      Purchased_on,
+      Tax_rate
+    } = this.state.devices[0];
     var availableValue, activeValue;
     //it checks or device is available
-    if (available == 1) {
+    if (Available == 1) {
       availableValue = "true";
     } else {
       availableValue = "false";
     }
     //it checks or device is active
-    if (active == 0) {
+    if (Active == 0) {
       activeValue = "false";
     } else {
       activeValue = "true";
     }
 
-    /*const rows = [
-      ("1", "Brand", brand),
-      ("2", "Model", model),
-      ("3", "Os", os),
-      ("4", "location", location),
-      ("5", "Custody", custody),
-      ("6", "Available", t),
-      ("7", "Active", f),
-      ("8", "Serial_Number", sNumber),
-      ("9", "group", group),
-      ("10", "subgroup", subgroup),
-      ("11", "Description", description),
-      ("12", "check_in_due", check_in),
-      ("13", "pruchase_date", purchaseDate),
-      ("14", "vendor", vendor),
-      ("15", "tax_rate", taxRate)
-    ];
-*/
     return (
       <form>
-        <Header />
-        <Button style={style.backarrow} onClick={this.ReturnBack}>
+        <NavLink to="/" style={style.backarrow}>
           <ArrowBack />
           Back to the list
-        </Button>
+        </NavLink>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>
@@ -189,7 +135,7 @@ class DeviceInfo extends React.Component {
                         {"Brand"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {brand}{" "}
+                        {Brand}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -198,7 +144,7 @@ class DeviceInfo extends React.Component {
                         {"Model"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {model}{" "}
+                        {Model}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -207,7 +153,7 @@ class DeviceInfo extends React.Component {
                         {"Os"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {os}{" "}
+                        {OS}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -216,7 +162,7 @@ class DeviceInfo extends React.Component {
                         {"Location"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {location}{" "}
+                        {City}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -225,7 +171,7 @@ class DeviceInfo extends React.Component {
                         {"Custody"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {custody}{" "}
+                        {Vendor}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -252,7 +198,7 @@ class DeviceInfo extends React.Component {
                         {"Serial_Number"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {sNumber}{" "}
+                        {Serial_Number}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -261,7 +207,7 @@ class DeviceInfo extends React.Component {
                         {"group"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {group}{" "}
+                        {Category}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -270,7 +216,7 @@ class DeviceInfo extends React.Component {
                         {"subgroup"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {subgroup}{" "}
+                        {Subcategory}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -279,7 +225,7 @@ class DeviceInfo extends React.Component {
                         {"Description"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {description}{" "}
+                        {Description}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -288,7 +234,7 @@ class DeviceInfo extends React.Component {
                         {"check_in_due"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {check_in}{" "}
+                        {Release_date}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={13}>
@@ -296,7 +242,7 @@ class DeviceInfo extends React.Component {
                         {"purchase_date"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {purchaseDate}{" "}
+                        {Purchased_on}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={14}>
@@ -304,7 +250,7 @@ class DeviceInfo extends React.Component {
                         {"vendor"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {vendor}{" "}
+                        {Vendor}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -313,7 +259,7 @@ class DeviceInfo extends React.Component {
                         {"tax_rate"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {taxRate}{" "}
+                        {Tax_rate}{" "}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -352,11 +298,35 @@ class DeviceInfo extends React.Component {
             >
               CHANGE LOCATION
             </Button>
-            <BookingsTable ID={sNumber}/>
+            <BookingsTable ID={Serial_Number}/>
           </div>
         </Grid>
       </form>
     );
+  }
+
+  getDevicesFromServer() {
+    const request = new Request("/get_device/" + this.props.match.params.sNumber, {
+      method: "GET"
+    });
+
+    fetch(request)
+      .then(res => {
+        if (res.ok) {
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ devices: obj });
+            console.log("loaded all devices", this.state);
+            return obj;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
+      });
   }
 }
 
@@ -365,4 +335,4 @@ DeviceInfo.propTypes = {
   brand: PropTypes.string.isRequired,
   device: PropTypes.shape({})
 };
-export default DeviceInfo;
+export default withStyles(style)(DeviceInfo);

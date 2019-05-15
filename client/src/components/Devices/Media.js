@@ -13,6 +13,7 @@ import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
 import { labeledStatement } from "@babel/types";
 import Reserve from "./Reserve.js";
+import {NavLink} from "react-router-dom";
 
 const styles = {
   card: {
@@ -28,6 +29,10 @@ const styles = {
   button: {
     margin: 5,
     padding: 10
+  },
+  link: {
+    textDecoration: "none",
+    textAlign: "center"
   }
 };
 
@@ -63,32 +68,7 @@ class Media extends React.Component {
 
     return (
       <Card className={classes.card}>
-        <Button
-          onClick={() =>
-            ReactDOM.render(
-              <DeviceInfo
-                classes={classes}
-                brand={brand}
-                model={model}
-                os={os}
-                location={location}
-                custody={custody}
-                available={available}
-                active={active}
-                sNumber={sNumber}
-                images={images}
-                group={group}
-                subgroup={subgroup}
-                description={description}
-                check_in={check_in}
-                purchaseDate={purchaseDate}
-                vendor={vendor}
-                taxRate={taxRate}
-              />,
-              document.getElementById("root")
-            )
-          }
-        >
+        <NavLink className={classes.link} to={`${sNumber}`}>
           <CardActionArea style={{ height: 320 }}>
             <CardMedia className={classes.media} image={images} />
             <CardContent>
@@ -98,8 +78,7 @@ class Media extends React.Component {
               <Typography component="p">{text2}</Typography>
             </CardContent>
           </CardActionArea>
-        </Button>
-
+          </NavLink>
         <CardActions>
           <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
           <BookDevice sNumber={sNumber} available={available} />
@@ -111,7 +90,7 @@ class Media extends React.Component {
 
 Media.propTypes = {
   classes: PropTypes.object.isRequired,
-  device: DeviceInfo.propTypes.device.isRequired
+  //device: DeviceInfo.propTypes.device.isRequired
 };
 
 export default withStyles(styles)(Media);
