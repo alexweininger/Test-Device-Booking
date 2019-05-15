@@ -1,7 +1,6 @@
 import './Login.css';
-
 import * as request from 'request';
-import NewDevice from "../../Devices/Grid";
+import NewDevice from "../../../App.js";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
