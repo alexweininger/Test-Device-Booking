@@ -1,7 +1,7 @@
 import './Login.css';
 
 import * as request from 'request';
-
+import NewDevice from "../../Devices/Grid";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -95,6 +95,9 @@ class FullWidthTabs extends React.Component {
             [name]: value
         });
     }
+    handleInputChange2 = (event) => {
+        this.firstName = event.target.value;
+    }
 
 
     render() {
@@ -137,11 +140,11 @@ class FullWidthTabs extends React.Component {
                                     </h5>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="email-login">Email</InputLabel>
-                                        <Input id="email-login" name="email-login" autoComplete="email-login" onChange={this.handleInputChange} />
+                                        <Input id="email-login" name="email-login" autoComplete="email-login" value={this.state.name} onChange={e => this.setState({ firstName: e.target.value })} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
                                         <InputLabel htmlFor="password-login">Password</InputLabel>
-                                        <Input name="password-login" type="password" id="password-login" autoComplete="current-password" onChange={this.handleInputChange} />
+                                        <Input name="password-login" type="password" id="password-login" autoComplete="current-password" value={this.state.name} onChange={e => this.setState({ lastName: e.target.value })} />
                                     </FormControl>
                                     <Button
                                         type=""
@@ -213,10 +216,63 @@ class FullWidthTabs extends React.Component {
     }
 
     loginUser(user) {
+        let query = 'where Device_Booking.atbl_Users.Email = lsimmank0@admin.ch';
+        const request = new Request('/get_LoginUser' ,{
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        });
+
+        // Create a list to return.
+        let rtrnList = {};
+
+        fetch(request).then(res => res.json()).then(result => {
+            //if success then update the office list
+            if (result.success) {
+
+                const officeList = result.offices;
+                let office,i;
+                for (i in officeList)
+                {          
+                    office = officeList[i];          
+                    if(office.Email === this.state.firstName && office.Password === this.state.lastName)
+                    {
+                        ReactDOM.render(<NewDevice />, document.getElementById("root"))
+                        console.log("hi");
+                        break;
+                    }
+                }
+                this.setState({
+					result
+				});
+            }
+            else {
+                console.log("Error");
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+   /* loginUser(user) {
 
         console.log(user);
 
         var data = `username=${user.username}&password=${user.password}`;
+        const request = new Request("/getUsers", {
+            method: "GET"
+          });
+      
+          fetch(request)
+            .then(res => {
+              if (res.ok) {               
+                  console.log("Login works");      
+              }
+            })
+            .catch(err => {
+              //if we successfully updated the DB
+              console.log("Error in getLogin", err);
+              console.log("get failed");
+            });
 
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
@@ -238,7 +294,7 @@ class FullWidthTabs extends React.Component {
 
 
         return true;
-    }
+}*/
 
     addUser(user) {
 

@@ -86,7 +86,7 @@ app.get('/Offices', (req, res) => {
 		});
 	});
 });*/
-
+app.use("/get_LoginUser", require("./routes/users/get_LoginUser.js"));
 let getUsersRouter = require("./routes/users/getUsers");
 let newUserRouter = require("./routes/users/newUser");
 let getDevicesRouter = require("./routes/devices/get_device.js");
