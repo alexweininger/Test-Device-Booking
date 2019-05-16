@@ -7,13 +7,13 @@ import Fab from "@material-ui/core/Fab";
 import ReactDOM from "react-dom";
 import NewDevice from "./NewDevice.js";
 import Grid from "@material-ui/core/Grid";
-import Progress from "./Progress";
 import Checkbox from "./Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Location from "./Location";
 import Brands from "./Brands";
+import Pagination from "material-ui-flat-pagination";
 
 var locationSet = new Set();
 var brandSet = new Set();
@@ -64,10 +64,10 @@ class TitlebarGridList extends React.Component {
     super(props);
 
     this.state = {
-      devices: []
+      devices: [],
+      offset: 0
     };
 
-    
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.handleChange();
   }
@@ -108,7 +108,10 @@ class TitlebarGridList extends React.Component {
     ) {
       this.getDevicesFromServer();
     } else this.getDevicesByFilter();
-      };
+  };
+  handleClickPage(offset) {
+    this.setState({ offset });
+  }
 
   render() {
     const { classes } = this.props;
@@ -223,7 +226,12 @@ class TitlebarGridList extends React.Component {
                 />
               ))}
             </Grid>
-            <Progress />
+            <Pagination
+              limit={10}
+              offset={this.state.offset}
+              total={100}
+              onClick={(e, offset) => this.handleClickPage(offset)}
+            />
           </Grid>
         </Grid>
       </div>
@@ -305,22 +313,20 @@ function createQuery(locationSet, brandSet, availabilitySet) {
     if (availabilitySet.has("Available") && !availabilitySet.has("Show all")) {
       query += ' AND atbl_Device.`Available`="1"';
     }
-  }
-  else if(brands.length != 0){
-      i = 0;
-      brands.map(brand => {
-        if (i == 0) query += 'WHERE (atbl_Device.`Brand`="' + brand + '"';
-        else query += ' OR atbl_Device.`Brand`="' + brand + '"';
-        i++;
-      });
-      query += ")";
-    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
-      query += " AND atbl_Device.`Available`=\"1\"";
+  } else if (brands.length != 0) {
+    i = 0;
+    brands.map(brand => {
+      if (i == 0) query += 'WHERE (atbl_Device.`Brand`="' + brand + '"';
+      else query += ' OR atbl_Device.`Brand`="' + brand + '"';
+      i++;
+    });
+    query += ")";
+    if (availabilitySet.has("Available") && !availabilitySet.has("Show all")) {
+      query += ' AND atbl_Device.`Available`="1"';
     }
-  }
-  else{
-    if(availabilitySet.has("Available") && !availabilitySet.has("Show all")){
-      query += " WHERE atbl_Device.`Available`=\"1\"";
+  } else {
+    if (availabilitySet.has("Available") && !availabilitySet.has("Show all")) {
+      query += ' WHERE atbl_Device.`Available`="1"';
     }
   }
   return query;

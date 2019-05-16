@@ -28,7 +28,7 @@ class LinearDeterminate extends React.Component {
     if (completed === 100) {
       this.setState({ completed: 100 });
     } else {
-      const diff = Math.random() * 10;
+      const diff = Math.random() * 30;
       this.setState({ completed: Math.min(completed + diff, 100) });
     }
   };

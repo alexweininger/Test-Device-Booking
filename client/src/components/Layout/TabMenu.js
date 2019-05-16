@@ -4,20 +4,20 @@ import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import Reports from '../Devices/Reports';
-import Grid from '../Devices/Grid';
-import Office from '../Offices/Office';
+import Reports from "../Devices/Reports";
+import Grid from "../Devices/Grid";
+import Office from "../Offices/Office";
 import User from "../Users/Pages/User";
 import profile from "../Users/Pages/UserList";
 import Location from "../Devices/Location";
 import DeviceInfo from "../Devices/DeviceInfo";
+import Progress from "../Devices/Progress";
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   }
 });
-
 
 class FullWidthTabs extends React.Component {
   state = {
@@ -36,11 +36,9 @@ class FullWidthTabs extends React.Component {
     const { classes } = this.props;
 
     return (
-
       <div className={classes.root}>
         <Router>
           <AppBar position="static" color="default">
-
             <div>
               <nav>
                 <Tabs
@@ -49,22 +47,58 @@ class FullWidthTabs extends React.Component {
                   indicatorColor="none"
                   variant="fullWidth"
                 >
-                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/"> DEVICE BOOKING</Link>
-                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Reports/">REPORTS</Link>
-                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/Offices/">OFFICES</Link>
-                  <Link style={{ color: "black", padding: 8 * 3, textDecoration: "none" }} to="/UserList/">USER LIST</Link>
+                  <Link
+                    style={{
+                      color: "black",
+                      padding: 8 * 3,
+                      textDecoration: "none"
+                    }}
+                    to="/"
+                  >
+                    {" "}
+                    DEVICE BOOKING
+                  </Link>
+                  <Link
+                    style={{
+                      color: "black",
+                      padding: 8 * 3,
+                      textDecoration: "none"
+                    }}
+                    to="/Reports/"
+                  >
+                    REPORTS
+                  </Link>
+                  <Link
+                    style={{
+                      color: "black",
+                      padding: 8 * 3,
+                      textDecoration: "none"
+                    }}
+                    to="/Offices/"
+                  >
+                    OFFICES
+                  </Link>
+                  <Link
+                    style={{
+                      color: "black",
+                      padding: 8 * 3,
+                      textDecoration: "none"
+                    }}
+                    to="/UserList/"
+                  >
+                    USER LIST
+                  </Link>
                 </Tabs>
               </nav>
-
             </div>
-
           </AppBar>
+          <Progress />
           <Switch>
-          <Route path="/" exact component={Grid} />
-          <Route path="/Reports/" component={Reports} />
-          <Route path="/Offices/" component={Office} />
-          <Route path="/UserList/" component={profile} />
-          <Route path="/:sNumber/" component={DeviceInfo}/>
+            <Route path="/" exact component={Grid} />
+            <Route path="/Reports/" component={Reports} />
+            <Route path="/Offices/" component={Office} />
+            <Route path="/UserList/" component={profile} />
+            <Route path="/:sNumber/" component={DeviceInfo} />
           </Switch>
         </Router>
       </div>
