@@ -9,7 +9,6 @@ import InputBase from "@material-ui/core/InputBase";
 import logo from "../Data/devbridge_full.png";
 import SearchIcon from "@material-ui/icons/Search";
 import Login from "../Users/Pages/Login";
-import Categories from "./Header_categorySelecton";
 
 const styles = theme => ({
   root: {
