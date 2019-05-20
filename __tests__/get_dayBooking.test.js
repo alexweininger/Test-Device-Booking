@@ -7,7 +7,7 @@ const request = require("supertest");
 const app = require("../server/app");
 
 var Id = 30037972;
-nrOfBookings = 1;
+nrOfBookings = 2;
 
 describe("test the /get_dayBookings route that returns a json array of all days", () => {
   test("get_day request returns OK", () => {
@@ -27,6 +27,7 @@ describe("test the /get_dayBookings route that returns a json array of all days"
   });
 
   test(`get_dayBooking request returns a an array with a length equal ${nrOfBookings}`, async () => {
+    //returns count of rows by Id
     const response = await request(app).get(`/get_dayBookings/${Id}`);
     return expect(response.body.length).toBe(nrOfBookings);
   });
