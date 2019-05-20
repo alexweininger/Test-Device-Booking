@@ -3,39 +3,44 @@ module.exports = require("babel-jest").createTransformer({
 });
 process.env.NODE_ENV = "test";
 
-const fetch = require("node-fetch");
 const request = require("supertest");
 const app = require("../server/app");
-var getDevices = require("../server/routes/devices/get_deviceByFilter");
 
-describe("test the get_deviceByFilter route that returns a json array of all available devices", () => {
+var brand = "Samsung";
+var city = "Kaunas";
+var available = 1;
+var nrOfCity = 5;
+var nrOfBrand = 2;
+var nrOfAvailable = 10;
+
+describe("test the get_deviceByFilter route that returns a json array of different devices by Filter", () => {
   test("get_deviceByFilter request returns OK", () => {
     return request(app)
-      .get("/get_deviceByFilter/WHERE atbl_Device.`Available`='1'")
+      .get(`/get_deviceByFilter/WHERE atbl_Device.Available=${available}`)
       .then(response => {
         expect(response.body).toBeDefined();
       });
   });
 
-  test("get_deviceByFilter request returns an array with a length equal 10 (available is true)", () => {
+  test(`get_deviceByFilter request returns an array with a length equal ${nrOfAvailable} (available is ${available})`, () => {
     return request(app)
-      .get("/get_deviceByFilter/WHERE atbl_Device.`Available`='1'")
+      .get(`/get_deviceByFilter/WHERE atbl_Device.Available=${available}`)
       .then(response => {
-        expect(response.body.length).toBe(10);
+        expect(response.body.length).toBe(nrOfAvailable);
       });
   });
 
-  test("get_deviceByFilter request returns an array with a length equal 2 (brand is Samsung)", async () => {
+  test(`get_deviceByFilter request returns an array with a length equal ${nrOfBrand} (brand is ${brand})`, async () => {
     const response = await request(app).get(
-      "/get_deviceByFilter/WHERE atbl_Device.`Brand`='Samsung'"
+      `/get_deviceByFilter/WHERE atbl_Device.Brand ="${brand}"`
     );
-    expect(response.body[0].Brand).toContain("Samsung");
-    return expect(response.body.length).toBe(2);
+    expect(response.body[0].Brand).toContain(brand);
+    return expect(response.body.length).toBe(nrOfBrand);
   });
-  test("get_deviceByFilter request returns an array with a lenght equal 5 (location is Kaunas) ", async () => {
+  test(`get_deviceByFilter request returns an array with a lenght equal ${nrOfCity} (location is ${city}) `, async () => {
     const response = await request(app).get(
-      "/get_deviceByFilter/WHERE atbl_Office.`City`= 'Kaunas'"
+      `/get_deviceByFilter/WHERE atbl_Office.City= "${city}"`
     );
-    return expect(response.body.length).toBe(5);
+    return expect(response.body.length).toBe(nrOfCity);
   });
 });

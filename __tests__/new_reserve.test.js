@@ -3,58 +3,46 @@ module.exports = require("babel-jest").createTransformer({
 });
 process.env.NODE_ENV = "test";
 
-const fetch = require("node-fetch");
 const request = require("supertest");
 const app = require("../server/app");
-var getDevices = require("../server/routes/devices/get_dayBookings");
+const db = require("../server/routes/dbmsTest");
+var dateFormat = require("dateformat");
 
 var date = new Date();
-//startTime
-var startDate =
-  date.getFullYear() +
-  "-" +
-  (date.getMonth() + 1) +
-  "-" +
-  date.getDate() +
-  " " +
-  date.getHours() +
-  ":" +
-  date.getMinutes() +
-  ":" +
-  date.getSeconds();
-//endTime
-finishDate =
-  date.getFullYear() +
-  "-" +
-  (date.getMonth() + 1) +
-  "-" +
-  date.getDate() +
-  " " +
-  (date.getHours() + 1) +
-  ":" +
-  date.getMinutes() +
-  ":" +
-  date.getSeconds();
+
+var Id = 30037972;
+var userId = 2;
+var startDate = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
+var finishDate = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
+var tempStartDate = startDate;
+var tempFinishDate = finishDate;
 
 describe("test the /new_reserve route that inserts new date", () => {
-  test("get_day request returns OK", () => {
-    var Id = "0030037972";
-    return request(app)
-      .get(`/get_dayBookings/${Id}`)
-      .then(response => {
-        expect(response.statusCode).toBe(200);
-      });
+  beforeAll(async () => {
+    await db.dbqueryPromise(
+      "CREATE TABLE atbl_Booking (Number SERIAL PRIMARY KEY, StartDate DATETIME, FinishDate DATETIME, fk_user_id_reg INT, fk_device_ser_nr INT)"
+    );
   });
 
-  test("POST /new_reserve (device ID=0030037972) equal StartDate = 2019-05-12T06:45:36.000Z", async () => {
-    var Id = "0030037972";
+  beforeAll(async () => {
+    // seed with some data
+    await db.dbqueryPromise(
+      `INSERT INTO atbl_Booking (StartDate, FinishDate, fk_user_id_reg, fk_device_ser_nr) VALUES (now(), now(), RAND()*(10-5)+5, RAND()*10000000), (now(), now(), RAND()*(10-5)+5, RAND()*10000000), (now(), now(), RAND()*(10-5)+5, 0030037972)`
+    );
+  });
 
+  afterAll(async () => {
+    // seed with some data
+    await db.dbqueryPromise(`DROP TABLE atbl_Booking`);
+  });
+
+  test(`POST /new_reserve (device ID=${Id}) inserted new StartDate = ${startDate} and FinishDate = ${finishDate}`, async () => {
     return await request(app)
       .post("/new_reserve")
       .send({
         startDate,
         finishDate,
-        ID: "2",
+        userID: userId,
         sNumber: Id
       })
       .then(response => {
@@ -62,20 +50,23 @@ describe("test the /new_reserve route that inserts new date", () => {
       });
   });
 
-  test("get_dayBooking request returns a an array with a length equal 2+1", async () => {
-    var Id = "0030037972";
-
+  test(`get_dayBooking request returns a an array with a length equal 1+1(new added time = ${tempStartDate}, device ID = ${Id})`, async () => {
     const response = await request(app).get(`/get_dayBookings/${Id}`);
-    return expect(response.body.length).toBe(3);
+    return expect(response.body.length).toBe(2);
   });
 
-  test("get_dayBooking request returns a value (new added device ID=0030037972) equal StartDate = 2019-05-12 09:08:06", () => {
-    var Id = "0030037972";
-    var tempDate = "2019-05-12T09:08:06.000Z";
+  test(`get_dayBooking request returns an object (new added time (device ID = ${Id}, user ID = ${userId})) equal StartDate = ${tempStartDate}`, () => {
     return request(app)
       .get(`/get_dayBookings/${Id}`)
       .then(response => {
-        expect(response.body[0].StartDate).toContain(tempDate);
+        var start = response.body[1].StartDate;
+        var finish = response.body[1].FinishDate;
+        expect(dateFormat(start, "yyyy-mm-dd' 'HH:mm:ss")).toBe(tempStartDate);
+        expect(dateFormat(finish, "yyyy-mm-dd' 'HH:mm:ss")).toBe(
+          tempFinishDate
+        );
+        expect(response.body[1].fk_user_id_reg).toBe(userId);
+        expect(response.body[1].fk_device_ser_nr).toBe(Id);
       });
   });
 });
