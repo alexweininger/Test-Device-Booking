@@ -75,6 +75,7 @@ app.use("/get_deviceByFilter", require("./routes/devices/get_deviceByFilter.js")
 app.use("/return_device", require("./routes/devices/return_device.js"));
 app.use("/new_booking", require("./routes/devices/new_booking.js"));
 app.use("/update_DeviceAvailability", require("./routes/devices/update_DeviceAvailability.js"));
+app.use("/get_closestBooking", require("./routes/devices/get_closestBooking"));
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 
 app.get('/Offices', (req, res) => {

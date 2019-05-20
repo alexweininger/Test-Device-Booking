@@ -173,7 +173,7 @@ class Reserve extends React.Component {
           className={classes.button}
           onClick={this.handleClickOpen}
         >
-          Reserve
+          Rsrv
         </Button>
         <Dialog
           className={classes.dialog}

@@ -5,23 +5,18 @@ const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
 
 var db = require(`../${dataBase}`);
 
-router.get("/:deviceId", (req, res) => {
+router.get("/:query", (req, res) => {
   console.log("req ", req.params);
 
   const availableQuery = `SELECT * FROM atbl_Booking 
-                            WHERE year(StartDate)=year(now()) 
-                              AND month(StartDate)=month(now()) 
-                              AND day(StartDate)=day(now()) 
-                              AND year(FinishDate)=year(now()) 
-                              AND month(FinishDate)=month(now()) 
-                              AND day(FinishDate)=day(now()) 
-                              AND fk_device_ser_nr=${req.params.deviceId}           
+                            ${req.params.query}
                               ORDER BY StartDate ASC
+                              LIMIT 1;
                               `;
 
   db.dbqueryPromise(availableQuery)
     .then(results => {
-      console.log("======Today's bookings======"+req.params.deviceId);
+      console.log("======Closest booking======");
       console.log(results);
 
       res.setHeader("Content-Type", "application/json");
@@ -30,7 +25,7 @@ router.get("/:deviceId", (req, res) => {
       });
     })
     .catch(err => {
-      console.log("There was an error getting the devices:");
+      console.log("There was an error getting the booking:");
       console.log("---------------------------------");
       console.log(err);
       console.log("---------------------------------");

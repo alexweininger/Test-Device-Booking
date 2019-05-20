@@ -49,6 +49,7 @@ class BookDevice extends React.Component {
       selectedTime: "",
       date: new Date(),
       booked: {
+        today: new Date(),
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
         userID: "2",
@@ -176,7 +177,7 @@ class BookDevice extends React.Component {
                   </MenuItem>
                 ))}
               </Select>
-              <BookingsTable ID={ID} bookings={bookings} />
+              <BookingsTable ID={ID} />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleOk} color="inherit">
@@ -292,8 +293,8 @@ class BookDevice extends React.Component {
       var finish = element.FinishDate;
       var s = new Date();
       var f = new Date();
-      s.setHours(start.substring(11, 13), start.substring(14, 16));
-      f.setHours(finish.substring(11, 13), finish.substring(14, 16));
+      s.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0);
+      f.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
       console.log(s, " booking Start");
       console.log(f, " booking Finish");
       if (s <= date && f > date) {

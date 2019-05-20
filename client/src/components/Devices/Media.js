@@ -14,6 +14,7 @@ import BookDevice from "./BookDevice.js";
 import { labeledStatement } from "@babel/types";
 import Reserve from "./Reserve.js";
 import {NavLink} from "react-router-dom";
+import ReserveDevice from"./ReserveDevice";
 
 const styles = {
   card: {
@@ -80,8 +81,9 @@ class Media extends React.Component {
           </CardActionArea>
           </NavLink>
         <CardActions>
-          <Reserve MuiPickersDay-isSelected-477="blue" sNumber={sNumber} />
+          <ReserveDevice sNumber={sNumber} />
           <BookDevice sNumber={sNumber} available={available} />
+          <Reserve sNumber={sNumber}/>
         </CardActions>
       </Card>
     );
