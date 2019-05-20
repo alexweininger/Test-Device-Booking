@@ -2,6 +2,8 @@ module.exports = require("babel-jest").createTransformer({
   rootMode: "upward"
 });
 
+process.env.NODE_ENV = "test";
+
 const request = require("supertest");
 const app = require("../server/app");
 var newUser = require("../server/routes/users/newUser");
