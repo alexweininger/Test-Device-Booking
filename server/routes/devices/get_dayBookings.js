@@ -15,13 +15,15 @@ router.get("/:deviceId", (req, res) => {
                               AND year(FinishDate)=year(now()) 
                               AND month(FinishDate)=month(now()) 
                               AND day(FinishDate)=day(now()) 
-                              AND fk_device_ser_nr=${req.params.deviceId}           
+                              AND fk_device_ser_nr=${
+                                req.params.deviceId
+                              }           
                               ORDER BY StartDate ASC
                               `;
-
+  console.log(availableQuery);
   db.dbqueryPromise(availableQuery)
     .then(results => {
-      console.log("======Today's bookings======"+req.params.deviceId);
+      console.log("======Today's bookings======" + req.params.deviceId);
       console.log(results);
 
       res.setHeader("Content-Type", "application/json");

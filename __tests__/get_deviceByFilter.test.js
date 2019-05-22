@@ -6,12 +6,12 @@ process.env.NODE_ENV = "test";
 const request = require("supertest");
 const app = require("../server/app");
 
-var brand = "Samsung";
-var city = "Kaunas";
+var brand = "Asus";
+var city = "San Lorenzo";
 var available = 1;
-var nrOfCity = 5;
+var nrOfCity = 1;
 var nrOfBrand = 2;
-var nrOfAvailable = 10;
+var nrOfAvailable = 8;
 
 describe("test the get_deviceByFilter route that returns a json array of different devices by Filter", () => {
   test("get_deviceByFilter request returns OK", () => {

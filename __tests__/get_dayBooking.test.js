@@ -7,7 +7,7 @@ const request = require("supertest");
 const app = require("../server/app");
 
 var Id = 30037972;
-nrOfBookings = 2;
+nrOfBookings = 1;
 
 describe("test the /get_dayBookings route that returns a json array of all days", () => {
   test("get_day request returns OK", () => {
