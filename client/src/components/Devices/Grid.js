@@ -226,12 +226,12 @@ class TitlebarGridList extends React.Component {
                 />
               ))}
             </Grid>
-            <Pagination
+            {/*<Pagination
               limit={10}
               offset={this.state.offset}
               total={100}
               onClick={(e, offset) => this.handleClickPage(offset)}
-            />
+            />*/}
           </Grid>
         </Grid>
       </div>
