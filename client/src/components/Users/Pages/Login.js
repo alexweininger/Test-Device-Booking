@@ -17,6 +17,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+  }
+   
+  
+  
+
 function TabContainer({ children, dir }) {
     return (
         <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
@@ -235,6 +243,7 @@ class FullWidthTabs extends React.Component {
                     office = officeList[i];          
                     if(office.Email === this.state.firstName && office.Password === this.state.lastName)
                     {
+                        localStorage.setItem('userId', office.id);
                         ReactDOM.render(<NewDevice />, document.getElementById("root"))
                         console.log("hi");
                         break;

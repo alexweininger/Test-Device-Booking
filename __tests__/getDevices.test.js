@@ -6,8 +6,8 @@ process.env.NODE_ENV = "test";
 const request = require("supertest");
 const app = require("../server/app");
 
-var nrOfDevices = 7;
-var sNumber = "1vfxAZ1";
+var nrOfDevices = 9;
+var sNumber = "1071040421";
 
 describe("test the /get_device route that returns a json array of all devices", () => {
   test("get_device request returns OK", () => {
