@@ -12,7 +12,6 @@ import Grid from "@material-ui/core/Grid";
 import ReactDOM from "react-dom";
 import App from "../../App";
 import PropTypes from "prop-types";
-import BookingsTable from "./BookingsTable";
 import { NavLink } from "react-router-dom";
 import ChangeLocation from "./ChangeLocation";
 
@@ -306,7 +305,6 @@ class DeviceInfo extends React.Component {
             >
               CHANGE LOCATION
             </Button>
-            <BookingsTable ID={Serial_Number} />
           </div>
         </Grid>
       </form>
