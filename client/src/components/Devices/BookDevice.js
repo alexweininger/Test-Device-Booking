@@ -358,12 +358,47 @@ class BookDevice extends React.Component {
     return time;
   }
 }
+
+
+function timeArray_test(date, closestBooking) {
+    var time = [];
+
+    var currentDate = date;
+    var bookingUntilDate = date;
+
+    if (closestBooking == 0) {
+      return time;
+    }
+    if (closestBooking == 1) {
+      bookingUntilDate.setDate(date.getDate() + 1);
+      bookingUntilDate.setHours(0);
+      bookingUntilDate.setMinutes(0);
+    } else {
+      bookingUntilDate = closestBooking;
+    }
+    var min = currentDate.getMinutes();
+    min = (Math.ceil(min / 15) + 1) * 15;
+    if (min > 60) {
+      currentDate.setHours(currentDate.getHours() + 1, 15);
+    } else {
+      currentDate.setMinutes(min);
+    }
+
+    while (bookingUntilDate - currentDate >= 0) {
+      time.push(currentDate);
+      currentDate = new Date(currentDate.getTime() + 15 * 60000);
+    }
+    for(var i = 0; i < time.length; i++){
+      //console.log(time[i]);
+    }
+    return time;
+}
   
       
 
 export { ID };
 //export { time };
-//export {TimeArray};
+export { timeArray_test };
 
 
 export default withStyles(styles)(BookDevice);
