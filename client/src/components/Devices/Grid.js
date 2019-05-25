@@ -21,7 +21,7 @@ var availabilitySet = new Set();
 var isCheckedLocation = [];
 var isCheckedBrand = [];
 var isCheckedAvailability = [];
-const inputText = {value: ""};
+const inputText = { value: "" };
 var input = "";
 
 const styles = theme => ({
@@ -70,7 +70,6 @@ class TitlebarGridList extends React.Component {
       allDevices: [],
       offset: 0
     };
-
   }
 
   handleBrandChange = event => {
@@ -122,27 +121,25 @@ class TitlebarGridList extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-  } 
+  }
 
   search = () => {
-    if(input !== inputText.value){
+    if (input !== inputText.value) {
       console.log(input !== inputText.value);
       input = inputText.value;
-      let newDeviceList = this.state.allDevices
-      .filter(device =>{
+      let newDeviceList = this.state.allDevices.filter(device => {
         let brand = device.Brand + " " + device.Model;
         return brand.toLowerCase().indexOf(inputText.value.toLowerCase()) >= 0;
-      })
-      this.setState({devices: newDeviceList});
+      });
+      this.setState({ devices: newDeviceList });
     }
-  }
+  };
 
   render() {
     const { classes } = this.props;
     const devices = this.state.devices || [];
     return (
       <div className={classes.root}>
-       
         <Fab
           className={classes.fab}
           color="primary"
@@ -223,38 +220,38 @@ class TitlebarGridList extends React.Component {
           <Grid item xs={8}>
             <Grid item xs={2.5} container spacing={0}>
               {devices
-              /*.filter(device =>{
+                /*.filter(device =>{
                 let brand = device.Brand + " " + device.Model;
                 return brand.toLowerCase().indexOf(inputText.value.toLowerCase()) >= 0;
               })*/
-              .map(device => (
-                <Media
-                  text={device.Brand + " " + device.Model + " "}
-                  text2={
-                    "OS: " +
-                    device.OS +
-                    "\n Identification number:" +
-                    device.Serial_Number
-                  }
-                  //need to validate data properties
-                  brand={device.Brand}
-                  model={device.Model}
-                  os={device.OS}
-                  location={device.City}
-                  custody={device.Vendor}
-                  available={device.Available}
-                  active={device.Active}
-                  images={device.Image}
-                  sNumber={device.Serial_Number}
-                  group={device.Category}
-                  subgroup={device.Subcategory}
-                  description={device.Description}
-                  check_in={device.Release_date}
-                  purchaseDate={device.Purchased_on}
-                  vendor={device.Vendor}
-                  taxRate={device.Tax_rate}
-                />
-              ))}
+                .map(device => (
+                  <Media
+                    text={device.Brand + " " + device.Model + " "}
+                    text2={
+                      "OS: " +
+                      device.OS +
+                      "\n Identification number:" +
+                      device.Serial_Number
+                    }
+                    //need to validate data properties
+                    brand={device.Brand}
+                    model={device.Model}
+                    os={device.OS}
+                    location={device.City}
+                    custody={device.Vendor}
+                    available={device.Available}
+                    active={device.Active}
+                    images={device.Image}
+                    sNumber={device.Serial_Number}
+                    group={device.Category}
+                    subgroup={device.Subcategory}
+                    description={device.Description}
+                    check_in={device.Release_date}
+                    purchaseDate={device.Purchased_on}
+                    vendor={device.Vendor}
+                    taxRate={device.Tax_rate}
+                  />
+                ))}
             </Grid>
             {/*<Pagination
               limit={10}
@@ -373,7 +370,6 @@ function handleChecks(value, set, isChecked) {
   return set;
 }
 
-
 function handleChecks_test(value, set, isChecked) {
   if (set.has(value)) {
     set.delete(value);
@@ -387,7 +383,6 @@ TitlebarGridList.propTypes = {
   classes: PropTypes.object.isRequired,
   device: Media.propTypes.device
 };
-
 
 export { createQuery, handleChecks_test, inputText };
 export default withStyles(styles)(TitlebarGridList);
