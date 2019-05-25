@@ -14,6 +14,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { withStyles } from "@material-ui/core/styles";
+import Header from "../../Layout/Header";
+import TabMenu from "../../Layout/TabMenu";
 
 
 const styles = theme => ({
@@ -141,6 +143,9 @@ class CustomizedTable extends React.Component {
     } else if (this.state.users) {
       if (this.state.loggedInUser == "admin") {
         return (
+          <div>
+            <Header/>
+            <TabMenu/>
           <div className={classes.root}>
           <MaterialTable
             columns={[
@@ -244,9 +249,13 @@ class CustomizedTable extends React.Component {
             }}
           />
           </div>
+          </div>
         );
       } else if (this.state.loggedInUser == "employee") {
         return (
+          <div>
+            <Header/>
+            <TabMenu/>
           <div className={classes.root}>
           <MaterialTable
             columns={[
@@ -281,13 +290,21 @@ class CustomizedTable extends React.Component {
             }}
           />
           </div>
+          </div>
         );
       } else {
         //when user is not logged in
-        return <span> PLEASE LOG IN </span>;
+        return <div>
+          <Header/>
+          <TabMenu/>
+          <span> PLEASE LOG IN </span>
+          </div>;
       }
     } else {
-      return <h1></h1>;
+      return <div>
+        <Header/>
+        <TabMenu/>
+      </div>;
     }
   }
 

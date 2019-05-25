@@ -9,6 +9,7 @@ import InputFile from "@material-ui/core/Input/Input";
 import BackArrow from "@material-ui/icons/ArrowBack";
 import Header from "../Layout/Header";
 import Paper from "@material-ui/core/Paper";
+import { NavLink } from "react-router-dom";
 
 const styles = theme => ({
   layout: {
@@ -133,7 +134,7 @@ class NewDevice extends Component {
     fetch(request)
       .then(res => res.json())
       .then(result => {
-        this.ReturnBack();
+        //this.ReturnBack();
       });
   }
 
@@ -327,9 +328,8 @@ class NewDevice extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={this.ReturnBack}
             >
-              Return
+              <NavLink style={{color: "white", textDecoration: "none"}} to="/">Return</NavLink>
               <BackArrow />
             </Button>
             <Button
@@ -337,7 +337,7 @@ class NewDevice extends Component {
               color="primary"
               onClick={this.AddDevice}
             >
-              Submit
+              <NavLink to="/" style={{color: "white", textDecoration: "none"}}>Submit</NavLink>
             </Button>
           </div>
         </Paper>

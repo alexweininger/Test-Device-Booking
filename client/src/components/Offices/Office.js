@@ -13,6 +13,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import { withStyles } from '@material-ui/core/styles';
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
 
 const CustomTableCell = withStyles(theme => ({
 	head: {
@@ -114,6 +116,9 @@ class Offices extends React.Component {
 	renderOfficeList(){
 		let i= 0;
 		return (
+			<div>
+				<Header/>
+				<TabMenu />
 			<div style={style.root}>
 				<div style={style.table}>
                 <Table>
@@ -136,6 +141,7 @@ class Offices extends React.Component {
 				<Button variant="contained" onClick= {()=>{this.setPageToShow('new')}}>
 					Add New
 				</Button>
+			</div>
 			</div>
 		);
 	}

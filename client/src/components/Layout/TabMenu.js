@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, NavLink } from "react-router-dom";
 import Reports from "../Devices/Reports";
 import Grid from "../Devices/Grid";
 import Office from "../Offices/Office";
@@ -37,7 +37,6 @@ class FullWidthTabs extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Router>
           <AppBar position="static" color="default">
             <div>
               <nav>
@@ -47,7 +46,7 @@ class FullWidthTabs extends React.Component {
                   indicatorColor="none"
                   variant="fullWidth"
                 >
-                  <Link
+                  <NavLink
                     style={{
                       color: "black",
                       padding: 8 * 3,
@@ -57,8 +56,8 @@ class FullWidthTabs extends React.Component {
                   >
                     {" "}
                     DEVICE BOOKING
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     style={{
                       color: "black",
                       padding: 8 * 3,
@@ -67,8 +66,8 @@ class FullWidthTabs extends React.Component {
                     to="/Reports/"
                   >
                     REPORTS
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     style={{
                       color: "black",
                       padding: 8 * 3,
@@ -77,8 +76,8 @@ class FullWidthTabs extends React.Component {
                     to="/Offices/"
                   >
                     OFFICES
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     style={{
                       color: "black",
                       padding: 8 * 3,
@@ -87,20 +86,12 @@ class FullWidthTabs extends React.Component {
                     to="/UserList/"
                   >
                     USER LIST
-                  </Link>
+                  </NavLink>
                 </Tabs>
               </nav>
             </div>
           </AppBar>
           <Progress />
-          <Switch>
-            <Route path="/" exact component={Grid} />
-            <Route path="/Reports/" component={Reports} />
-            <Route path="/Offices/" component={Office} />
-            <Route path="/UserList/" component={profile} />
-            <Route path="/:sNumber/" component={DeviceInfo} />
-          </Switch>
-        </Router>
       </div>
     );
   }

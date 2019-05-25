@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
 
 class EditOffice extends React.Component{
 	constructor(props){
@@ -19,6 +21,8 @@ class EditOffice extends React.Component{
 		
 		return (
 			<div>
+				<Header/>
+				<TabMenu/>
 				<Typography variant= {'headline'}>
 					Edit Office
 				</Typography>

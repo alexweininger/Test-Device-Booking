@@ -17,6 +17,7 @@ import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import BookingsTable from "./BookingsTable";
 import { NavLink } from "react-router-dom";
+import TabMenu from "../Layout/TabMenu";
 
 const style = {
   head: {
@@ -109,10 +110,14 @@ class DeviceInfo extends React.Component {
 
     return (
       <form>
-        <NavLink to="/" style={style.backarrow}>
-          <ArrowBack />
-          Back to the list
-        </NavLink>
+        <Header/>
+        <TabMenu/>
+        <Button>
+        <NavLink to="/" style={{color: "black", textDecoration: "none", fontSize: 20}}>
+          <ArrowBack style={{color: "black"}}/>
+					Back to the list
+          </NavLink>
+				</Button>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>

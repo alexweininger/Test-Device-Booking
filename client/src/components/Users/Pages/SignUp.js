@@ -113,20 +113,37 @@ class FullWidthTabs extends React.Component {
                 <div className={classes.root}>
                 <TabContainer dir={theme.direction}>
                             <Paper className={classes.paper}>
-                                <form className={classes.form} >
-                                    <h1>
-                                        Welcome back!
-                                     </h1>
-                                    <h5 style={{ color: '#989898' }}>
-                                        Enter your details below to access your account:
-                                    </h5>
+                                <form className={classes.form} onSubmit={this.createAccountHandler}  >
+                                    <h3>
+                                        Enter your details below to create your account:
+                                    </h3>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="email-login">Email</InputLabel>
-                                        <Input id="email-login" name="email-login" autoComplete="email-login" value={this.state.name} onChange={e => this.setState({ firstName: e.target.value })} />
+                                        <InputLabel htmlFor="firstName">First Name</InputLabel>
+                                        <Input id="firstName" name="firstName" autoComplete="firstName" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <FormControl margin="normal" required fullWidth>
-                                        <InputLabel htmlFor="password-login">Password</InputLabel>
-                                        <Input name="password-login" type="password" id="password-login" autoComplete="current-password" value={this.state.name} onChange={e => this.setState({ lastName: e.target.value })} />
+                                        <InputLabel htmlFor="lastName">Last Name</InputLabel>
+                                        <Input value={this.state.lastName} id="lastName" name="lastName" autoComplete="lastName" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="email-signup">Email</InputLabel>
+                                        <Input id="email-signup" name="email-signup" autoComplete="email-signup" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="slackUsername">Slack Username</InputLabel>
+                                        <Input id="slackUsername" name="slackUsername" autoComplete="slackUsername" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="employeeId">Employee ID</InputLabel>
+                                        <Input id="employeeId" name="employeeId" autoComplete="employeeId" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="officeId">Office ID</InputLabel>
+                                        <Input id="officeId" name="officeId" autoComplete="officeId" onChange={this.handleInputChange} />
+                                    </FormControl>
+                                    <FormControl margin="normal" required fullWidth>
+                                        <InputLabel htmlFor="password-signup">Password</InputLabel>
+                                        <Input name="password-signup" type="password" id="password-signup" autoComplete="current-password" onChange={this.handleInputChange} />
                                     </FormControl>
                                     <Button
                                         type=""
@@ -134,10 +151,9 @@ class FullWidthTabs extends React.Component {
                                         variant="contained"
                                         color="secondary"
                                         className={classes.submit}
-                                        onClick={() => {this.loginUser(this.state)}}
+                                        onClick={() => this.addUser(this.state)}
                                     >
-                                        <NavLink style={{color: 'white', textDecoration: 'none'}} 
-                                            to="/">Log in</NavLink>
+                                        <NavLink to="/Login" style={{color: "white", textDecoration: "none"}}>Create Account</NavLink>
                                     </Button>
                                 </form>
                             </Paper>
@@ -147,42 +163,35 @@ class FullWidthTabs extends React.Component {
         );
     }
 
-    loginUser(user) {
-        let query = 'where Device_Booking.atbl_Users.Email = lsimmank0@admin.ch';
-        const request = new Request('/get_LoginUser' ,{
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
+    addUser(user) {
+
+        console.log(user);
+
+        const request = new Request('http://localhost:5000/new_user', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user)
         });
 
-        // Create a list to return.
-        let rtrnList = {};
+        fetch(request).then(res => {
+            //if we successfully updated the DB
+            if (res.ok) {
+                //add the office
 
-        fetch(request).then(res => res.json()).then(result => {
-            //if success then update the office list
-            if (result.success) {
-
-                const officeList = result.offices;
-                let office,i;
-                for (i in officeList)
-                {
-                    office = officeList[i];          
-                    if(office.Email === this.state.firstName && office.Password === this.state.lastName)
-                    {
-                        ReactDOM.render(<NewDevice />, document.getElementById("root"));
-                        console.log("hi");
-                        break;
-                    }
-                }
-            }
-            else {
-                console.log("Error");
+                console.log("added user");
             }
         }).catch(err => {
+            //if we successfully updated the DB
             console.log(err);
+            console.log('post failed');
+
         });
+        return true;
     }
 }
-
 
 FullWidthTabs.propTypes = {
     classes: PropTypes.object.isRequired,

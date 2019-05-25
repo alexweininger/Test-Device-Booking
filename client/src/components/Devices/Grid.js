@@ -14,6 +14,9 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Location from "./Location";
 import Brands from "./Brands";
 import Pagination from "material-ui-flat-pagination";
+import TabMenu from "../Layout/TabMenu";
+import Header from "../Layout/Header";
+import { NavLink } from "react-router-dom";
 
 var locationSet = new Set();
 var brandSet = new Set();
@@ -141,18 +144,17 @@ class TitlebarGridList extends React.Component {
     const { classes } = this.props;
     const devices = this.state.devices || [];
     return (
+      <div>
+      <Header/>
+       <TabMenu/>
       <div className={classes.root}>
-       
         <Fab
           className={classes.fab}
           color="primary"
           aria-label="Add"
-          onClick={() =>
-            ReactDOM.render(<NewDevice />, document.getElementById("root"))
-          }
           style={{ zIndex: 1 }}
         >
-          <AddIcon />
+          <NavLink to="/NewDevice"> <AddIcon style={{color: "white"}}/></NavLink>
         </Fab>
 
         <Grid container spacing={20}>
@@ -264,6 +266,7 @@ class TitlebarGridList extends React.Component {
             />*/}
           </Grid>
         </Grid>
+      </div>
       </div>
     );
   }
