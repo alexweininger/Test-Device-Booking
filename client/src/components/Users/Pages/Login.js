@@ -243,7 +243,7 @@ class FullWidthTabs extends React.Component {
                     office = officeList[i];          
                     if(office.Email === this.state.firstName && office.Password === this.state.lastName)
                     {
-                        localStorage.setItem('myFirstKey', office.id);
+                        localStorage.setItem('userId', office.id);
                         ReactDOM.render(<NewDevice />, document.getElementById("root"))
                         console.log("hi");
                         break;

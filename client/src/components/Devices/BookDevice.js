@@ -52,7 +52,7 @@ class BookDevice extends React.Component {
         today: new Date(),
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
-        userID: localStorage.getItem("myFirstKey"),
+        userID: localStorage.getItem("userId"),
         sNumber: this.props.sNumber
       }
     };

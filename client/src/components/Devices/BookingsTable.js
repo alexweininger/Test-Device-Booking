@@ -36,7 +36,7 @@ class BookingsTable extends React.Component {
 
     this.state = {
       bookings: [],
-      Id: localStorage.getItem("myFirstKey")
+      Id: localStorage.getItem("userId")
     };
 
     this.getTodaysBookings(this.state.Id);
