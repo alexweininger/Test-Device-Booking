@@ -1,11 +1,11 @@
-const { handleChecks } = require("../components/Devices/Grid");
+const { handleChecks_test } = require("../components/Devices/Grid");
 
-test("[Samsung, Samsungas, Samsungas1] checkboxes have been pressed", () => {
-  const brandChecks = ["Samsung", "Samsungas", "Samsungas1"];
+test("[Samsung, Apple, Asus] checkboxes have been pressed", () => {
+  const brandChecks = ["Samsung", "Apple", "Asus"];
   let set = new Set();
-  const expectedSet = new Set(["Samsung", "Samsungas", "Samsungas1"]);
+  const expectedSet = new Set(["Samsung", "Apple", "Asus"]);
   brandChecks.map(check => {
-      set = handleChecks(check, set);
+      set = handleChecks_test(check, set);
   })
   expect(set).toEqual(expectedSet);
 });
@@ -15,17 +15,17 @@ test("[Samsung, Samsung, Samsung, Samsung] checkboxes have been pressed", () => 
     let set = new Set();
     const expectedSet = new Set();
     brandChecks.map(check => {
-        set = handleChecks(check, set);
+        set = handleChecks_test(check, set);
     })
     expect(set).toEqual(expectedSet);
   });
 
-test("[Samsung, Samsungas] [Kaunas, Kaunas] [Available] checkboxes have been pressed", () => {
-    const brandChecks = ["Samsung", "Samsungas"];
+test("[Samsung, Asus] [Kaunas, Kaunas] [Available] checkboxes have been pressed", () => {
+    const brandChecks = ["Samsung", "Asus"];
     let brandSet = new Set();
-    const expectedBrandSet = new Set(["Samsung", "Samsungas"]);
+    const expectedBrandSet = new Set(["Samsung", "Asus"]);
     brandChecks.map(check => {
-        brandSet = handleChecks(check, brandSet);
+        brandSet = handleChecks_test(check, brandSet);
     })
     expect(brandSet).toEqual(expectedBrandSet);
 
@@ -33,7 +33,7 @@ test("[Samsung, Samsungas] [Kaunas, Kaunas] [Available] checkboxes have been pre
     let locationSet = new Set();
     const expectedLocationSet = new Set();
     locationChecks.map(check => {
-        locationSet = handleChecks(check, locationSet);
+        locationSet = handleChecks_test(check, locationSet);
     })
     expect(locationSet).toEqual(expectedLocationSet);
 
@@ -41,7 +41,7 @@ test("[Samsung, Samsungas] [Kaunas, Kaunas] [Available] checkboxes have been pre
     let availabilitySet = new Set();
     const expectedAvailabilitySet = new Set(["Available"]);
     availabilityChecks.map(check => {
-        availabilitySet = handleChecks(check, availabilitySet);
+        availabilitySet = handleChecks_test(check, availabilitySet);
     })
     expect(availabilitySet).toEqual(expectedAvailabilitySet);
   });

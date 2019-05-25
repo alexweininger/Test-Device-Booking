@@ -6,14 +6,10 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import ReactDOM from "react-dom";
-import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
-import { labeledStatement } from "@babel/types";
-import {NavLink} from "react-router-dom";
-import ReserveDevice from"./ReserveDevice";
+import { NavLink } from "react-router-dom";
+import ReserveDevice from "./ReserveDevice";
 
 const styles = {
   card: {
@@ -42,30 +38,7 @@ class Media extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      text,
-      text2,
-      brand,
-      model,
-      os,
-      location,
-      custody,
-      available,
-      active,
-      images,
-      sNumber,
-      group,
-      subgroup,
-      description,
-      check_in,
-      purchaseDate,
-      vendor,
-      taxRate
-    } = this.props;
-
-    console.log(images);
-
+    const { classes, text, text2, available, images, sNumber } = this.props;
     return (
       <Card className={classes.card}>
         <NavLink className={classes.link} to={`${sNumber}`}>
@@ -78,7 +51,7 @@ class Media extends React.Component {
               <Typography component="p">{text2}</Typography>
             </CardContent>
           </CardActionArea>
-          </NavLink>
+        </NavLink>
         <CardActions>
           <ReserveDevice sNumber={sNumber} />
           <BookDevice sNumber={sNumber} available={available} />
@@ -89,8 +62,7 @@ class Media extends React.Component {
 }
 
 Media.propTypes = {
-  classes: PropTypes.object.isRequired,
-  //device: DeviceInfo.propTypes.device.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Media);

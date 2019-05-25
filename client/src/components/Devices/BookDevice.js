@@ -10,7 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import BookingsTable from "./BookingsTable";
 import NewDevice from "../../App";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 var date = new Date();
 //var time = [];
 var ID = "0";
@@ -52,36 +52,33 @@ class BookDevice extends React.Component {
         today: new Date(),
         startDate: new Date().setMonth(date.getMonth + 1),
         finishDate: new Date().setMonth(date.getMonth + 1),
-        userID: "2",
+        userID: localStorage.getItem("userId"),
         sNumber: this.props.sNumber
       }
     };
-    if(this.props.available == 0)
-    {
-      this.state.buttonText="Return Device";
+    if (this.props.available == 0) {
+      this.state.buttonText = "Return Device";
+    } else {
+      this.getTodaysBookings();
     }
-    this.getTodaysBookings();
   }
   handleClickOpen = () => {
-    if (this.props.available)
-    {
-      this.getTodaysBookings();
+    if (this.props.available) {
       date = new Date();
       this.setState({ open: true });
       this.state.booked.startDate =
-      date.getFullYear() +
-      "-" +
-      (date.getMonth() + 1) +
-      "-" +
-      date.getDate() +
-      " " +
-      date.getHours() +
-      ":" +
-      date.getMinutes() +
-      ":" +
-      date.getSeconds();
-    }
-    else{
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1) +
+        "-" +
+        date.getDate() +
+        " " +
+        date.getHours() +
+        ":" +
+        date.getMinutes() +
+        ":" +
+        date.getSeconds();
+    } else {
       this.returnDevice(this.state.booked);
     }
     ID = this.state.booked.sNumber;
@@ -94,7 +91,7 @@ class BookDevice extends React.Component {
 
   handleOk = event => {
     this.setState({ open: false });
-    this.updateAvailability(this.state.booked);    
+    this.updateAvailability(this.state.booked);
   };
   handleTimeChange = event => {
     this.setState({ selectedTime: event.target.value });
@@ -117,8 +114,7 @@ class BookDevice extends React.Component {
     const bookings = this.state.bookings || [];
     const { classes, sNumber, available } = this.props;
     return (
-     
-        <div>
+      <div>
         <Button
           size="large"
           variant="contained"
@@ -130,67 +126,67 @@ class BookDevice extends React.Component {
           {this.state.buttonText}
         </Button>
 
-        { available ? (
-          
-        <Dialog
-          className={classes.dialog}
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Book device"} {ID}
-            <DialogContent className={classes.content}>
-              <InputLabel className={classes.input}>
-                From{" "}
-                {(date.getHours() < 10 ? "0" : "") +
-                  date.getHours() +
-                  ":" +
-                  (date.getMinutes() < 10 ? "0" : "") +
-                  date.getMinutes()}
-              </InputLabel>
-              <InputLabel className={classes.input}>To</InputLabel>
-              <Select
-                value={this.state.selectedTime}
-                onChange={this.handleTimeChange}
-                className={classes.input}
-                color="inherit"
-              >
-                {this.state.time.map((t, index) => (
-                  <MenuItem
-                    key={index}
-                    value={t}
-                    selected={index === "Pyxis"}
-                    InputLabel={
-                      (t.getHours() < 10 ? "0" : "") +
-                      t.getHours() +
-                      ":" +
-                      (t.getMinutes() < 10 ? "0" : "") +
-                      t.getMinutes()
-                    }
-                  >
-                    {(t.getHours() < 10 ? "0" : "") +
-                      t.getHours() +
-                      ":" +
-                      (t.getMinutes() < 10 ? "0" : "") +
-                      t.getMinutes()}
-                  </MenuItem>
-                ))}*/
-              </Select>
-              <BookingsTable ID={ID} />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleOk} color="inherit">
-                OK
-              </Button>
-              <Button onClick={this.handleClose} color="inherit" autoFocus>
-                Cancel
-              </Button>
-            </DialogActions>
-          </DialogTitle>
-        </Dialog>) : ""}
+        {available ? (
+          <Dialog
+            className={classes.dialog}
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Book device"} {ID}
+              <DialogContent className={classes.content}>
+                <InputLabel className={classes.input}>
+                  From{" "}
+                  {(date.getHours() < 10 ? "0" : "") +
+                    date.getHours() +
+                    ":" +
+                    (date.getMinutes() < 10 ? "0" : "") +
+                    date.getMinutes()}
+                </InputLabel>
+                <InputLabel className={classes.input}>To</InputLabel>
+                <Select
+                  value={this.state.selectedTime}
+                  onChange={this.handleTimeChange}
+                  className={classes.input}
+                  color="inherit"
+                >
+                  {this.state.time.map((t, index) => (
+                    <MenuItem
+                      key={index}
+                      value={t}
+                      selected={index === "Pyxis"}
+                      InputLabel={
+                        (t.getHours() < 10 ? "0" : "") +
+                        t.getHours() +
+                        ":" +
+                        (t.getMinutes() < 10 ? "0" : "") +
+                        t.getMinutes()
+                      }
+                    >
+                      {(t.getHours() < 10 ? "0" : "") +
+                        t.getHours() +
+                        ":" +
+                        (t.getMinutes() < 10 ? "0" : "") +
+                        t.getMinutes()}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <BookingsTable ID={ID} />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleOk} color="inherit">
+                  OK
+                </Button>
+                <Button onClick={this.handleClose} color="inherit" autoFocus>
+                  Cancel
+                </Button>
+              </DialogActions>
+            </DialogTitle>
+          </Dialog>
+        ) : (
+          ""
+        )}
       </div>
-
-      
     );
   }
 
@@ -312,11 +308,11 @@ class BookDevice extends React.Component {
     console.log("1");
     closestBooking = 1;
     this.state.time = this.timeArray();
-      return;
+    return;
   }
 
   timeArray() {
-     var time = [];
+    var time = [];
 
     console.log("closestBooking ", closestBooking);
     console.log("");
@@ -351,18 +347,49 @@ class BookDevice extends React.Component {
     }
 
     console.log("timearray created");
-    for(var i = 0; i < time.length; i++){
+    for (var i = 0; i < time.length; i++) {
       //console.log(time[i]);
     }
     return time;
   }
 }
-  
-      
+
+function timeArray_test(date, closestBooking) {
+  var time = [];
+
+  var currentDate = date;
+  var bookingUntilDate = date;
+
+  if (closestBooking == 0) {
+    return time;
+  }
+  if (closestBooking == 1) {
+    bookingUntilDate.setDate(date.getDate() + 1);
+    bookingUntilDate.setHours(0);
+    bookingUntilDate.setMinutes(0);
+  } else {
+    bookingUntilDate = closestBooking;
+  }
+  var min = currentDate.getMinutes();
+  min = (Math.ceil(min / 15) + 1) * 15;
+  if (min > 60) {
+    currentDate.setHours(currentDate.getHours() + 1, 15);
+  } else {
+    currentDate.setMinutes(min);
+  }
+
+  while (bookingUntilDate - currentDate >= 0) {
+    time.push(currentDate);
+    currentDate = new Date(currentDate.getTime() + 15 * 60000);
+  }
+  for (var i = 0; i < time.length; i++) {
+    //console.log(time[i]);
+  }
+  return time;
+}
 
 export { ID };
 //export { time };
-//export {TimeArray};
-
+export { timeArray_test };
 
 export default withStyles(styles)(BookDevice);

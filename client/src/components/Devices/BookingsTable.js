@@ -36,7 +36,7 @@ class BookingsTable extends React.Component {
 
     this.state = {
       bookings: [],
-      Id: ID
+      Id: localStorage.getItem("userId")
     };
 
     this.getTodaysBookings(this.state.Id);
@@ -61,7 +61,7 @@ class BookingsTable extends React.Component {
                   {b.StartDate.substring(11, 16)}-
                   {b.FinishDate.substring(11, 16)}
                 </CustomTableCell>
-                <CustomTableCell align="left"> {ID}</CustomTableCell>
+                <CustomTableCell align="left"> {this.state.Id}</CustomTableCell>
               </TableRow>
             ))}
           </TableBody>

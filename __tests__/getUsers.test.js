@@ -38,14 +38,14 @@ describe("test the /getUsers route that returns a json array of all users", () =
     return request(app)
       .post("/users")
       .then(response => {
-        expect(response.body.length).toBe(13);
+        expect(response.body.length).toBe(10);
       });
   });
   test("getUsers request returns a value equal FirstName = Ainsley", () => {
     return request(app)
       .post("/users")
       .then(response => {
-        expect(response.body[0].FirstName).toContain("Ainsley");
+        expect(response.body[0].FirstName).toContain("Lani");
       });
   });
 });
