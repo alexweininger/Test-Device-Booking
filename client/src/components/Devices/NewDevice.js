@@ -92,7 +92,7 @@ class NewDevice extends Component {
         Status: 0,
         Name: "Test",
         Brand: "",
-        Model: "First",
+        Model: "",
         Serial_Number: "9878975",
         OS: "Android",
         Category: "Phone",
@@ -186,19 +186,11 @@ class NewDevice extends Component {
 
           {/*Device model*/}
           <TextField
-            id="standard-select-Model"
-            select
-            label="Select Model"
+            label="Model"
             className={classes.textField}
             value={this.state.device.Model}
             onChange={this.handleChange("Model")}
-          >
-            {Models.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          />
 
           {/*Device date*/}
           <TextField
