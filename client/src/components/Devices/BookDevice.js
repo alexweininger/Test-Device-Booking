@@ -60,13 +60,12 @@ class BookDevice extends React.Component {
     {
       this.state.buttonText="Return Device";
     }
-    else{
-      this.getTodaysBookings();
-    }
+    this.getTodaysBookings();
   }
   handleClickOpen = () => {
     if (this.props.available)
     {
+      this.getTodaysBookings();
       date = new Date();
       this.setState({ open: true });
       this.state.booked.startDate =
@@ -175,7 +174,7 @@ class BookDevice extends React.Component {
                       (t.getMinutes() < 10 ? "0" : "") +
                       t.getMinutes()}
                   </MenuItem>
-                ))}
+                ))}*/
               </Select>
               <BookingsTable ID={ID} />
             </DialogContent>

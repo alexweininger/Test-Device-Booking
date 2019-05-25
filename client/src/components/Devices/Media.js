@@ -12,7 +12,6 @@ import ReactDOM from "react-dom";
 import DeviceInfo from "./DeviceInfo.js";
 import BookDevice from "./BookDevice.js";
 import { labeledStatement } from "@babel/types";
-import Reserve from "./Reserve.js";
 import {NavLink} from "react-router-dom";
 import ReserveDevice from"./ReserveDevice";
 
@@ -83,7 +82,6 @@ class Media extends React.Component {
         <CardActions>
           <ReserveDevice sNumber={sNumber} />
           <BookDevice sNumber={sNumber} available={available} />
-          <Reserve sNumber={sNumber}/>
         </CardActions>
       </Card>
     );

@@ -8,7 +8,10 @@ var db = require(`../${dataBase}`);
 router.get("/:query", (req, res) => {
   console.log("req ", req.params);
 
-  const availableQuery = `SELECT * FROM atbl_Booking 
+  const availableQuery = `SELECT *,
+                            CONVERT_TZ(StartDate,'+00:00','+3:00') AS StartDate, 
+                            CONVERT_TZ(FinishDate,'+00:00','+3:00') AS FinishDate 
+                          FROM atbl_Booking 
                             ${req.params.query}
                               ORDER BY StartDate ASC
                               LIMIT 1;
