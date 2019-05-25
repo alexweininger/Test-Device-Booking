@@ -36,10 +36,11 @@ class BookingsTable extends React.Component {
 
     this.state = {
       bookings: [],
-      Id: localStorage.getItem("userId")
+      userId: localStorage.getItem("userId"),
+      sNumber: this.props.ID
     };
 
-    this.getTodaysBookings(this.state.Id);
+    this.getTodaysBookings(this.state.sNumber);
   }
 
   render() {
@@ -61,7 +62,9 @@ class BookingsTable extends React.Component {
                   {b.StartDate.substring(11, 16)}-
                   {b.FinishDate.substring(11, 16)}
                 </CustomTableCell>
-                <CustomTableCell align="left"> {this.state.Id}</CustomTableCell>
+                <CustomTableCell align="left"> 
+                  {b.FirstName} {b.LastName}
+                </CustomTableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -70,7 +73,7 @@ class BookingsTable extends React.Component {
     );
   }
   getTodaysBookings() {
-    const request = new Request(`/get_dayBookings/${this.state.Id}`, {
+    const request = new Request(`/get_dayBookings/${this.state.sNumber}`, {
       method: "GET"
     });
 
@@ -86,6 +89,7 @@ class BookingsTable extends React.Component {
             return obj;
           });
         }
+        return [];
       })
       .catch(err => {
         //if we successfully updated the DB

@@ -8,16 +8,18 @@ var db = require(`../${dataBase}`);
 router.get("/:deviceId", (req, res) => {
   console.log("req ", req.params);
 
-  const availableQuery = `SELECT *, CONVERT_TZ(StartDate,'+00:00','+3:00') AS StartDate, 
-                                    CONVERT_TZ(FinishDate,'+00:00','+3:00') AS FinishDate 
-                          FROM atbl_Booking 
-                          WHERE year(StartDate)=year(now()) 
+  const availableQuery = `SELECT Number, StartDate, FinishDate, FirstName, LastName, CONVERT_TZ(StartDate,'+00:00','+3:00') AS StartDate, 
+                              CONVERT_TZ(FinishDate,'+00:00','+3:00') AS FinishDate 
+                            FROM atbl_Booking 
+                            LEFT JOIN atbl_users 
+                            ON fk_user_id_reg = id
+                            WHERE year(StartDate)=year(now()) 
                             AND month(StartDate)=month(now()) 
                             AND day(StartDate)=day(now()) 
                             AND year(FinishDate)=year(now()) 
                             AND month(FinishDate)=month(now()) 
                             AND day(FinishDate)=day(now()) 
-                            AND fk_device_ser_nr=${req.params.deviceId}          
+                            AND fk_device_ser_nr=${req.params.deviceId}         
                             ORDER BY StartDate ASC
                               `;
   //console.log(availableQuery);

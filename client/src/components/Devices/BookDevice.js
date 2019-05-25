@@ -58,7 +58,7 @@ class BookDevice extends React.Component {
     };
     if (this.props.available == 0) {
       this.state.buttonText = "Return Device";
-    } else {
+    } else{
       this.getTodaysBookings();
     }
   }
