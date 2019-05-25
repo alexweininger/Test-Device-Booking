@@ -10,6 +10,8 @@ import logo from "../Data/devbridge_full.png";
 import SearchIcon from "@material-ui/icons/Search";
 import Login from "../Users/Pages/Login";
 
+import { inputText } from "../Devices/Grid";
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.primary,
@@ -72,6 +74,10 @@ const styles = theme => ({
   }
 });
 
+function assignValue(newValue){
+  return Object.assign(inputText, {value: newValue});
+}
+
 function ButtonAppBar(props) {
   const { classes } = props;
   return (
@@ -95,6 +101,9 @@ function ButtonAppBar(props) {
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput
+              }}
+              onInput={(event) => {
+                assignValue(event.target.value);
               }}
             />
           </div>

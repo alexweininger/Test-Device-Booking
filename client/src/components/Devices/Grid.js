@@ -21,6 +21,8 @@ var availabilitySet = new Set();
 var isCheckedLocation = [];
 var isCheckedBrand = [];
 var isCheckedAvailability = [];
+const inputText = {value: ""};
+var input = "";
 
 const styles = theme => ({
   root: {
@@ -65,11 +67,10 @@ class TitlebarGridList extends React.Component {
 
     this.state = {
       devices: [],
+      allDevices: [],
       offset: 0
     };
 
-    this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
-    this.handleChange();
   }
 
   handleBrandChange = event => {
@@ -113,11 +114,35 @@ class TitlebarGridList extends React.Component {
     this.setState({ offset });
   }
 
+  componentDidMount() {
+    this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
+    this.handleChange();
+    this.interval = setInterval(() => this.search(), 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  } 
+
+  search = () => {
+    if(input !== inputText.value){
+      console.log(input !== inputText.value);
+      input = inputText.value;
+      let newDeviceList = this.state.allDevices
+      .filter(device =>{
+        let brand = device.Brand + " " + device.Model;
+        return brand.toLowerCase().indexOf(inputText.value.toLowerCase()) >= 0;
+      })
+      this.setState({devices: newDeviceList});
+    }
+  }
+
   render() {
     const { classes } = this.props;
     const devices = this.state.devices || [];
     return (
       <div className={classes.root}>
+       
         <Fab
           className={classes.fab}
           color="primary"
@@ -197,7 +222,12 @@ class TitlebarGridList extends React.Component {
 
           <Grid item xs={8}>
             <Grid item xs={2.5} container spacing={0}>
-              {devices.map(device => (
+              {devices
+              /*.filter(device =>{
+                let brand = device.Brand + " " + device.Model;
+                return brand.toLowerCase().indexOf(inputText.value.toLowerCase()) >= 0;
+              })*/
+              .map(device => (
                 <Media
                   text={device.Brand + " " + device.Model + " "}
                   text2={
@@ -248,7 +278,7 @@ class TitlebarGridList extends React.Component {
           res.json().then(obj => {
             console.log(obj);
 
-            this.setState({ devices: obj });
+            this.setState({ devices: obj, allDevices: obj });
             console.log("loaded all devices", this.state);
             return obj;
           });
@@ -343,10 +373,21 @@ function handleChecks(value, set, isChecked) {
   return set;
 }
 
+
+function handleChecks_test(value, set, isChecked) {
+  if (set.has(value)) {
+    set.delete(value);
+  } else {
+    set.add(value);
+  }
+  return set;
+}
+
 TitlebarGridList.propTypes = {
   classes: PropTypes.object.isRequired,
   device: Media.propTypes.device
 };
 
-export { createQuery, handleChecks };
+
+export { createQuery, handleChecks_test, inputText };
 export default withStyles(styles)(TitlebarGridList);
