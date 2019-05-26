@@ -1,4 +1,4 @@
-const { handleChecks_test } = require("../components/Devices/Grid");
+const { handleChecks_test } = require("../components/Devices/TestFunctions");
 
 test("[Samsung, Apple, Asus] checkboxes have been pressed", () => {
   const brandChecks = ["Samsung", "Apple", "Asus"];
