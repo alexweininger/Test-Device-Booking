@@ -80,6 +80,7 @@ function assignValue(newValue) {
 }
 function ifLogOut() {
   localStorage.setItem("userId", "null");
+  localStorage.setItem('userBookings', "null");
   //window.location = "http://localhost:3000/Login";
 }
 

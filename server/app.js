@@ -65,7 +65,7 @@ app.use(
 );
 
 app.use("/get_deviceBrands", require("./routes/devices/get_deviceBrands.js"));
-
+app.use("/get_userBookings", require("./routes/devices/get_userBookings.js"));
 app.use("/update_Location", require("./routes/devices/update_Location.js"));
 app.use("/new_device", require("./routes/devices/new_device.js"));
 app.use("/get_device", require("./routes/devices/get_device.js"));
