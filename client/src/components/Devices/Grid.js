@@ -17,7 +17,6 @@ import Pagination from "material-ui-flat-pagination";
 import TabMenu from "../Layout/TabMenu";
 import Header from "../Layout/Header";
 import { NavLink } from "react-router-dom";
-
 var i = 0;
 
 if (typeof localStorage === "undefined" || localStorage === null) {
@@ -80,6 +79,7 @@ class TitlebarGridList extends React.Component {
       allDevices: [],
       offset: 0
     };
+    this.getUserBookings();
   }
 
   handleBrandChange = event => {
@@ -325,6 +325,40 @@ class TitlebarGridList extends React.Component {
       .catch(err => {
         //if we successfully updated the DB
         console.log("Error in getDevices", err);
+        console.log("get failed");
+      });
+  }
+  getUserBookings() {
+    var id = localStorage.getItem("userId");
+    const request = new Request(
+      `/get_userBookings/${id}`,
+      {
+        method: "GET"
+      }
+    );
+
+    fetch(request)
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(bookings => {
+            console.log(bookings);
+            if(bookings.length > 0){
+              localStorage.setItem('userBookings', bookings[0].fk_device_ser_nr);
+            console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB "+bookings[0].fk_device_ser_nr);
+            var c = localStorage.getItem('userBookings');
+            console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC "+ c);
+          //  this.setState({ userBookings: bookings });
+            }
+          //  else localStorage.setItem('userBookings', null);
+            console.log("loaded all user bookings");
+            return bookings;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in get user bookings", err);
         console.log("get failed");
       });
   }

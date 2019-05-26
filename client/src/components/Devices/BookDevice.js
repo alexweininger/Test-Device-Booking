@@ -12,6 +12,7 @@ import BookingsTable from "./BookingsTable";
 import NewDevice from "../../App";
 import ReactDOM from "react-dom";
 var date = new Date();
+
 //var time = [];
 var ID = "0";
 var bkngs = [];
@@ -43,11 +44,11 @@ class BookDevice extends React.Component {
     super(props);
     this.state = {
       time: [],
-      buttonText: "Book Device",
       bookings: [],
       open: false,
       selectedTime: "",
       date: new Date(),
+      userBooking: localStorage.getItem("userBookings"),
       booked: {
         today: new Date(),
         startDate: new Date().setMonth(date.getMonth + 1),
@@ -56,11 +57,33 @@ class BookDevice extends React.Component {
         sNumber: this.props.sNumber
       }
     };
-    if (this.props.available == 0) {
-      this.state.buttonText = "Return Device";
-    } else{
-      this.getTodaysBookings();
+    this.getTodaysBookings();
+  }
+
+  isDisabled(){
+    // localStorage.clear();
+     console.log("AAAAAAAAAAAAAAAAAAAAAAAAA "+this.state.userBooking+"  "+this.props.available);
+    // var b = this.getUserBookings();
+    var s = parseInt(this.props.sNumber, 10);
+    if(s == this.state.userBooking){
+      return false;
     }
+    else if (!this.props.available) {
+       return true;
+     } else{
+       return false;
+     }
+  }
+  getButtonText(){
+    var s = parseInt(this.props.sNumber, 10);
+    if(s == this.state.userBooking){
+      return "Return Device";
+    }
+    else if (!this.props.available) {
+       return "Book Device";
+     } else{
+       return "Book Device";
+     }
   }
   handleClickOpen = () => {
     if (this.props.available) {
@@ -79,6 +102,7 @@ class BookDevice extends React.Component {
         ":" +
         date.getSeconds();
     } else {
+      localStorage.removeItem('userBookings');
       this.returnDevice(this.state.booked);
     }
     ID = this.state.booked.sNumber;
@@ -111,6 +135,8 @@ class BookDevice extends React.Component {
   };
 
   render() {
+    const buttonText = this.getButtonText();
+    const isDisabled = this.isDisabled();
     const bookings = this.state.bookings || [];
     const { classes, sNumber, available } = this.props;
     return (
@@ -122,8 +148,10 @@ class BookDevice extends React.Component {
           className={classes.button}
           onClick={() => this.handleClickOpen(sNumber)}
           style={{ height: 60 }}
+          disabled={isDisabled}
+          
         >
-          {this.state.buttonText}
+          {buttonText}
         </Button>
 
         {available ? (
@@ -189,7 +217,34 @@ class BookDevice extends React.Component {
       </div>
     );
   }
+ /* getUserBookings() {
+    var id = localStorage.getItem("userId");
+    const request = new Request(
+      `/get_userBookings/${id}`,
+      {
+        method: "GET"
+      }
+    );
 
+    fetch(request)
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(bookings => {
+            console.log(bookings);
+
+            this.setState({ userBookings: bookings });
+            console.log("loaded all user bookings");
+            return bookings;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in get user bookings", err);
+        console.log("get failed");
+      });
+  }*/
   getTodaysBookings() {
     const request = new Request(
       `/get_dayBookings/${this.state.booked.sNumber}`,
@@ -215,7 +270,7 @@ class BookDevice extends React.Component {
       })
       .catch(err => {
         //if we successfully updated the DB
-        console.log("Error in getDevices", err);
+        console.log("Error in getTodaysBookings", err);
         console.log("get failed");
       });
   }
@@ -239,11 +294,11 @@ class BookDevice extends React.Component {
       });
     return true;
   }
-  addBooking(booked) {
+  addBooking(reserved) {
     console.log("called_");
     const request = new Request("/new_booking", {
       method: "POST",
-      body: JSON.stringify(booked),
+      body: JSON.stringify(reserved),
       headers: { "Content-Type": "application/json" }
     });
 
@@ -281,7 +336,7 @@ class BookDevice extends React.Component {
   }
   getClosestBooking() {
     console.log("Getting Closest Booking");
-    console.log(bkngs.length);
+//    console.log(bkngs.length);
     for (var e = 0; e < bkngs.length; e++) {
       var element = bkngs[e];
       var start = element.StartDate;
@@ -290,8 +345,8 @@ class BookDevice extends React.Component {
       var f = new Date();
       s.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0);
       f.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
-      console.log(s, " booking Start");
-      console.log(f, " booking Finish");
+  //    console.log(s, " booking Start");
+  //    console.log(f, " booking Finish");
       if (s <= date && f > date) {
         console.log("0");
         closestBooking = 0;
@@ -299,13 +354,13 @@ class BookDevice extends React.Component {
         return;
       }
       if (s >= date) {
-        console.log(s);
+ //       console.log(s);
         closestBooking = s;
         this.state.time = this.timeArray();
         return;
       }
     }
-    console.log("1");
+ //   console.log("1");
     closestBooking = 1;
     this.state.time = this.timeArray();
     return;
@@ -314,8 +369,8 @@ class BookDevice extends React.Component {
   timeArray() {
     var time = [];
 
-    console.log("closestBooking ", closestBooking);
-    console.log("");
+ //   console.log("closestBooking ", closestBooking);
+ //   console.log("");
     var currentDate = new Date();
     var bookingUntilDate = new Date();
 
@@ -326,12 +381,12 @@ class BookDevice extends React.Component {
       bookingUntilDate.setDate(date.getDate() + 1);
       bookingUntilDate.setHours(0);
       bookingUntilDate.setMinutes(0);
-      console.log("booking until: ", bookingUntilDate);
-      console.log("");
+ //     console.log("booking until: ", bookingUntilDate);
+ //     console.log("");
     } else {
       bookingUntilDate = closestBooking;
-      console.log("booking until: ", bookingUntilDate);
-      console.log("");
+ //     console.log("booking until: ", bookingUntilDate);
+ //     console.log("");
     }
     var min = currentDate.getMinutes();
     min = (Math.ceil(min / 15) + 1) * 15;
