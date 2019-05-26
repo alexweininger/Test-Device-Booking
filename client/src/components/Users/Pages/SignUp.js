@@ -152,17 +152,6 @@ class FullWidthTabs extends React.Component {
                   />
                 </FormControl>
                 <FormControl margin="normal" required fullWidth>
-                  <InputLabel htmlFor="id">
-                    ID
-                  </InputLabel>
-                  <Input
-                    id="id"
-                    name="id"
-                    autoComplete="id"
-                    onChange={this.handleInputChange}
-                  />
-                </FormControl>
-                <FormControl margin="normal" required fullWidth>
                   <InputLabel htmlFor="OfficeID">Office ID</InputLabel>
                   <Input
                     id="OfficeID"
@@ -189,7 +178,7 @@ class FullWidthTabs extends React.Component {
                   className={classes.submit}
                   onClick={() => this.addUser(this.state)}
                 >
-                    Create Account
+                  Create Account
                 </Button>
               </form>
             </Paper>
@@ -202,13 +191,10 @@ class FullWidthTabs extends React.Component {
   addUser(user) {
     console.log(user);
 
-    const request = new Request("http://localhost:5000/new_user", {
+    const request = new Request("/new_user", {
       method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
+      headers: { "Content-Type": "application/json" }
     });
 
     fetch(request)

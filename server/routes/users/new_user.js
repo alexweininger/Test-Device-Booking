@@ -12,10 +12,12 @@ router.post("/", (req, res) => {
   //TODO make sure the reserve is unique
 
   const insert =
-    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, OfficeID, Role, Password, id)";
-  const values = ` VALUES ('${user.FirstName}', '${
-    user.LastName
-  }', '${user.Email}', '${user.SlackUsername}', '${user.OfficeID}', '${user.Role}', '${user.Password}', '${user.id}');`;
+    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, OfficeID, Role, Password)";
+  const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${
+    user.Email
+  }', '${user.SlackUsername}', '${user.OfficeID}', '${user.Role}', '${
+    user.Password
+  }');`;
 
   console.log(insert + " " + values);
 
