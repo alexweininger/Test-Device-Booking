@@ -20,9 +20,10 @@ import { NavLink } from "react-router-dom";
 var i = 0;
 
 if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage('./scratch');
+  var LocalStorage = require("node-localstorage").LocalStorage;
+  localStorage = new LocalStorage("./scratch");
 }
+var storage = require("sessionstorage");
 
 var locationSet = new Set();
 var brandSet = new Set();
@@ -127,7 +128,8 @@ class TitlebarGridList extends React.Component {
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.handleChange();
     this.interval = setInterval(() => this.search(), 3000);
-    if(localStorage.getItem("userId") === 'null'){
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!" + localStorage.length);
+    if (localStorage.getItem("userId") === "null") {
       window.location.href = "http://localhost:3000/Login";
     }
   }
@@ -154,128 +156,131 @@ class TitlebarGridList extends React.Component {
     console.log("++++" + localStorage.getItem("userId"));
     return (
       <div>
-      <Header/>
-       <TabMenu/>
-      <div className={classes.root}>
-        <Fab
-          className={classes.fab}
-          color="primary"
-          aria-label="Add"
-          style={{ zIndex: 1 }}
-        >
-          <NavLink to="/NewDevice"> <AddIcon style={{color: "white"}}/></NavLink>
-        </Fab>
-
-        <Grid container spacing={20}>
-          <Grid
-            onChange={this.handleChange}
-            item
-            xs={3}
-            className={classes.selection}
+        <Header />
+        <TabMenu />
+        <div className={classes.root}>
+          <Fab
+            className={classes.fab}
+            color="primary"
+            aria-label="Add"
+            style={{ zIndex: 1 }}
           >
-            <FormControl
-              onChange={this.handleBrandChange}
-              component="fieldset"
-              className={classes.formControl}
-            >
-              <FormLabel
-                style={{ fontWeight: "bold", color: "#595959" }}
-                disabled
-              >
-                BRANDS
-              </FormLabel>
-              <Brands checked={isCheckedBrand} />
-            </FormControl>
+            <NavLink to="/NewDevice">
+              {" "}
+              <AddIcon style={{ color: "white" }} />
+            </NavLink>
+          </Fab>
 
-            <FormControl
-              onChange={this.handleLocationChange}
-              component="fieldset"
-              className={classes.formControl}
+          <Grid container spacing={20}>
+            <Grid
+              onChange={this.handleChange}
+              item
+              xs={3}
+              className={classes.selection}
             >
-              <FormLabel
-                style={{ fontWeight: "bold", color: "#595959" }}
-                disabled
+              <FormControl
+                onChange={this.handleBrandChange}
+                component="fieldset"
+                className={classes.formControl}
               >
-                LOCATION
-              </FormLabel>
-              <Location checked={isCheckedLocation} />
-            </FormControl>
-            <FormControl
-              onChange={this.handleAvailabilityChange}
-              component="fieldset"
-              className={classes.formControl2}
-            >
-              <FormLabel
-                style={{ fontWeight: "bold", color: "#595959" }}
-                disabled
-              >
-                AVAILABILITY
-              </FormLabel>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onClick={this.getDevicesFromServer}
-                    label="Show all"
-                    isChecked={isCheckedAvailability["Show all"]}
-                  />
-                }
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    label="Available"
-                    isChecked={isCheckedAvailability["Available"]}
-                  />
-                }
-              />
-            </FormControl>
-          </Grid>
+                <FormLabel
+                  style={{ fontWeight: "bold", color: "#595959" }}
+                  disabled
+                >
+                  BRANDS
+                </FormLabel>
+                <Brands checked={isCheckedBrand} />
+              </FormControl>
 
-          <Grid item xs={8}>
-            <Grid item xs={2.5} container spacing={0}>
-              {devices
-                /*.filter(device =>{
+              <FormControl
+                onChange={this.handleLocationChange}
+                component="fieldset"
+                className={classes.formControl}
+              >
+                <FormLabel
+                  style={{ fontWeight: "bold", color: "#595959" }}
+                  disabled
+                >
+                  LOCATION
+                </FormLabel>
+                <Location checked={isCheckedLocation} />
+              </FormControl>
+              <FormControl
+                onChange={this.handleAvailabilityChange}
+                component="fieldset"
+                className={classes.formControl2}
+              >
+                <FormLabel
+                  style={{ fontWeight: "bold", color: "#595959" }}
+                  disabled
+                >
+                  AVAILABILITY
+                </FormLabel>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onClick={this.getDevicesFromServer}
+                      label="Show all"
+                      isChecked={isCheckedAvailability["Show all"]}
+                    />
+                  }
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      label="Available"
+                      isChecked={isCheckedAvailability["Available"]}
+                    />
+                  }
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={8}>
+              <Grid item xs={2.5} container spacing={0}>
+                {devices
+                  /*.filter(device =>{
                 let brand = device.Brand + " " + device.Model;
                 return brand.toLowerCase().indexOf(inputText.value.toLowerCase()) >= 0;
               })*/
-                .map(device => (
-                  <Media
-                    text={device.Brand + " " + device.Model + " "}
-                    text2={
-                      "OS: " +
-                      device.OS +
-                      "\n Identification number:" +
-                      device.Serial_Number
-                    }
-                    //need to validate data properties
-                    brand={device.Brand}
-                    model={device.Model}
-                    os={device.OS}
-                    location={device.City}
-                    custody={device.Vendor}
-                    available={device.Available}
-                    active={device.Active}
-                    images={device.Image}
-                    sNumber={device.Serial_Number}
-                    group={device.Category}
-                    subgroup={device.Subcategory}
-                    description={device.Description}
-                    check_in={device.Release_date}
-                    purchaseDate={device.Purchased_on}
-                    vendor={device.Vendor}
-                    taxRate={device.Tax_rate}
-                  />
-                ))}
-            </Grid>
-            {/*<Pagination
+                  .map(device => (
+                    <Media
+                      text={device.Brand + " " + device.Model + " "}
+                      text2={
+                        "OS: " +
+                        device.OS +
+                        "\n Identification number:" +
+                        device.Serial_Number
+                      }
+                      //need to validate data properties
+                      brand={device.Brand}
+                      model={device.Model}
+                      os={device.OS}
+                      location={device.City}
+                      custody={device.Vendor}
+                      available={device.Available}
+                      active={device.Active}
+                      images={device.Image}
+                      sNumber={device.Serial_Number}
+                      group={device.Category}
+                      subgroup={device.Subcategory}
+                      description={device.Description}
+                      check_in={device.Release_date}
+                      purchaseDate={device.Purchased_on}
+                      vendor={device.Vendor}
+                      taxRate={device.Tax_rate}
+                    />
+                  ))}
+              </Grid>
+              {/*<Pagination
               limit={10}
               offset={this.state.offset}
               total={100}
               onClick={(e, offset) => this.handleClickPage(offset)}
             />*/}
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
       </div>
     );
   }

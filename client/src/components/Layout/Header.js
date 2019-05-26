@@ -75,12 +75,18 @@ const styles = theme => ({
   }
 });
 
-function assignValue(newValue){
-  return Object.assign(inputText, {value: newValue});
+function assignValue(newValue) {
+  return Object.assign(inputText, { value: newValue });
+}
+function ifLogOut() {
+  localStorage.setItem("userId", "null");
+  localStorage.setItem('userBookings', "null");
+  //window.location = "http://localhost:3000/Login";
 }
 
 function ButtonAppBar(props) {
   const { classes } = props;
+
   return (
     <div className={classes.root}>
       <AppBar color="inherit" position="static">
@@ -103,7 +109,7 @@ function ButtonAppBar(props) {
                 root: classes.inputRoot,
                 input: classes.inputInput
               }}
-              onInput={(event) => {
+              onInput={event => {
                 assignValue(event.target.value);
               }}
             />
@@ -120,20 +126,19 @@ function ButtonAppBar(props) {
               padding: 9,
               cursor: "pointer"
             }}
-            
+            onClick={ifLogOut}
           >
-            <NavLink to="/Login" style={{color: 'black', textDecoration: 'none'}} >Log Out</NavLink>
+            <NavLink
+              to="/Login"
+              style={{ color: "black", textDecoration: "none" }}
+            >
+              Log Out
+            </NavLink>
           </button>
         </Toolbar>
       </AppBar>
     </div>
   );
-}
-
-function ifLogOut(){
-  localStorage.setItem('userId', null);
-  localStorage.setItem('userBookings', null);
-  window.location = "http://localhost:3000/Login";
 }
 
 ButtonAppBar.propTypes = {
