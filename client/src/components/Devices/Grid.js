@@ -129,7 +129,7 @@ class TitlebarGridList extends React.Component {
     this.handleChange();
     this.interval = setInterval(() => this.search(), 3000);
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!" + localStorage.length);
-    if (localStorage.getItem("userId") === "null") {
+    if (localStorage.length === 0) {
       window.location.href = "http://localhost:3000/Login";
     }
   }
@@ -335,12 +335,9 @@ class TitlebarGridList extends React.Component {
   }
   getUserBookings() {
     var id = localStorage.getItem("userId");
-    const request = new Request(
-      `/get_userBookings/${id}`,
-      {
-        method: "GET"
-      }
-    );
+    const request = new Request(`/get_userBookings/${id}`, {
+      method: "GET"
+    });
 
     fetch(request)
       .then(res => {
@@ -348,14 +345,19 @@ class TitlebarGridList extends React.Component {
           //add the office
           res.json().then(bookings => {
             console.log(bookings);
-            if(bookings.length > 0){
-              localStorage.setItem('userBookings', bookings[0].fk_device_ser_nr);
-            console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB "+bookings[0].fk_device_ser_nr);
-            var c = localStorage.getItem('userBookings');
-            console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC "+ c);
-          //  this.setState({ userBookings: bookings });
+            if (bookings.length > 0) {
+              localStorage.setItem(
+                "userBookings",
+                bookings[0].fk_device_ser_nr
+              );
+              console.log(
+                "BBBBBBBBBBBBBBBBBBBBBBBBBB " + bookings[0].fk_device_ser_nr
+              );
+              var c = localStorage.getItem("userBookings");
+              console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC " + c);
+              //  this.setState({ userBookings: bookings });
             }
-          //  else localStorage.setItem('userBookings', null);
+            //  else localStorage.setItem('userBookings', null);
             console.log("loaded all user bookings");
             return bookings;
           });

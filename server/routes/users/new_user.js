@@ -21,33 +21,26 @@ router.post("/", (req, res) => {
 
   console.log(insert + " " + values);
 
-  db.dbquery(insert + values, (err, results) => {
-    if (err) {
-      res.status(400).send(err);
-    } else {
-      res.status(200).send("User added successfully.");
-    }
-
-    db.dbqueryPromise(insert + values)
-      .then(results => {
-        //if the insert is successful, pull off the id that was given
-        //and send it to the client
-        res.json({
-          success: true,
-          Number: results.insertId
-        });
-      })
-      .catch(err => {
-        console.log("There was an error inserting a new date in reserve:");
-        console.log("---------------------------------");
-        console.log(err);
-        console.log("---------------------------------");
-
-        //if the insert is unsuccessful, notify the client
-        res.json({
-          success: false
-        });
+  db.dbqueryPromise(insert + values)
+    .then(results => {
+      //if the insert is successful, pull off the id that was given
+      //and send it to the client
+      res.json({
+        success: true,
+        Number: results.insertId
       });
-  });
+    })
+    .catch(err => {
+      console.log("There was an error inserting a new date in reserve:");
+      console.log("---------------------------------");
+      console.log(err);
+      console.log("---------------------------------");
+
+      //if the insert is unsuccessful, notify the client
+      res.json({
+        success: false
+      });
+    });
 });
+
 module.exports = router;
