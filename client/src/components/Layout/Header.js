@@ -9,6 +9,7 @@ import InputBase from "@material-ui/core/InputBase";
 import logo from "../Data/devbridge_full.png";
 import SearchIcon from "@material-ui/icons/Search";
 import Login from "../Users/Pages/Login";
+import { NavLink } from "react-router-dom";
 
 import { inputText } from "../Devices/Grid";
 
@@ -119,16 +120,19 @@ function ButtonAppBar(props) {
               padding: 9,
               cursor: "pointer"
             }}
-            onClick={() => {
-              ReactDOM.render(<Login />, document.getElementById("root"));
-            }}
+            
           >
-            Login
+            <NavLink to="/Login" style={{color: 'black', textDecoration: 'none'}} >Log Out</NavLink>
           </button>
         </Toolbar>
       </AppBar>
     </div>
   );
+}
+
+function ifLogOut(){
+  localStorage.setItem('userId', null);
+  window.location = "http://localhost:3000/Login";
 }
 
 ButtonAppBar.propTypes = {

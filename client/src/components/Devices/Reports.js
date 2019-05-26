@@ -10,6 +10,8 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import PreviewIcon from '@material-ui/icons/InsertDriveFile';
 import DownloadIcon from '@material-ui/icons/SaveAlt';
+import TabMenu from "../Layout/TabMenu";
+import Header from "../Layout/Header";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -64,6 +66,9 @@ function CustomizedTable(props) {
   const { classes } = props;
 
   return (
+    <div>
+      <Header/>
+      <TabMenu/>
     <div className={classes.root}>
       <Paper style={{backgroundColor: '#f2f2f2'}} className={classes.root}>
         <Table className={classes.table}>
@@ -96,7 +101,7 @@ function CustomizedTable(props) {
         </Table>
       </Paper>
     </div>
-
+    </div>
   );
 }
 

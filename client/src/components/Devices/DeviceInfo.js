@@ -13,7 +13,9 @@ import ReactDOM from "react-dom";
 import App from "../../App";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+import TabMenu from "../Layout/TabMenu";
 import ChangeLocation from "./ChangeLocation";
+import Header from "../Layout/Header";
 
 const style = {
   head: {
@@ -114,10 +116,14 @@ class DeviceInfo extends React.Component {
 
     return (
       <form>
-        <NavLink to="/" style={style.backarrow}>
-          <ArrowBack />
-          Back to the list
-        </NavLink>
+        <Header/>
+        <TabMenu/>
+        <Button>
+        <NavLink to="/" style={{color: "black", textDecoration: "none", fontSize: 20}}>
+          <ArrowBack style={{color: "black"}}/>
+					Back to the list
+          </NavLink>
+				</Button>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>

@@ -14,6 +14,16 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Location from "./Location";
 import Brands from "./Brands";
 import Pagination from "material-ui-flat-pagination";
+import TabMenu from "../Layout/TabMenu";
+import Header from "../Layout/Header";
+import { NavLink } from "react-router-dom";
+
+var i = 0;
+
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
 
 var locationSet = new Set();
 var brandSet = new Set();
@@ -117,6 +127,9 @@ class TitlebarGridList extends React.Component {
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.handleChange();
     this.interval = setInterval(() => this.search(), 3000);
+    if(localStorage.getItem("userId") === 'null'){
+      window.location.href = "http://localhost:3000/Login";
+    }
   }
 
   componentWillUnmount() {
@@ -138,18 +151,19 @@ class TitlebarGridList extends React.Component {
   render() {
     const { classes } = this.props;
     const devices = this.state.devices || [];
+    console.log("++++" + localStorage.getItem("userId"));
     return (
+      <div>
+      <Header/>
+       <TabMenu/>
       <div className={classes.root}>
         <Fab
           className={classes.fab}
           color="primary"
           aria-label="Add"
-          onClick={() =>
-            ReactDOM.render(<NewDevice />, document.getElementById("root"))
-          }
           style={{ zIndex: 1 }}
         >
-          <AddIcon />
+          <NavLink to="/NewDevice"> <AddIcon style={{color: "white"}}/></NavLink>
         </Fab>
 
         <Grid container spacing={20}>
@@ -261,6 +275,7 @@ class TitlebarGridList extends React.Component {
             />*/}
           </Grid>
         </Grid>
+      </div>
       </div>
     );
   }
