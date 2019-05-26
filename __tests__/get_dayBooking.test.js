@@ -37,5 +37,5 @@ setTimeout(
       return expect(response.body[0].fk_device_ser_nr).toBe(Id);
     });
   }),
-  5000
+  10000
 );
