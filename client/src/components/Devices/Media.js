@@ -32,6 +32,13 @@ const styles = {
   }
 };
 
+function availability(available){
+  if(available == 1){
+    return <Typography style={{color: "green"}}>Available</Typography>
+  }
+  else return <Typography style={{color: "red"}}>Unavailable</Typography>
+}
+
 class Media extends React.Component {
   state = {
     value: ""
@@ -46,6 +53,7 @@ class Media extends React.Component {
             <CardMedia className={classes.media} image={images} />
             <CardContent>
               <Typography gutterBottom variant="h6" component="h6">
+              {availability(available)}
                 {text}
               </Typography>
               <Typography component="p">{text2}</Typography>
