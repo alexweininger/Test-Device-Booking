@@ -18,6 +18,11 @@ import { withStyles } from '@material-ui/core/styles';
 import { NavLink } from "react-router-dom";
 import AppBar from "./AppBar";
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+  }
+  
 function TabContainer({ children, dir }) {
     return (
         <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
@@ -103,7 +108,7 @@ class FullWidthTabs extends React.Component {
     render() {
 
         const { classes, theme } = this.props;
-
+        console.log("locS: " + localStorage.getItem('userId'));
         return (
             <main className={classes.main}>
                 <div>
@@ -136,8 +141,10 @@ class FullWidthTabs extends React.Component {
                                         className={classes.submit}
                                         onClick={() => {this.loginUser(this.state)}}
                                     >
-                                        <NavLink style={{color: 'white', textDecoration: 'none'}} 
-                                            to="/">Log in</NavLink>
+                                        <NavLink 
+                                            style={{color: 'white', textDecoration: 'none'}} 
+                                            to="/">Log in
+                                        </NavLink>
                                     </Button>
                                 </form>
                             </Paper>
@@ -168,6 +175,7 @@ class FullWidthTabs extends React.Component {
                     office = officeList[i];          
                     if(office.Email === this.state.firstName && office.Password === this.state.lastName)
                     {
+                        localStorage.setItem('userId', office.id);
                         ReactDOM.render(<NewDevice />, document.getElementById("root"));
                         console.log("hi");
                         break;

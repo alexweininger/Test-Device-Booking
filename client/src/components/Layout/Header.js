@@ -130,6 +130,15 @@ function ButtonAppBar(props) {
   );
 }
 
+function ifLogOut(){
+  if(localStorage.getItem("userID") != ""){
+    return "Log Out";
+  }
+  else{
+    
+  }
+}
+
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };

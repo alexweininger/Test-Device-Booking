@@ -18,6 +18,13 @@ import TabMenu from "../Layout/TabMenu";
 import Header from "../Layout/Header";
 import { NavLink } from "react-router-dom";
 
+var i = 0;
+
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
+
 var locationSet = new Set();
 var brandSet = new Set();
 var availabilitySet = new Set();
@@ -121,6 +128,10 @@ class TitlebarGridList extends React.Component {
     this.getDevicesByFilter = this.getDevicesByFilter.bind(this);
     this.handleChange();
     this.interval = setInterval(() => this.search(), 3000);
+    if(localStorage.getItem("userId") === null){
+      //localStorage.setItem('i', 1);
+      window.location.href = "http://localhost:3000/Login";
+    }
   }
 
   componentWillUnmount() {
@@ -143,6 +154,7 @@ class TitlebarGridList extends React.Component {
   render() {
     const { classes } = this.props;
     const devices = this.state.devices || [];
+    console.log("++++" + localStorage.getItem("userId"));
     return (
       <div>
       <Header/>

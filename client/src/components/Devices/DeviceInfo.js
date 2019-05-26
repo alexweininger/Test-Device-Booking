@@ -11,13 +11,12 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import ReactDOM from "react-dom";
 import App from "../../App";
-import Header from "../Layout/Header";
-import tlf from "../Data/image.jpg";
-import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
 import BookingsTable from "./BookingsTable";
 import { NavLink } from "react-router-dom";
 import TabMenu from "../Layout/TabMenu";
+import ChangeLocation from "./ChangeLocation";
+import Header from "../Layout/Header";
 
 const style = {
   head: {
@@ -68,15 +67,23 @@ class DeviceInfo extends React.Component {
     super(props);
     this.state = {
       value: "",
+      pageToShow: "info",
       devices: [{}]
     };
+    this.updateDeviceInfo = this.updateDeviceInfo.bind(this);
   }
 
   componentDidMount() {
     this.getDevicesFromServer();
   }
 
-  render() {
+  updateDeviceInfo(device) {
+    //call update state
+    this.updateState(device);
+    this.props.ChangeLocation(device);
+  }
+
+  renderDeviceInfo() {
     const {
       Brand,
       Model,
@@ -294,6 +301,9 @@ class DeviceInfo extends React.Component {
               RESERVATION
             </Button>
             <Button
+              onClick={() => {
+                this.setPageToShow("edit");
+              }}
               size="large"
               variant="contained"
               color="secondary"
@@ -307,6 +317,52 @@ class DeviceInfo extends React.Component {
         </Grid>
       </form>
     );
+  }
+
+  render() {
+    const {
+      Brand,
+      Model,
+      OS,
+      City,
+      Serial_Number,
+      Category,
+      Subcategory
+    } = this.state.devices[0];
+
+    switch (this.state.pageToShow) {
+      case "info":
+        return this.renderDeviceInfo();
+      case "edit":
+        return (
+          <ChangeLocation
+            Brand={Brand}
+            Model={Model}
+            Serial_Number={Serial_Number}
+            OS={OS}
+            Category={Category}
+            Subcategory={Subcategory}
+            City={City}
+            office={this.state.office}
+            returnToInfo={() => this.setPageToShow("info")}
+            updateDeviceInfo={this.updateDeviceInfo}
+          />
+        );
+      default:
+        return (
+          <div>
+            Error: unxpected pageToShow in OfficeInfo
+            <br />
+            pageToShow= {this.state.pageToShow}
+          </div>
+        );
+    }
+  }
+  setPageToShow(page) {
+    const newState = {
+      pageToShow: page
+    };
+    this.setState(newState);
   }
 
   getDevicesFromServer() {
