@@ -61,12 +61,13 @@ class BookDevice extends React.Component {
   }
 
   isDisabled(){
-    // localStorage.clear();
-     console.log("AAAAAAAAAAAAAAAAAAAAAAAAA "+this.state.userBooking+"  "+this.props.available);
-    // var b = this.getUserBookings();
     var s = parseInt(this.props.sNumber, 10);
     if(s == this.state.userBooking){
       return false;
+    }
+    else if(this.state.userBooking != null)
+    {
+      return true;
     }
     else if (!this.props.available) {
        return true;

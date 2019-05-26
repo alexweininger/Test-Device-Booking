@@ -79,8 +79,7 @@ function assignValue(newValue) {
   return Object.assign(inputText, { value: newValue });
 }
 function ifLogOut() {
-  localStorage.setItem("userId", "null");
-  localStorage.setItem('userBookings', "null");
+  localStorage.clear();
   //window.location = "http://localhost:3000/Login";
 }
 
