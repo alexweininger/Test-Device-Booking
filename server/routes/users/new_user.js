@@ -12,12 +12,13 @@ router.post("/", (req, res) => {
   //TODO make sure the reserve is unique
 
   const insert =
-    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, ID, OfficeID, Role, Password)";
-  const values = ` VALUES ('${user.firstName}', '${
-    user.lastName
-  }', '${user.email - signup}', '${user.slackUsername}', '${
-    user.employeeId
-  }', '${user.officeId}', '${user.Role}', '${user.password - signup}');`;
+    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, OfficeID, Role, Password, id)";
+  const values = ` VALUES ('${user.FirstName}', '${
+    user.LastName
+  }', '${user.Email}', '${user.SlackUsername}', '${user.OfficeID}', '${user.Role}', '${user.Password}', '${user.id}');`;
+
+  console.log(insert + " " + values);
+
   db.dbquery(insert + values, (err, results) => {
     if (err) {
       res.status(400).send(err);
@@ -25,7 +26,7 @@ router.post("/", (req, res) => {
       res.status(200).send("User added successfully.");
     }
 
-    db.dbqueryPromise(query)
+    db.dbqueryPromise(insert + values)
       .then(results => {
         //if the insert is successful, pull off the id that was given
         //and send it to the client
