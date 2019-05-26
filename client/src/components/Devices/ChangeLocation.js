@@ -10,6 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import { NavLink } from "react-router-dom";
 import DeviceInfo from "./DeviceInfo";
 import { truncateSync } from "fs";
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
 
 const styles = theme => ({
   layout: {
@@ -104,6 +106,8 @@ class ChangeLocation extends Component {
 
     return (
       <form>
+        <Header/>
+        <TabMenu/>
         <Paper className={classes.layout}>
           {/*Device brand*/}
           <TextField

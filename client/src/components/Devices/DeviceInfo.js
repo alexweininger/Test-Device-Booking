@@ -19,7 +19,9 @@ import Header from "../Layout/Header";
 
 const style = {
   head: {
-    margin: 20
+    margin: 20,
+    width: 200,
+    float: 'right'
   },
   table: {
     minWidth: 100
@@ -124,6 +126,20 @@ class DeviceInfo extends React.Component {
 					Back to the list
           </NavLink>
 				</Button>
+        <div style={style.head}>
+            <Button
+              onClick={() => {
+                this.setPageToShow("edit");
+              }}
+              size="large"
+              variant="contained"
+              color="secondary"
+              fullWidth="ture"
+              style={style.buttom}
+            >
+              CHANGE LOCATION
+            </Button>
+        </div>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>
@@ -277,40 +293,6 @@ class DeviceInfo extends React.Component {
                 </Table>
               </Paper>
             </Grid>
-          </div>
-          <div style={style.head}>
-            <Button
-              size="large"
-              variant="contained"
-              color="inherit"
-              disabled="ture"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              BOOK DEVICE
-              <plusBox />
-            </Button>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              RESERVATION
-            </Button>
-            <Button
-              onClick={() => {
-                this.setPageToShow("edit");
-              }}
-              size="large"
-              variant="contained"
-              color="secondary"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              CHANGE LOCATION
-            </Button>
           </div>
         </Grid>
       </form>

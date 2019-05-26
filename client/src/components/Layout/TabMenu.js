@@ -63,16 +63,6 @@ class FullWidthTabs extends React.Component {
                       padding: 8 * 3,
                       textDecoration: "none"
                     }}
-                    to="/Reports/"
-                  >
-                    REPORTS
-                  </NavLink>
-                  <NavLink
-                    style={{
-                      color: "black",
-                      padding: 8 * 3,
-                      textDecoration: "none"
-                    }}
                     to="/Offices/"
                   >
                     OFFICES
