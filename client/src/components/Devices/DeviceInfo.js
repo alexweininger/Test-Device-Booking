@@ -17,6 +17,8 @@ import TabMenu from "../Layout/TabMenu";
 import ChangeLocation from "./ChangeLocation";
 import Header from "../Layout/Header";
 
+var dateFormat = require("dateformat");
+
 const style = {
   head: {
     margin: 20
@@ -96,7 +98,7 @@ class DeviceInfo extends React.Component {
       Category,
       Subcategory,
       Description,
-      Release_date,
+      Release_Date,
       Purchased_on,
       Tax_rate
     } = this.state.devices[0];
@@ -116,14 +118,17 @@ class DeviceInfo extends React.Component {
 
     return (
       <form>
-        <Header/>
-        <TabMenu/>
+        <Header />
+        <TabMenu />
         <Button>
-        <NavLink to="/" style={{color: "black", textDecoration: "none", fontSize: 20}}>
-          <ArrowBack style={{color: "black"}}/>
-					Back to the list
+          <NavLink
+            to="/"
+            style={{ color: "black", textDecoration: "none", fontSize: 20 }}
+          >
+            <ArrowBack style={{ color: "black" }} />
+            Back to the list
           </NavLink>
-				</Button>
+        </Button>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>
@@ -245,7 +250,7 @@ class DeviceInfo extends React.Component {
                         {"check_in_due"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {Release_date}{" "}
+                        {dateFormat(Release_Date, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={13}>
@@ -253,7 +258,7 @@ class DeviceInfo extends React.Component {
                         {"purchase_date"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {Purchased_on}{" "}
+                        {dateFormat(Purchased_on, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={14}>
