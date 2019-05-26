@@ -69,6 +69,7 @@
     "react-daypicker": "^3.0.8",
     "react-dom": "^16.8.2",
     "react-swipeable-views": "^0.13.1",
+    "sessionstorage": "^0.1.0",
     "styled-components": "^4.2.0"
   },
   "jest": {
