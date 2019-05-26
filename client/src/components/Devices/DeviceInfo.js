@@ -17,11 +17,13 @@ import TabMenu from "../Layout/TabMenu";
 import ChangeLocation from "./ChangeLocation";
 import Header from "../Layout/Header";
 
+var dateFormat = require("dateformat");
+
 const style = {
   head: {
     margin: 20,
     width: 200,
-    float: 'right'
+    float: "right"
   },
   table: {
     minWidth: 100
@@ -98,7 +100,7 @@ class DeviceInfo extends React.Component {
       Category,
       Subcategory,
       Description,
-      Release_date,
+      Release_Date,
       Purchased_on,
       Tax_rate
     } = this.state.devices[0];
@@ -118,27 +120,30 @@ class DeviceInfo extends React.Component {
 
     return (
       <form>
-        <Header/>
-        <TabMenu/>
+        <Header />
+        <TabMenu />
         <Button>
-        <NavLink to="/" style={{color: "black", textDecoration: "none", fontSize: 20}}>
-          <ArrowBack style={{color: "black"}}/>
-					Back to the list
+          <NavLink
+            to="/"
+            style={{ color: "black", textDecoration: "none", fontSize: 20 }}
+          >
+            <ArrowBack style={{ color: "black" }} />
+            Back to the list
           </NavLink>
-				</Button>
+        </Button>
         <div style={style.head}>
-            <Button
-              onClick={() => {
-                this.setPageToShow("edit");
-              }}
-              size="large"
-              variant="contained"
-              color="secondary"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              CHANGE LOCATION
-            </Button>
+          <Button
+            onClick={() => {
+              this.setPageToShow("edit");
+            }}
+            size="large"
+            variant="contained"
+            color="secondary"
+            fullWidth="ture"
+            style={style.buttom}
+          >
+            CHANGE LOCATION
+          </Button>
         </div>
         <Grid container style={style.containerStyle}>
           <div>
@@ -261,7 +266,7 @@ class DeviceInfo extends React.Component {
                         {"check_in_due"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {Release_date}{" "}
+                        {dateFormat(Release_Date, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={13}>
@@ -269,7 +274,7 @@ class DeviceInfo extends React.Component {
                         {"purchase_date"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {Purchased_on}{" "}
+                        {dateFormat(Purchased_on, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={14}>
