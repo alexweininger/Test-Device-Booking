@@ -8,7 +8,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import BookDevice from "./BookDevice.js";
-import Reserve from "./Reserve.js";
 import { NavLink } from "react-router-dom";
 import ReserveDevice from "./ReserveDevice";
 
@@ -33,6 +32,13 @@ const styles = {
   }
 };
 
+function availability(available){
+  if(available == 1){
+    return <Typography style={{color: "green"}}>Available</Typography>
+  }
+  else return <Typography style={{color: "red"}}>Unavailable</Typography>
+}
+
 class Media extends React.Component {
   state = {
     value: ""
@@ -47,6 +53,7 @@ class Media extends React.Component {
             <CardMedia className={classes.media} image={images} />
             <CardContent>
               <Typography gutterBottom variant="h6" component="h6">
+              {availability(available)}
                 {text}
               </Typography>
               <Typography component="p">{text2}</Typography>
@@ -56,7 +63,6 @@ class Media extends React.Component {
         <CardActions>
           <ReserveDevice sNumber={sNumber} />
           <BookDevice sNumber={sNumber} available={available} />
-          <Reserve sNumber={sNumber} />
         </CardActions>
       </Card>
     );

@@ -122,7 +122,7 @@ function ButtonAppBar(props) {
             }}
             
           >
-            <NavLink to="/Login" style={{color: 'black', textDecoration: 'none'}} >Login</NavLink>
+            <NavLink to="/Login" style={{color: 'black', textDecoration: 'none'}} >Log Out</NavLink>
           </button>
         </Toolbar>
       </AppBar>
@@ -131,12 +131,8 @@ function ButtonAppBar(props) {
 }
 
 function ifLogOut(){
-  if(localStorage.getItem("userID") != ""){
-    return "Log Out";
-  }
-  else{
-    
-  }
+  localStorage.setItem('userId', null);
+  window.location = "http://localhost:3000/Login";
 }
 
 ButtonAppBar.propTypes = {

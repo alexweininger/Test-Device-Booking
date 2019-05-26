@@ -6,17 +6,21 @@ const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
 var db = require(`../${dataBase}`);
 
 router.get("/:deviceId", (req, res) => {
-  const availableQuery = `SELECT * FROM atbl_Booking 
-                            WHERE year(StartDate)=year(now()) 
-                              AND month(StartDate)=month(now()) 
-                              AND day(StartDate)=day(now()) 
-                              AND year(FinishDate)=year(now()) 
-                              AND month(FinishDate)=month(now()) 
-                              AND day(FinishDate)=day(now()) 
-                              AND fk_device_ser_nr=${
-                                req.params.deviceId
-                              }           
-                              ORDER BY StartDate ASC
+  console.log("req ", req.params);
+
+  const availableQuery = `SELECT Number, StartDate, FinishDate, FirstName, LastName, CONVERT_TZ(StartDate,'+00:00','+3:00') AS StartDate, 
+                              CONVERT_TZ(FinishDate,'+00:00','+3:00') AS FinishDate , fk_user_id_reg, fk_device_ser_nr
+                            FROM atbl_Booking 
+                            LEFT JOIN atbl_users 
+                            ON fk_user_id_reg = id
+                            WHERE year(StartDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND month(StartDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND day(StartDate)=day(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND year(FinishDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND month(FinishDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND day(FinishDate)=day(CONVERT_TZ(now(),'+00:00','+3:00')) 
+                            AND fk_device_ser_nr=${req.params.deviceId}         
+                            ORDER BY StartDate ASC
                               `;
   //console.log(availableQuery);
   db.dbqueryPromise(availableQuery)

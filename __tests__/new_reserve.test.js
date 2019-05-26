@@ -27,7 +27,7 @@ describe("test the /new_reserve route that inserts new date", () => {
   beforeAll(async () => {
     // seed with some data
     await db.dbqueryPromise(
-      `INSERT INTO atbl_Booking (StartDate, FinishDate, fk_user_id_reg, fk_device_ser_nr) VALUES (now(), now(), RAND()*(10-5)+5, RAND()*10000000), (now(), now(), RAND()*(10-5)+5, RAND()*10000000), (now(), now(), RAND()*(10-5)+5, 0030037972)`
+      `INSERT INTO atbl_Booking (StartDate, FinishDate, fk_user_id_reg, fk_device_ser_nr) VALUES (CONVERT_TZ(now(),'+00:00','+3:00'), CONVERT_TZ(now(),'+00:00','+3:00'), RAND()*(10-5)+5, RAND()*10000000), (CONVERT_TZ(now(),'+00:00','+3:00'), CONVERT_TZ(now(),'+00:00','+3:00'), RAND()*(10-5)+5, RAND()*10000000), (CONVERT_TZ(now(),'+00:00','+3:00'), CONVERT_TZ(now(),'+00:00','+3:00'), RAND()*(10-5)+5, 0030037972)`
     );
   });
 
@@ -59,14 +59,16 @@ describe("test the /new_reserve route that inserts new date", () => {
     return request(app)
       .get(`/get_dayBookings/${Id}`)
       .then(response => {
-        var start = response.body[1].StartDate;
-        var finish = response.body[1].FinishDate;
-        expect(dateFormat(start, "yyyy-mm-dd' 'HH:mm:ss")).toBe(tempStartDate);
-        expect(dateFormat(finish, "yyyy-mm-dd' 'HH:mm:ss")).toBe(
+        var start = response.body[0].StartDate;
+        var finish = response.body[0].FinishDate;
+        expect(dateFormat(start, "UTC:yyyy-mm-dd' 'HH:mm:ss")).toBe(
+          tempStartDate
+        );
+        expect(dateFormat(finish, "UTC:yyyy-mm-dd' 'HH:mm:ss")).toBe(
           tempFinishDate
         );
-        expect(response.body[1].fk_user_id_reg).toBe(userId);
-        expect(response.body[1].fk_device_ser_nr).toBe(Id);
+        expect(response.body[0].fk_user_id_reg).toBe(userId);
+        expect(response.body[0].fk_device_ser_nr).toBe(Id);
       });
   });
 });

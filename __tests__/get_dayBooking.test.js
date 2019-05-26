@@ -32,13 +32,10 @@ setTimeout(
       return expect(response.body.length).toBe(nrOfBookings);
     });
 
-    test(`get_dayBooking request returns a value (device ID=${Id})`, () => {
-      return request(app)
-        .get(`/get_dayBookings/${Id}`)
-        .then(response => {
-          expect(response.body[0].fk_device_ser_nr).toBe(Id);
-        });
+    test(`get_dayBooking request returns a value (device ID=${Id})`, async () => {
+      const response = await request(app).get(`/get_dayBookings/${Id}`);
+      return expect(response.body[0].fk_device_ser_nr).toBe(Id);
     });
   }),
-  3000
+  10000
 );

@@ -16,9 +16,8 @@ import {
   TimePicker,
   DatePicker
 } from "material-ui-pickers";
-
+var dateFormat = require('dateformat');
 var today = new Date();
-var time = [];
 
 const styles = theme => ({
   dialog: {
@@ -28,7 +27,7 @@ const styles = theme => ({
   input: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 50
+    width: 85
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -54,13 +53,15 @@ class ReserveDevice extends React.Component {
     super(props);
 
     this.state = {
-      closestBooking: [],
+      maxDate: new Date().setFullYear(today.getFullYear()+1),
       bookings: [],
-      time: [],
+      timeArray: [],
+      timeArrayTo: [],
       open: false,
       selectedDateFrom: new Date(),
       selectedDateTo: new Date(),
-      selectedTimeValue: 0,
+      selectedTimeFrom: "",
+      selectedTimeTo: "",
       reserved: {
         startDate: "",
         finishDate: "",
@@ -71,43 +72,98 @@ class ReserveDevice extends React.Component {
   }
 
   handleDateChangeFrom = date => {
-    time=[];
+
     if(date.getDate() != today.getDate() || 
       date.getFullYear() != today.getFullYear() || 
       date.getMonth() != today.getMonth()){
         date.setHours(0, 0, 0);
     }
-    console.log("dateChanging");
+    else{
+      date.setHours(today.getHours(), today.getMinutes(), 0);
+    }
+   // var d = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
+    this.setState({maxDate: new Date().setFullYear(today.getFullYear()+1)});
+    this.setState({ startDate: date});
     this.setState({selectedDateTo: date});
     this.setState({selectedDateFrom: date});
-    console.log("dateChanged");
-    console.log("Accept");
-    this.setState({ bookings: this.getBookings(date, timeArrayFrom)});
-   // this.render();
-   // console.log(this.state.selectedDateFrom);
-    
-    console.log("Accepted");
-};
-handleDateChangeTo = date => {
-  console.log(this.state.selectedDateFrom);
-    this.setState({selectedDateTo: date});
-};
+
+    this.getBookings(date);
+  }
+  handleDateChangeTo = date => {
+    if(date.getDate() != today.getDate() || 
+        date.getFullYear() != today.getFullYear() || 
+        date.getMonth() != today.getMonth()){
+          date.setHours(0, 0, 0);
+          
+    }
+    else{
+      date.setHours(this.state.selectedDateFrom.getHours(), this.state.selectedDateFrom.getMinutes(), 0);
+    }
+   // var d = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
+ //   console.log("from: "+this.state.selectedTimeFrom);
+    this.setState({selectedDateTo: date}, () => 
+    this.timeArrayTo(date, this.state.closestBooking));
+  //  this.setState({reserved: { finishDate: date}}
+  }
+
   handleTimeChangeFrom = event =>{
-    this.setState({selectedDateFrom: event.target.value});
-    this.setState({closestBooking: this.getClosestBooking});
+    var t = event.target.value;
+  //  var date = dateFormat(t, "yyyy-mm-dd' 'HH:mm:ss");
+    this.setState({selectedDateFrom: t}, () => 
+    this.getClosestBooking(t),);
+  //  this.setState({reserved: {finishDate: t}});
+ //   this.setState({reserved: {startDate: t}}
+    this.setState({selectedTimeFrom: t});
   }
+
   handleTimeChangeTo = event =>{
-    this.setState({selectedDateTo: event.target.value});
+    var dateFrom = this.state.selectedDateFrom;
+    var t = event.target.value;
+ //   var date = dateFormat(t, "yyyy-mm-dd' 'HH:mm:ss");
+    this.setState({selectedDateTo: t});
+ //   this.setState({reserved: {finishDate: t}});
+    this.setState({selectedTimeTo: t});
+    this.setState({reserved:{
+      startDate: 
+      dateFrom.getFullYear() +
+      "-" +
+      (dateFrom.getMonth() + 1) +
+      "-" +
+      dateFrom.getDate() +
+      " " +
+      dateFrom.getHours() +
+      ":" +
+      dateFrom.getMinutes() +
+      ":00",
+      finishDate: t.getFullYear() +
+      "-" +
+      (t.getMonth() + 1) +
+      "-" +
+      t.getDate() +
+      " " +
+      t.getHours() +
+      ":" +
+      t.getMinutes() +
+      ":00",
+      sNumber: this.props.sNumber,
+      userID: "2"
+    }})
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
+    today = new Date();
   };
-
   handleClose = () => {
     this.setState({ open: false });
+    console.log(this.state.reserved.startDate);
+    console.log(this.state.reserved.finishDate);
+    console.log(this.state.reserved.userID);
+    console.log(this.state.reserved.sNumber);
   };
 
-  handleAddNewReserved = () => {
+  handleClickOk = () => {
+    
     this.setState({ open: false });
     this.addReserved(this.state.reserved);
     
@@ -118,6 +174,7 @@ handleDateChangeTo = date => {
   }
 
   render() {
+    var ta=this.state.timeArray;
     const { classes, sNumber } = this.props;
     return (
       <div>
@@ -150,21 +207,20 @@ handleDateChangeTo = date => {
                     startDate={this.state.selectedDateFrom}
                     endDate={this.state.selectedDateTo}
                     onChange={this.handleDateChangeFrom}
-                  //  onAccept={this.HandleAccept}
                     disablePast="true"
-                    shouldDisableDate={this.disableWeekends}
+                    //shouldDisableDate={this.disableWeekends}
                 />  
                 <Select
-                value={this.state.selectedTime}
-                onChange={this.handleTimeChange}
+                value={this.state.selectedTimeFrom}
+                onChange={this.handleTimeChangeFrom}
                 className={classes.input}
                 color="inherit"
               >
-                {time.map((t, index) => (
+                {this.state.timeArray.map((t, index) => (
                   <MenuItem
                     key={index}
                     value={t}
-                    selected={index === "Pyxis"}
+                    selected={t === "Pyxis"}
                     InputLabel={
                       (t.getHours() < 10 ? "0" : "") +
                       t.getHours() +
@@ -189,26 +245,28 @@ handleDateChangeTo = date => {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container justify="space-around">
                 <DatePicker
+                    minDate={this.state.selectedDateFrom}
+                    maxDate={this.state.maxDate}
                     value={this.state.selectedDateTo}
                     selected={this.state.selectedDateTo}
                     selectsEnd
                     startDate={this.state.selectedDateFrom}
                     endDate={this.state.selectedDateTo}
                     onChange={this.handleDateChangeTo}
-                    disablePast="true"
-                    shouldDisableDate={this.disableWeekends}
+                    //shouldDisableDate={this.disableWeekends}
+                    
                 />  
                 <Select
-                value={this.state.selectedTime}
-                onChange={this.handleTimeChange}
+                value={this.state.selectedTimeTo}
+                onChange={this.handleTimeChangeTo}
                 className={classes.input}
                 color="inherit"
               >
-                {this.state.time.map((t, index) => (
+                {this.state.timeArrayTo.map((t) => (
                   <MenuItem
-                    key={index}
+                    key={t}
                     value={t}
-                    selected={index === "Pyxis"}
+                    selected={t === "Pyxis"}
                     InputLabel={
                       (t.getHours() < 10 ? "0" : "") +
                       t.getHours() +
@@ -231,7 +289,7 @@ handleDateChangeTo = date => {
               </MuiPickersUtilsProvider>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleAddNewReserved} color="inherit">
+              <Button onClick={this.handleClickOk} color="inherit">
                 OK
               </Button>
               <Button onClick={this.handleClose} color="inherit" autoFocus>
@@ -243,8 +301,8 @@ handleDateChangeTo = date => {
       </div>
     );
   }
-  getBookings(date, callback) {
-    console.log(date+"getBookings");
+
+  getBookings(date) {
     var query = createQueryDayBookings(date, this.props.sNumber)
     const request = new Request(`/get_Booking/` + query,
       {
@@ -252,24 +310,24 @@ handleDateChangeTo = date => {
       }
     );
   
-    fetch(request)
+     return fetch(request)
       .then(res => {
         if (res.ok) {
-          res.json().then(obj => {
-            console.log(obj);
-  
-            this.setState({ bookings: obj });
+          res.json().then( bookings => {
+            console.log(bookings);
             console.log("loaded all bookings ReserveDevice");
-            callback(date, this.state.bookings);
-            return obj;
+            this.setState({bookings: bookings});
+            this.timeArrayFrom(date, bookings);
           });
         }
+        return [];
       })
       .catch(err => {
         console.log("Error in getTodaysBookings", err);
         console.log("get failed");
       });
   }
+
   getClosestBooking(date) {
     console.log("closestBooking");
     var query = createQueryClosestBooking(date, this.props.sNumber);
@@ -280,12 +338,22 @@ handleDateChangeTo = date => {
     fetch(request)
       .then(res => {
         if (res.ok) {
-          res.json().then(obj => {
-            console.log(obj);
+          res.json().then(closestB => {
 
-            this.setState({ closestBooking: obj });
+            console.log(closestB[0]+"closest1");
+            if(closestB.length > 0){
+              var s = new Date();
+              var start = closestB[0].StartDate;
+              s.setFullYear(start.substring(0,4), start.substring(5,7)-1, start.substring(8,10));
+              s.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0)
+              this.setState({ closestBooking: closestB});
+              this.setState({maxDate: s})
+            }
+            
+            else
+            this.setState({ closestBooking: null});
             console.log("loaded closest booking");
-            return obj;
+            return closestB;
           });
         }
       })
@@ -295,12 +363,113 @@ handleDateChangeTo = date => {
         console.log("get failed");
       });
   }
+
+  timeArrayFrom(d, bookings) {
+    console.log("timeArray from date: "+d);
+    var time = []
+
+    var bookingUntilDate = new Date();
+    bookingUntilDate.setFullYear(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+    bookingUntilDate.setHours(0, 0, 0);
+
+    if(d.getHours() != 0 && d.getMinutes() != 0){
+      var min = d.getMinutes();
+      min = (Math.ceil(min / 15)) * 15;
+      if (min > 60) {
+        d.setHours(d.getHours() + 1, 15, 0, 0);
+      } else {
+        d.setMinutes(min, 0, 0);
+      }
+    }
+    
+    while(d <= bookingUntilDate){
+      time.push(d);
+      d = new Date(d.getTime() + 15 * 60000);
+    }
+    var s=new Date();
+    var f=new Date();
+    for(var i = 0; i < bookings.length; i++){
+
+      var e = bookings[i];
+      var start=e.StartDate;
+      var finish=e.FinishDate;
+
+      s.setFullYear(start.substring(0,4), start.substring(5,7)-1, start.substring(8,10));
+      s.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0);
+      f.setFullYear(finish.substring(0,4), finish.substring(5,7)-1, finish.substring(8,10));
+      f.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
+
+      for(var j = 0; j < time.length; j++)
+      {
+        var t = time[j];
+        if((t>=s && t<f)) 
+        time.splice(j,1);
+      }
+    }
+    console.log("timearray created");
+
+    this.setState({timeArray: time});
+    return time; 
+  }
+
+  timeArrayTo(d, bookings) {
+    var time = []
+    var bookingUntilDate = new Date();
+    bookingUntilDate.setDate(d.getDate() + 1);
+    bookingUntilDate.setHours(0, 0, 0);
+
+    if(bookings != null){
+      var start = bookings[0].StartDate;
+      bookingUntilDate.setFullYear(start.substring(0,4), start.substring(5,7)-1, start.substring(8,10));
+      bookingUntilDate.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0);
+    }
+    if(d.getHours() != 0 && d.getMinutes() != 0){
+      var min = d.getMinutes();
+      min = (Math.ceil(min / 15)+1) * 15;
+      if (min > 60) {
+        d.setHours(d.getHours() + 1, 15, 0, 0);
+      } else {
+        d.setMinutes(min, 0, 0);
+      }
+    }
+    
+    while(d <= bookingUntilDate){
+      time.push(d);
+      d = new Date(d.getTime() + 15 * 60000);
+    }
+    console.log("timearray created");
+
+    this.setState({timeArrayTo: time});
+    return time; 
+  }
+
+  addReserved(reserved) {
+    console.log("called_");
+
+    const request = new Request("/new_reserve", {
+      method: "POST",
+      body: JSON.stringify(reserved),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+
+        if (result.success) {
+          window.location.reload();
+        }
+      });
+
+    return true;
+  }
 }
 
 function createQueryClosestBooking(date, id){
-  return("WHERE year(StartDate)>"+date.getFullYear()+
-  " AND month(StartDate)>"+(date.getMonth()+1)+
-  " AND day(StartDate)>"+date.getDate()+
+  return("WHERE year(StartDate)>="+date.getFullYear()+
+  " AND month(StartDate)>="+(date.getMonth()+1)+
+  " AND day(StartDate)>="+date.getDate()+
+  " AND time(StartDate)>=maketime("+date.getHours()+","+date.getMinutes()+","+date.getSeconds()+")"+
   " AND fk_device_ser_nr="+id);
 }
 function createQueryDayBookings(date, id){
@@ -312,82 +481,6 @@ function createQueryDayBookings(date, id){
   " AND day(FinishDate)="+date.getDate()+
   " AND fk_device_ser_nr="+id);
 }
-function timeArrayFrom(d, bookings) {
 
-  var currentDate = new Date();
-  var bookingUntilDate = new Date();
-  bookingUntilDate.setDate(d.getDate() + 1);
-  bookingUntilDate.setHours(0, 0, 0);
-  if(d.getDate() != currentDate.getDate() || currentDate.getFullYear() != d.getFullYear() || currentDate.getMonth() != d.getMonth())
-  {
-    currentDate.setFullYear(d.getFullYear(), d.getMonth(), d.getDate());
-    currentDate.setHours(0, 0, 0);
-  }
-  else{
-    var min = d.getMinutes();
-    min = (Math.ceil(min / 15) + 1) * 15;
-    if (min > 60) {
-      currentDate.setHours(d.getHours() + 1, 15, 0, 0);
-    } else {
-      currentDate.setMinutes(min, 0, 0);
-    }
-  }
-  
-  
-  if(bookings.length > 0)
-  {
-    console.log("bookings");
-    console.log(currentDate);
-    console.log("bookingslength>0");
-    var i = 0;
-    var element = bookings[i];
-    var s=element.StartDate;
-    var closestBooking = new Date()
-    closestBooking.setFullYear(s.substring(0,4), s.substring(5,7)-1, s.substring(8,10));
-    closestBooking.setHours(s.substring(11, 13), s.substring(14, 16), 0, 0);
-    console.log(s+" s");
-    console.log(closestBooking+" closest");
-
-    while(currentDate <= bookingUntilDate){
-      console.log(closestBooking-currentDate+" b-c"+closestBooking.getHours()+":"+closestBooking.getMinutes()+" "+currentDate.getHours()+":"+currentDate.getMinutes());
-      if(closestBooking-currentDate <= 15 && closestBooking.getHours() != 0)
-      {
-  //      console.log("<15");
-        currentDate.setHours(element.FinishDate.substring(11, 13), element.FinishDate.substring(14, 16));
-        if(i+1 < bookings.length){
-          i++;
-          element = bookings[i];
-   //     console.log(element.StartDate+" element <15");
-        s=element.StartDate;
-        closestBooking.setFullYear(s.substring(0,4), s.substring(5,7)-1, s.substring(8,10));
-        closestBooking.setHours(s.substring(11, 13), s.substring(14, 16), 0, 0);
-        }
-        else{
-          closestBooking.setFullYear(bookingUntilDate.getFullYear(), bookingUntilDate.getMonth(), bookingUntilDate.getDate());
-          closestBooking.setHours(bookingUntilDate.getHours(), bookingUntilDate.getMinutes(), 0, 0);
-        }
-      }
-        time.push(currentDate);
-        currentDate = new Date(currentDate.getTime() + 15 * 60000);
-      
-    }
-  }
-  else{
-    console.log(currentDate+" cd");
-    while(currentDate <= bookingUntilDate){
-      time.push(currentDate);
-      currentDate = new Date(currentDate.getTime() + 15 * 60000);
-    }
-  }
-
-  console.log("timearray created");
-  for(var i = 0; i < time.length; i++){
-    console.log(time[i]);
-  }
-  return; 
-}
-function TimeArrayTo(){
-  
-}
 export default withStyles(styles)(ReserveDevice);
 

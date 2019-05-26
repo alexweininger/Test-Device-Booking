@@ -3,7 +3,7 @@ import * as request from 'request';
 import NewDevice from "../../../App.js";
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import Header from '../../Layout/Header'
+import Header from '../../Layout/Header_Login'
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';

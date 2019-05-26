@@ -3,7 +3,7 @@ import * as request from 'request';
 import NewDevice from "../../../App.js";
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import Header from '../../Layout/Header'
+import Header from '../../Layout/Header_Login'
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
@@ -21,11 +21,11 @@ import AppBar from "./AppBar";
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
-  }
+}
   
 function TabContainer({ children, dir }) {
     return (
-        <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+        <Typography>
             {children}
         </Typography>
     );
@@ -141,10 +141,7 @@ class FullWidthTabs extends React.Component {
                                         className={classes.submit}
                                         onClick={() => {this.loginUser(this.state)}}
                                     >
-                                        <NavLink 
-                                            style={{color: 'white', textDecoration: 'none'}} 
-                                            to="/">Log in
-                                        </NavLink>
+                                        Log in
                                     </Button>
                                 </form>
                             </Paper>
@@ -176,8 +173,9 @@ class FullWidthTabs extends React.Component {
                     if(office.Email === this.state.firstName && office.Password === this.state.lastName)
                     {
                         localStorage.setItem('userId', office.id);
-                        ReactDOM.render(<NewDevice />, document.getElementById("root"));
+                        ReactDOM.render(<NewDevice />, document.getElementById("root"))
                         console.log("hi");
+                        window.location = "http://localhost:3000/";
                         break;
                     }
                 }

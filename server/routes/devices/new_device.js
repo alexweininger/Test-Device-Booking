@@ -5,8 +5,6 @@ const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
 
 var db = require(`../${dataBase}`);
 
-console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!pradedam");
-
 router.post("/", (req, res) => {
   const device = req.body;
 
@@ -36,8 +34,6 @@ router.post("/", (req, res) => {
     .replace("{Tax_rate}", device.Tax_rate)
     .replace("{fk_office_id}", device.fk_office_id)
     .replace("{Available}", "1");
-
-  console.log("Query\n\n\n\n" + query + "\n\n\n\n\n");
 
   db.dbqueryPromise(query)
     .then(results => {
