@@ -13,7 +13,6 @@ import DateFnsUtils from "@date-io/date-fns";
 //import ReservationsTable from "./ReservationsTable";
 import {
   MuiPickersUtilsProvider,
-  TimePicker,
   DatePicker
 } from "material-ui-pickers";
 var dateFormat = require('dateformat');
@@ -65,7 +64,7 @@ class ReserveDevice extends React.Component {
       reserved: {
         startDate: "",
         finishDate: "",
-        userID: "2",
+        userId: localStorage.getItem("userId"),
         sNumber: this.props.sNumber
       },
     };
@@ -81,7 +80,6 @@ class ReserveDevice extends React.Component {
     else{
       date.setHours(today.getHours(), today.getMinutes(), 0);
     }
-   // var d = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
     this.setState({maxDate: new Date().setFullYear(today.getFullYear()+1)});
     this.setState({ startDate: date});
     this.setState({selectedDateTo: date});
@@ -99,29 +97,21 @@ class ReserveDevice extends React.Component {
     else{
       date.setHours(this.state.selectedDateFrom.getHours(), this.state.selectedDateFrom.getMinutes(), 0);
     }
-   // var d = dateFormat(date, "yyyy-mm-dd' 'HH:mm:ss");
- //   console.log("from: "+this.state.selectedTimeFrom);
     this.setState({selectedDateTo: date}, () => 
     this.timeArrayTo(date, this.state.closestBooking));
-  //  this.setState({reserved: { finishDate: date}}
   }
 
   handleTimeChangeFrom = event =>{
     var t = event.target.value;
-  //  var date = dateFormat(t, "yyyy-mm-dd' 'HH:mm:ss");
     this.setState({selectedDateFrom: t}, () => 
     this.getClosestBooking(t),);
-  //  this.setState({reserved: {finishDate: t}});
- //   this.setState({reserved: {startDate: t}}
     this.setState({selectedTimeFrom: t});
   }
 
   handleTimeChangeTo = event =>{
     var dateFrom = this.state.selectedDateFrom;
     var t = event.target.value;
- //   var date = dateFormat(t, "yyyy-mm-dd' 'HH:mm:ss");
     this.setState({selectedDateTo: t});
- //   this.setState({reserved: {finishDate: t}});
     this.setState({selectedTimeTo: t});
     this.setState({reserved:{
       startDate: 
@@ -146,7 +136,7 @@ class ReserveDevice extends React.Component {
       t.getMinutes() +
       ":00",
       sNumber: this.props.sNumber,
-      userID: "2"
+      userID: localStorage.getItem("userId")
     }})
   }
 
@@ -389,7 +379,7 @@ class ReserveDevice extends React.Component {
     var s=new Date();
     var f=new Date();
     for(var i = 0; i < bookings.length; i++){
-
+      
       var e = bookings[i];
       var start=e.StartDate;
       var finish=e.FinishDate;
@@ -398,13 +388,22 @@ class ReserveDevice extends React.Component {
       s.setHours(start.substring(11, 13), start.substring(14, 16), 0, 0);
       f.setFullYear(finish.substring(0,4), finish.substring(5,7)-1, finish.substring(8,10));
       f.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
-
-      for(var j = 0; j < time.length; j++)
+      console.log("------------------------------------------------");
+      console.log(s);
+      console.log(f);
+      console.log("------------------------------------------------");
+      var j = 0;
+      while(j < time.length)
       {
         var t = time[j];
-        if((t>=s && t<f)) 
-        time.splice(j,1);
+        console.log(t);
+        if((t>=s && f>t)) {
+          time.splice(j,1);
+          j--;
+        }
+        j++;
       }
+      console.log("************************************************");
     }
     console.log("timearray created");
 
