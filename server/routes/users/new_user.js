@@ -12,39 +12,35 @@ router.post("/", (req, res) => {
   //TODO make sure the reserve is unique
 
   const insert =
-    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, ID, OfficeID, Role, Password)";
-  const values = ` VALUES ('${user.firstName}', '${
-    user.lastName
-  }', '${user.email - signup}', '${user.slackUsername}', '${
-    user.employeeId
-  }', '${user.officeId}', '${user.Role}', '${user.password - signup}');`;
-  db.dbquery(insert + values, (err, results) => {
-    if (err) {
-      res.status(400).send(err);
-    } else {
-      res.status(200).send("User added successfully.");
-    }
+    "INSERT INTO atbl_Users (FirstName, LastName, Email, SlackUsername, OfficeID, Role, Password)";
+  const values = ` VALUES ('${user.FirstName}', '${user.LastName}', '${
+    user.Email
+  }', '${user.SlackUsername}', '${user.OfficeID}', '${user.Role}', '${
+    user.Password
+  }');`;
 
-    db.dbqueryPromise(query)
-      .then(results => {
-        //if the insert is successful, pull off the id that was given
-        //and send it to the client
-        res.json({
-          success: true,
-          Number: results.insertId
-        });
-      })
-      .catch(err => {
-        console.log("There was an error inserting a new date in reserve:");
-        console.log("---------------------------------");
-        console.log(err);
-        console.log("---------------------------------");
+  console.log(insert + " " + values);
 
-        //if the insert is unsuccessful, notify the client
-        res.json({
-          success: false
-        });
+  db.dbqueryPromise(insert + values)
+    .then(results => {
+      //if the insert is successful, pull off the id that was given
+      //and send it to the client
+      res.json({
+        success: true,
+        Number: results.insertId
       });
-  });
+    })
+    .catch(err => {
+      console.log("There was an error inserting a new date in reserve:");
+      console.log("---------------------------------");
+      console.log(err);
+      console.log("---------------------------------");
+
+      //if the insert is unsuccessful, notify the client
+      res.json({
+        success: false
+      });
+    });
 });
+
 module.exports = router;
