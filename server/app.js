@@ -96,6 +96,7 @@ app.get('/Offices', (req, res) => {
 		});
 	});
 });*/
+app.use("/new_user", require("./routes/users/new_user.js"));
 app.use("/get_LoginUser", require("./routes/users/get_LoginUser.js"));
 let getUsersRouter = require("./routes/users/getUsers");
 let newUserRouter = require("./routes/users/newUser");
