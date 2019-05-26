@@ -81,6 +81,7 @@ class TitlebarGridList extends React.Component {
       offset: 0
     };
     this.getUserBookings();
+    this.getUserReservation();
   }
 
   handleBrandChange = event => {
@@ -364,6 +365,41 @@ class TitlebarGridList extends React.Component {
       .catch(err => {
         //if we successfully updated the DB
         console.log("Error in get user bookings", err);
+        console.log("get failed");
+      });
+  }
+  getUserReservation() {
+    var id = localStorage.getItem("userId");
+    console.log("IIIIDDDD "+id);
+    const request = new Request(
+      `/get_userReservations/${id}`,
+      {
+        method: "GET"
+      }
+    );
+
+    fetch(request)
+      .then(res => {
+        if (res.ok) {
+          //add the office
+          res.json().then(reservations => {
+            console.log(reservations);
+            if(reservations.length > 0){
+              localStorage.setItem('userReservation', reservations[0].fk_device_ser_nr);
+            console.log("RESERVATION[0] "+reservations[0].fk_device_ser_nr);
+            var c = localStorage.getItem('userReservation');
+            console.log("RESERVATION "+ c);
+          //  this.setState({ userBookings: bookings });
+            }
+          //  else localStorage.setItem('userBookings', null);
+            console.log("loaded all user reservations");
+            return reservations;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in get user reservations", err);
         console.log("get failed");
       });
   }

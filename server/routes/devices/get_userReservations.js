@@ -15,16 +15,16 @@ router.get("/:id", (req, res) => {
   LEFT JOIN atbl_device
   ON fk_device_ser_nr = Serial_Number
   
-  WHERE year(StartDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
-  AND month(StartDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
-  AND day(StartDate)=day(CONVERT_TZ(now(),'+00:00','+3:00')) 
-  AND year(FinishDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
-  AND month(FinishDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
-  AND day(FinishDate)=day(CONVERT_TZ(now(),'+00:00','+3:00'))
-  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), FinishDate) <=15
-  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), StartDate) < 0
-  AND Available = 0 
-  AND atbl_users.id = ${req.params.id}
+            WHERE year(StartDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
+            AND month(StartDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
+            AND day(StartDate)=day(CONVERT_TZ(now(),'+00:00','+3:00')) 
+            AND year(FinishDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
+            AND month(FinishDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
+            AND day(FinishDate)=day(CONVERT_TZ(now(),'+00:00','+3:00'))
+            AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), StartDate) <=15
+            AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), StartDate) >0
+            AND Available = 1 
+            AND atbl_users.id = ${req.params.id}
   
   ORDER BY StartDate ASC
                               `;

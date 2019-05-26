@@ -56,6 +56,7 @@ class ReserveDevice extends React.Component {
       bookings: [],
       timeArray: [],
       timeArrayTo: [],
+      userBooking: localStorage.getItem("userReservation"),
       open: false,
       selectedDateFrom: new Date(),
       selectedDateTo: new Date(),
@@ -69,7 +70,14 @@ class ReserveDevice extends React.Component {
       },
     };
   }
-
+  buttonText(){
+    var s = parseInt(this.props.sNumber, 10);
+    if(this.props.available && s == this.state.userBooking)
+    {
+      return "Check in";
+    }
+    else return "Reserve";
+  }
   handleDateChangeFrom = date => {
 
     if(date.getDate() != today.getDate() || 
@@ -141,8 +149,15 @@ class ReserveDevice extends React.Component {
   }
 
   handleClickOpen = () => {
+    var s = parseInt(this.props.sNumber, 10);
+    if(this.props.available && s == this.state.userBooking)
+    {
+      this.updateAvailability(this.state.reserved);
+    }
+    else {
     this.setState({ open: true });
     today = new Date();
+    }
   };
   handleClose = () => {
     this.setState({ open: false });
@@ -164,8 +179,8 @@ class ReserveDevice extends React.Component {
   }
 
   render() {
-    var ta=this.state.timeArray;
-    const { classes, sNumber } = this.props;
+    const buttonText = this.buttonText();
+    const { classes, sNumber, available } = this.props;
     return (
       <div>
         <Button
@@ -176,7 +191,7 @@ class ReserveDevice extends React.Component {
           className={classes.button}
           onClick={this.handleClickOpen}
         >
-          Reserve
+          {buttonText}
         </Button>
         <Dialog
           className={classes.dialog}
@@ -291,7 +306,26 @@ class ReserveDevice extends React.Component {
       </div>
     );
   }
+  updateAvailability(booked) {
+    console.log("called_");
+    const request = new Request("/update_DeviceAvailability", {
+      method: "POST",
+      body: JSON.stringify(booked),
+      headers: { "Content-Type": "application/json" }
+    });
 
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        //if we successfully updated the DB
+
+        if (result.success) {
+          console.log("Availability updated");
+          window.location.reload();
+        }
+      });
+    return true;
+  }
   getBookings(date) {
     var query = createQueryDayBookings(date, this.props.sNumber)
     const request = new Request(`/get_Booking/` + query,

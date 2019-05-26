@@ -61,7 +61,7 @@ class Media extends React.Component {
           </CardActionArea>
         </NavLink>
         <CardActions>
-          <ReserveDevice sNumber={sNumber} />
+          <ReserveDevice sNumber={sNumber} available={available}/>
           <BookDevice sNumber={sNumber} available={available} />
         </CardActions>
       </Card>

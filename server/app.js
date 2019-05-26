@@ -84,6 +84,7 @@ app.use(
   require("./routes/devices/update_DeviceAvailability.js")
 );
 app.use("/get_closestBooking", require("./routes/devices/get_closestBooking"));
+app.use("/get_userReservations", require("./routes/devices/get_userReservations.js"));
 /*const officeQuery = 'SELECT * FROM Devices.office;';
 
 app.get('/Offices', (req, res) => {
