@@ -450,7 +450,7 @@ class ReserveDevice extends React.Component {
     var bookingUntilDate = new Date();
     bookingUntilDate.setDate(d.getDate() + 1);
     bookingUntilDate.setHours(0, 0, 0);
-
+    d=new Date(d.getTime()+15*60000);
     if(bookings != null){
       var start = bookings[0].StartDate;
       bookingUntilDate.setFullYear(start.substring(0,4), start.substring(5,7)-1, start.substring(8,10));
@@ -458,10 +458,11 @@ class ReserveDevice extends React.Component {
     }
     if(d.getHours() != 0 && d.getMinutes() != 0){
       var min = d.getMinutes();
-      min = (Math.ceil(min / 15)+1) * 15;
+      min = (Math.ceil(min / 15)) * 15;
       if (min > 60) {
         d.setHours(d.getHours() + 1, 15, 0, 0);
-      } else {
+      } 
+      else {
         d.setMinutes(min, 0, 0);
       }
     }

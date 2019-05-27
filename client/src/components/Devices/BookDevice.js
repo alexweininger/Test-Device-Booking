@@ -68,7 +68,13 @@ class BookDevice extends React.Component {
     var finish = this.state.userFinishDate;
     var fDate = new Date();
     if(finish == null)
-    return false;
+    {
+      if (!this.props.available) {
+        return true;
+      }
+      return false;
+    }
+    
     else {
       fDate.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
       var dif = (fDate-date)/60000;
