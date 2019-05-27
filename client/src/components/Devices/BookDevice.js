@@ -62,6 +62,8 @@ class BookDevice extends React.Component {
   }
 
   isDisabled(){
+    var dif = 0;
+    var fDate = new Date();
     var s = parseInt(this.props.sNumber, 10);
     var finish = this.state.userFinishDate;
     var fDate = new Date();
