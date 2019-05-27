@@ -8,7 +8,7 @@ var db = require(`../${dataBase}`);
 router.get("/:id", (req, res) => {
   console.log("req ", req.params);
 
-  const availableQuery = `SELECT fk_device_ser_nr, StartDate, FinishDate, fk_user_id_reg 
+  const availableQuery = `SELECT fk_device_ser_nr, CONVERT_TZ(StartDate,'+00:00','+3:00') as StartDate, CONVERT_TZ(FinishDate,'+00:00','+3:00') as FinishDate, fk_user_id_reg 
   FROM atbl_Booking 
   LEFT JOIN atbl_users 
   ON fk_user_id_reg = atbl_users.id
@@ -21,10 +21,10 @@ router.get("/:id", (req, res) => {
   AND year(FinishDate)=year(CONVERT_TZ(now(),'+00:00','+3:00')) 
   AND month(FinishDate)=month(CONVERT_TZ(now(),'+00:00','+3:00')) 
   AND day(FinishDate)=day(CONVERT_TZ(now(),'+00:00','+3:00'))
-  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), FinishDate) <=15
-  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), StartDate) < 0
+  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), FinishDate) >=15
+  AND TIMESTAMPDIFF(minute, CONVERT_TZ(now(),'+00:00','+3:00'), StartDate) <=0
   AND Available = 0 
-  AND atbl_users.id = ${req.params.id}
+  AND atbl_users.id=${req.params.id}
   
   ORDER BY StartDate ASC
                               `;

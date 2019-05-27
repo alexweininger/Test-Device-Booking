@@ -351,8 +351,12 @@ class TitlebarGridList extends React.Component {
                 "userBookings",
                 bookings[0].fk_device_ser_nr
               );
+              localStorage.setItem(
+                "userFD",
+                bookings[0].FinishDate
+              );
               console.log(
-                "BBBBBBBBBBBBBBBBBBBBBBBBBB " + bookings[0].fk_device_ser_nr
+                "BBBBBBBBBBBBBBBBBBBBBBBBBB " + bookings[0].FinishDate
               );
               var c = localStorage.getItem("userBookings");
               console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC " + c);

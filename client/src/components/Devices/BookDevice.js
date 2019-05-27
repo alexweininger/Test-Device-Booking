@@ -49,6 +49,7 @@ class BookDevice extends React.Component {
       selectedTime: "",
       date: new Date(),
       userBooking: localStorage.getItem("userBookings"),
+      userFinishDate: localStorage.getItem("userFD"),
       booked: {
         today: new Date(),
         startDate: new Date().setMonth(date.getMonth + 1),
@@ -62,12 +63,25 @@ class BookDevice extends React.Component {
 
   isDisabled(){
     var s = parseInt(this.props.sNumber, 10);
-    if(s == this.state.userBooking){
+    var finish = this.state.userFinishDate;
+    var fDate = new Date();
+    fDate.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
+    var dif = (fDate-date)/60000;
+    if(s == this.state.userBooking && dif <15 && dif > 0){
+      console.log(dif+"     DIF");
+      console.log(date);
+      console.log(fDate);
+      console.log("+++++++++++++++++++");
       return false;
     }
     else if(this.state.userBooking != null)
     {
+      console.log(dif+"     DIF");
+      console.log(date);
+      console.log(fDate);
+      console.log("+++++++++++++++++++");
       return true;
+      
     }
     else if (!this.props.available) {
        return true;
@@ -316,6 +330,10 @@ class BookDevice extends React.Component {
     return true;
   }
   updateAvailability(booked) {
+    console.log(booked.startDate);
+    console.log(booked.finishDate);
+    console.log(booked.sNumber);
+    console.log(booked.userID);
     console.log("called_");
     const request = new Request("/update_DeviceAvailability", {
       method: "POST",
