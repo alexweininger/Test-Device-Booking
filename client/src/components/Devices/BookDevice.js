@@ -65,29 +65,34 @@ class BookDevice extends React.Component {
     var s = parseInt(this.props.sNumber, 10);
     var finish = this.state.userFinishDate;
     var fDate = new Date();
-    fDate.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
-    var dif = (fDate-date)/60000;
-    if(s == this.state.userBooking && dif <15 && dif > 0){
-      console.log(dif+"     DIF");
-      console.log(date);
-      console.log(fDate);
-      console.log("+++++++++++++++++++");
-      return false;
+    if(finish == null)
+    return false;
+    else {
+      fDate.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
+      var dif = (fDate-date)/60000;
+      if(s == this.state.userBooking && dif <15){
+        console.log(dif+"     DIF");
+        console.log(date);
+        console.log(fDate);
+        console.log("+++++++++++++++++++");
+        return false;
+      }
+      else if(this.state.userBooking != null)
+      {
+        console.log(dif+"     DIF");
+        console.log(date);
+        console.log(fDate);
+        console.log("+++++++++++++++++++");
+        return true;
+        
+      }
+      else if (!this.props.available) {
+         return true;
+       } else{
+         return false;
+       }
     }
-    else if(this.state.userBooking != null)
-    {
-      console.log(dif+"     DIF");
-      console.log(date);
-      console.log(fDate);
-      console.log("+++++++++++++++++++");
-      return true;
-      
-    }
-    else if (!this.props.available) {
-       return true;
-     } else{
-       return false;
-     }
+    
   }
   getButtonText(){
     var s = parseInt(this.props.sNumber, 10);
