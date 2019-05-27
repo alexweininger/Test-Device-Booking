@@ -10,7 +10,7 @@ var db = require(`../${dataBase}`);
 router.get("/", (req, res) => {
   let deviceQuery =
     "SELECT atbl_Device.*, .atbl_Office.City  FROM atbl_Device, atbl_Office" +
-    " WHERE atbl_Device.fk_office_id = atbl_Office.id_Office AND atbl_Device.Status = '1' LIMIT 20;";
+    " WHERE atbl_Device.fk_office_id = atbl_Office.id_Office AND atbl_Device.Status = '1';";
 
   db.dbqueryPromise(deviceQuery)
     .then(results => {

@@ -34,7 +34,8 @@ TabContainer.propTypes = {
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.palette.primary
+    backgroundColor: theme.palette.primary,
+    marginTop: 20
   },
   main: {
     display: "block", // Fix IE 11 issue.

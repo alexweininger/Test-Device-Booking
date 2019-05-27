@@ -19,7 +19,6 @@ class App extends Component {
             <Route path="/Login" component={Login} />
             <Route path="/SignUp" component={SignUp} />
             <Route path="/NewDevice" component={NewDevice} />
-            <Route path="/Reports/" component={Reports} />
             <Route path="/Offices/" component={Office}/> 
             <Route path="/UserList/" component={profile} />
             <Route path="/:sNumber/" component={DeviceInfo} />
