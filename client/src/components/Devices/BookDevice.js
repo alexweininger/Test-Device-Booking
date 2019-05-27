@@ -62,11 +62,15 @@ class BookDevice extends React.Component {
   }
 
   isDisabled(){
+    var dif = 0;
+    var fDate = new Date();
     var s = parseInt(this.props.sNumber, 10);
     var finish = this.state.userFinishDate;
-    var fDate = new Date();
+    if (finish != null){
     fDate.setHours(finish.substring(11, 13), finish.substring(14, 16), 0, 0);
-    var dif = (fDate-date)/60000;
+    dif = (fDate-date)/60000;
+    }
+    
     if(s == this.state.userBooking && dif <15 && dif > 0){
       console.log(dif+"     DIF");
       console.log(date);
