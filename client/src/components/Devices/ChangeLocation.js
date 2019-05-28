@@ -89,6 +89,11 @@ class ChangeLocation extends Component {
       .then(res => res.json())
       .then(result => {
         this.props.updateDeviceInfo(this.state);
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
       });
   }
 
@@ -106,8 +111,8 @@ class ChangeLocation extends Component {
 
     return (
       <form>
-        <Header/>
-        <TabMenu/>
+        <Header />
+        <TabMenu />
         <Paper className={classes.layout}>
           {/*Device brand*/}
           <TextField
