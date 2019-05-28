@@ -9,7 +9,7 @@ var db = require(`../${dataBase}`);
 
 router.get("/", (req, res) => {
   let deviceQuery =
-    "SELECT atbl_Device.*, .atbl_Office.City,  FROM atbl_Device, atbl_Office" +
+    "SELECT atbl_Device.*, .atbl_Office.City  FROM atbl_Device, atbl_Office" +
     " WHERE atbl_Device.fk_office_id = atbl_Office.id_Office AND atbl_Device.Status = '1';";
 
   db.dbqueryPromise(deviceQuery)
@@ -49,7 +49,7 @@ router.get("/", (req, res) => {
 router.get("/:sNumber", (req, res) => {
   const sNumber = req.params.sNumber;
   let deviceQuery =
-    "SELECT atbl_Device.*, .atbl_Office.City, .atbl_Office.Address  FROM atbl_Device, atbl_Office" +
+    "SELECT atbl_Device.*, .atbl_Office.City  FROM atbl_Device, atbl_Office" +
     " WHERE atbl_Device.fk_office_id = atbl_Office.id_Office AND atbl_Device.Status = '1'" +
     " AND atbl_Device.Serial_Number = '" +
     sNumber +
