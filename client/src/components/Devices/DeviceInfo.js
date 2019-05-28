@@ -102,8 +102,7 @@ class DeviceInfo extends React.Component {
       Description,
       Release_Date,
       Purchased_on,
-      Tax_rate,
-      Address
+      Tax_rate
     } = this.state.devices[0];
     var availableValue, activeValue;
     //it checks or device is available
@@ -195,8 +194,7 @@ class DeviceInfo extends React.Component {
                         {"Location"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {Address}
-                        {","} {City}
+                        {City}{" "}
                       </TableCell>
                     </TableRow>
 
