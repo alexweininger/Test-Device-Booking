@@ -195,7 +195,8 @@ class DeviceInfo extends React.Component {
                         {"Location"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {City}{" "}
+                        {Address}
+                        {","} {City}
                       </TableCell>
                     </TableRow>
 
