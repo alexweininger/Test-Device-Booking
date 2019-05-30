@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import EditOffice from './EditOffice';
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
 /* render a component for the office details
  * @param props an object with properties for this office including
 				-office an object with data about the office to display
@@ -39,6 +41,8 @@ class OfficeInfo extends React.Component{
 	renderOfficeInfo(){
 		return (
 			<div>
+				<Header/>
+				<TabMenu/>
 				<Button onClick= {() => this.props.returnToList()}>
 					<ArrowBack />
 					Back to the list

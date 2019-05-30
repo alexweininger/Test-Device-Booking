@@ -11,25 +11,19 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import ReactDOM from "react-dom";
 import App from "../../App";
-import Header from "../Layout/Header";
-import tlf from "../Data/image.jpg";
-import plusBox from "@material-ui/icons/PhotoCamera";
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import TabMenu from "../Layout/TabMenu";
+import ChangeLocation from "./ChangeLocation";
+import Header from "../Layout/Header";
 
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.common.black,
-    fontSize: 50
-  },
-  body: {
-    fontSize: 14
-  }
-}))(TableCell);
+var dateFormat = require("dateformat");
 
 const style = {
   head: {
-    margin: 20
+    margin: 20,
+    width: 200,
+    float: "right"
   },
   table: {
     minWidth: 100
@@ -68,109 +62,94 @@ const style = {
   }
 };
 
-let id = 0;
-function createData(name, info) {
-  id += 1;
-  return { id, name, info };
-}
-/*
-const rows2 = [
-  createData("brand", "Samsung"),
-  createData("model", "SM-G930F"),
-  createData("Os", "Android 7.0"),
-  createData("location", "Wilno"),
-  createData("custody", "John Snow"),
-  createData("available", "true"),
-  createData("actice", "3000-01-01 11:11:11.123"),
-  createData("id", 497),
-  createData("group", "Tablet Apple"),
-  createData("subgroup", "Soup"),
-  createData(
-    "description",
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-  ),
-  createData("check_in_due", null),
-  createData("pruchase_date", "2018-01-01 11:11:11.123"),
-  createData("vendor", "Ka randu ta jamu"),
-  createData("tax_rate", "Demo Tax: 10.0%")
-];
-*/
 class DeviceInfo extends React.Component {
   ReturnBack() {
     ReactDOM.render(<App />, document.getElementById("root"));
   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+      pageToShow: "info",
+      devices: [{}]
+    };
+    this.updateDeviceInfo = this.updateDeviceInfo.bind(this);
+  }
 
-  state = {
-    value: ""
-  };
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
+  componentDidMount() {
+    this.getDevicesFromServer();
+  }
 
-  state = {};
-  render() {
+  updateDeviceInfo(device) {
+    //call update state
+    this.updateState(device);
+    this.props.ChangeLocation(device);
+  }
+
+  renderDeviceInfo() {
     const {
-      classes1,
-      brand,
-      model,
-      os,
-      location,
-      custody,
-      available,
-      active,
-      sNumber,
-      group,
-      subgroup,
-      description,
-      check_in,
-      purchaseDate,
-      vendor,
-      taxRate
-    } = this.props;
+      Brand,
+      Model,
+      OS,
+      City,
+      Vendor,
+      Available,
+      Active,
+      Image,
+      Serial_Number,
+      Category,
+      Subcategory,
+      Description,
+      Release_Date,
+      Purchased_on,
+      Tax_rate
+    } = this.state.devices[0];
     var availableValue, activeValue;
     //it checks or device is available
-    if (available == 1) {
+    if (Available == 1) {
       availableValue = "true";
     } else {
       availableValue = "false";
     }
     //it checks or device is active
-    if (active == 0) {
+    if (Active == 0) {
       activeValue = "false";
     } else {
       activeValue = "true";
     }
 
-    /*const rows = [
-      ("1", "Brand", brand),
-      ("2", "Model", model),
-      ("3", "Os", os),
-      ("4", "location", location),
-      ("5", "Custody", custody),
-      ("6", "Available", t),
-      ("7", "Active", f),
-      ("8", "Serial_Number", sNumber),
-      ("9", "group", group),
-      ("10", "subgroup", subgroup),
-      ("11", "Description", description),
-      ("12", "check_in_due", check_in),
-      ("13", "pruchase_date", purchaseDate),
-      ("14", "vendor", vendor),
-      ("15", "tax_rate", taxRate)
-    ];
-*/
     return (
       <form>
         <Header />
-        <Button style={style.backarrow} onClick={this.ReturnBack}>
-          <ArrowBack />
-          Back to the list
+        <TabMenu />
+        <Button>
+          <NavLink
+            to="/"
+            style={{ color: "black", textDecoration: "none", fontSize: 20 }}
+          >
+            <ArrowBack style={{ color: "black" }} />
+            Back to the list
+          </NavLink>
         </Button>
+        <div style={style.head}>
+          <Button
+            onClick={() => {
+              this.setPageToShow("edit");
+            }}
+            size="large"
+            variant="contained"
+            color="secondary"
+            fullWidth="ture"
+            style={style.buttom}
+          >
+            CHANGE LOCATION
+          </Button>
+        </div>
         <Grid container style={style.containerStyle}>
           <div>
             <Grid itme>
               <Paper style={style.Paper1}>
-                <img alt="Device picture" src={tlf} style={{ height: 400 }} />
+                <img alt="Device picture" src={Image} />
               </Paper>
             </Grid>
           </div>
@@ -188,7 +167,7 @@ class DeviceInfo extends React.Component {
                         {"Brand"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {brand}{" "}
+                        {Brand}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -197,7 +176,7 @@ class DeviceInfo extends React.Component {
                         {"Model"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {model}{" "}
+                        {Model}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -206,7 +185,7 @@ class DeviceInfo extends React.Component {
                         {"Os"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {os}{" "}
+                        {OS}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -215,7 +194,7 @@ class DeviceInfo extends React.Component {
                         {"Location"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {location}{" "}
+                        {City}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -224,7 +203,7 @@ class DeviceInfo extends React.Component {
                         {"Custody"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {custody}{" "}
+                        {Vendor}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -251,7 +230,7 @@ class DeviceInfo extends React.Component {
                         {"Serial_Number"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {sNumber}{" "}
+                        {Serial_Number}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -260,7 +239,7 @@ class DeviceInfo extends React.Component {
                         {"group"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {group}{" "}
+                        {Category}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -269,7 +248,7 @@ class DeviceInfo extends React.Component {
                         {"subgroup"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {subgroup}{" "}
+                        {Subcategory}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -278,7 +257,7 @@ class DeviceInfo extends React.Component {
                         {"Description"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {description}{" "}
+                        {Description}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -287,7 +266,7 @@ class DeviceInfo extends React.Component {
                         {"check_in_due"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {check_in}{" "}
+                        {dateFormat(Release_Date, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={13}>
@@ -295,7 +274,7 @@ class DeviceInfo extends React.Component {
                         {"purchase_date"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {purchaseDate}{" "}
+                        {dateFormat(Purchased_on, "UTC:yyyy-mm-dd")}{" "}
                       </TableCell>
                     </TableRow>
                     <TableRow style={style.row} key={14}>
@@ -303,7 +282,7 @@ class DeviceInfo extends React.Component {
                         {"vendor"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {vendor}{" "}
+                        {Vendor}{" "}
                       </TableCell>
                     </TableRow>
 
@@ -312,7 +291,7 @@ class DeviceInfo extends React.Component {
                         {"tax_rate"}
                       </TableCell>
                       <TableCell width="400" align="left">
-                        {taxRate}{" "}
+                        {Tax_rate}{" "}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -320,44 +299,88 @@ class DeviceInfo extends React.Component {
               </Paper>
             </Grid>
           </div>
-          <div style={style.head}>
-            <Button
-              size="large"
-              variant="contained"
-              color="inherit"
-              disabled="ture"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              BOOK DEVICE
-              <plusBox />
-            </Button>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              RESERVATION
-            </Button>
-            <Button
-              size="large"
-              variant="contained"
-              color="secondary"
-              fullWidth="ture"
-              style={style.buttom}
-            >
-              CHANGE LOCATION
-            </Button>
-          </div>
         </Grid>
       </form>
     );
   }
+
+  render() {
+    const {
+      Brand,
+      Model,
+      OS,
+      City,
+      Serial_Number,
+      Category,
+      Subcategory
+    } = this.state.devices[0];
+
+    switch (this.state.pageToShow) {
+      case "info":
+        return this.renderDeviceInfo();
+      case "edit":
+        return (
+          <ChangeLocation
+            Brand={Brand}
+            Model={Model}
+            Serial_Number={Serial_Number}
+            OS={OS}
+            Category={Category}
+            Subcategory={Subcategory}
+            City={City}
+            office={this.state.office}
+            returnToInfo={() => this.setPageToShow("info")}
+            updateDeviceInfo={this.updateDeviceInfo}
+          />
+        );
+      default:
+        return (
+          <div>
+            Error: unxpected pageToShow in OfficeInfo
+            <br />
+            pageToShow= {this.state.pageToShow}
+          </div>
+        );
+    }
+  }
+  setPageToShow(page) {
+    const newState = {
+      pageToShow: page
+    };
+    this.setState(newState);
+  }
+
+  getDevicesFromServer() {
+    const request = new Request(
+      "/get_device/" + this.props.match.params.sNumber,
+      {
+        method: "GET"
+      }
+    );
+
+    fetch(request)
+      .then(res => {
+        if (res.ok) {
+          res.json().then(obj => {
+            console.log(obj);
+
+            this.setState({ devices: obj });
+            console.log("loaded all devices", this.state);
+            return obj;
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
+      });
+  }
 }
 
 DeviceInfo.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  brand: PropTypes.string.isRequired,
+  device: PropTypes.shape({})
 };
-export default DeviceInfo;
+export default withStyles(style)(DeviceInfo);

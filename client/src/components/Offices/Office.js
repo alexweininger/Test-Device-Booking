@@ -12,6 +12,40 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
+import { withStyles } from '@material-ui/core/styles';
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
+
+const CustomTableCell = withStyles(theme => ({
+	head: {
+	  backgroundColor: theme.palette.common.black,
+	  color: theme.palette.common.white,
+	},
+	body: {
+	  fontSize: 14,
+	},
+  }))(TableCell);
+  
+  const style = ({
+	root: {
+	  width: '100%',
+	  overflowX: 'auto',
+	  marginTop: 30,
+		width: 1100,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+	},
+	table: {
+		width: 'auto',
+		height: 500,
+		overflowY: 'auto'
+	},
+	row: {
+	  '&:nth-of-type(odd)': {
+		backgroundColor: 'white',
+	  },
+	},
+  });
 
 /* renders a single table row with information for a single office
  * that can be added to a table of OfficeItems
@@ -22,9 +56,9 @@ import TableHead from '@material-ui/core/TableHead';
 function OfficeItem(props) {
 	return (
 		<TableRow className="officeItem" onClick= {() => props.onClick()}>
-			<TableCell className= "officeEntry">{props.office.country} </TableCell>
-			<TableCell className= "officeEntry"> {props.office.city} </TableCell>
-			<TableCell className= "officeEntry"> {props.office.address} </TableCell>
+			<CustomTableCell className= "officeEntry">{props.office.country} </CustomTableCell>
+			<CustomTableCell className= "officeEntry"> {props.office.city} </CustomTableCell>
+			<CustomTableCell className= "officeEntry"> {props.office.address} </CustomTableCell>
 		</TableRow>
 	);
 }
@@ -83,25 +117,31 @@ class Offices extends React.Component {
 		let i= 0;
 		return (
 			<div>
+				<Header/>
+				<TabMenu />
+			<div style={style.root}>
+				<div style={style.table}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Country</TableCell>
-                            <TableCell>City</TableCell>
-                            <TableCell>Address</TableCell>
+                            <CustomTableCell>Country</CustomTableCell>
+                            <CustomTableCell>City</CustomTableCell>
+                            <CustomTableCell>Address</CustomTableCell>
                         </TableRow>
                     </TableHead>
 					<TableBody>
 							{/*render the list of offices, they are table rows*/}
 							{Object.keys(this.state.offices).map(officeID => 
-								this.renderOffice(this.state.offices[officeID],i++))};
+								this.renderOffice(this.state.offices[officeID],i++))}
 								
 					</TableBody>
 				</Table>
+				</div>
 				{/*when the new office button is clicked, go to new office page*/}
-				<Button onClick= {()=>{this.setPageToShow('new')}}>
+				<Button variant="contained" onClick= {()=>{this.setPageToShow('new')}}>
 					Add New
 				</Button>
+			</div>
 			</div>
 		);
 	}
@@ -136,7 +176,7 @@ class Offices extends React.Component {
 	/* add the given office to the database
 	 */
 	addOffice(office){
-		console.log("callded_");
+		console.log("called_");
 		if(!this.officeCanBeAdded(office)){
 			return false;
 		}

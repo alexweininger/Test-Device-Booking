@@ -3,6 +3,8 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Header from "../Layout/Header";
+import TabMenu from "../Layout/TabMenu";
 
 class NewOffice extends React.Component {
 	constructor(props){
@@ -21,6 +23,8 @@ class NewOffice extends React.Component {
 	render(){
 		return (
 			<div>
+				<Header/>
+				<TabMenu/>
 				<Typography variant= {'h4'}>
 					Add New Office
 				</Typography>

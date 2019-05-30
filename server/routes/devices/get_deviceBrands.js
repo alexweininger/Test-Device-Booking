@@ -1,7 +1,11 @@
 var express = require("express");
 var router = express.Router();
 
-var db = require("../dbms.js");
+//var db = require("../dbms.js");
+
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
+
+var db = require(`../${dataBase}`);
 
 router.get("/", (req, res) => {
   let brandQuery =

@@ -4,6 +4,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "enzyme": "^3.9.0",
     "material-table": "^1.27.2",
     "prop-types": "^15.7.2",
     "react": "^16.2.0",
@@ -27,12 +28,26 @@
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.5.0",
     "babel-loader": "^8.0.5",
+    "jest-localstorage-mock": "^2.4.0",
+    "jsonwebtoken": "^8.5.1",
     "react-test-renderer": "^16.8.4"
   },
   "babel": {
     "presets": [
       "@babel/preset-env",
       "@babel/preset-react"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   }
 }

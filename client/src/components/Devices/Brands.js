@@ -1,50 +1,51 @@
-import React from 'react';
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from '@material-ui/core/Checkbox';
-
+import React from "react";
+import Checkbox from "./Checkbox";
 
 class Brands extends React.Component {
+  constructor(props) {
+    super(props);
 
-	constructor(props) {
-		super(props);
+    this.state = {
+      brands: []
+    };
 
-		this.state= {
-            brands: []
-		}
+    this.getBrands();
+  }
 
-		this.getBrands();
-    }
-	
+  render() {
+    const { checked } = this.props;
+    return (
+      <div>
+        <form>
+          {this.state.brands.map(brand => (
+            <Checkbox label={brand.Brand} isChecked={checked[brand.Brand]} />
+          ))}
+        </form>
+      </div>
+    );
+  }
 
-	render(){
-		const brands = this.state.brands || [];
+  getBrands() {
+    const request = new Request("/get_deviceBrands", {
+      method: "GET"
+    });
 
-		return (
-			<div>
-				{brands.map(brand => 
-				
-				<FormControlLabel style={{marginRight: 90}} control={<Checkbox value="checkedC" />} label={brand.Brand}>
-				</FormControlLabel>
-				)}
-			</div>
-		)
-	}
-
-	getBrands(){
-		const request = new Request('/get_deviceBrands', {
-			method : 'GET'
-		});
-
-		fetch(request).then(res => res.json()).then(result => {
-			console.log('result ', result);
-			if(result.success){
-				this.setState({
-					brands : result.brands
-				});
-			}
-		});
-
-	}
+    fetch(request)
+      .then(res => res.json())
+      .then(result => {
+        console.log("result ", result);
+        if (result.success) {
+          this.setState({
+            brands: result.brands
+          });
+        }
+      })
+      .catch(err => {
+        //if we successfully updated the DB
+        console.log("Error in getDevices", err);
+        console.log("get failed");
+      });
+  }
 }
 
 export default Brands;

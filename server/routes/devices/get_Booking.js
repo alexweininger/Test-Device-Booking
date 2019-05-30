@@ -1,23 +1,33 @@
 var express = require("express");
 var router = express.Router();
 
-var db = require("../dbms.js");
+const dataBase = process.env.NODE_ENV === "test" ? "dbmsTest.js" : "dbms.js";
 
-router.get("/", (req, res) => {
-  const availableQuery = "SELECT * FROM Device_Booking.atbl_Booking";
+var db = require(`../${dataBase}`);
 
+router.get("/:query", (req, res) => {
+  console.log("req ", req.params);
+
+  const availableQuery = `SELECT *, CONVERT_TZ(StartDate,'+00:00','+3:00') AS StartDate, 
+                                    CONVERT_TZ(FinishDate,'+00:00','+3:00') AS FinishDate 
+                          FROM atbl_Booking 
+                            ${req.params.query}         
+                              ORDER BY StartDate ASC
+                              `;
+                              console.log(availableQuery+"-------------------");
   db.dbqueryPromise(availableQuery)
     .then(results => {
-      //console.log("======Available devices======");
-      //console.log(results);
+      
+      console.log("======Today's bookings======");
+      console.log(results);
 
-      res.json({
-        success: true,
-        devices: results
+      res.setHeader("Content-Type", "application/json");
+      SQLArrayToJSON(results, json => {
+        res.status(200).json(json);
       });
     })
     .catch(err => {
-      console.log("There was an error getting the Booking information:");
+      console.log("There was an error getting the devices:");
       console.log("---------------------------------");
       console.log(err);
       console.log("---------------------------------");
@@ -26,6 +36,18 @@ router.get("/", (req, res) => {
         success: false
       });
     });
+  function SQLArrayToJSON(sql, callback) {
+    const arr = [];
+    Object.keys(sql).forEach(key => {
+      const rowObj = {};
+      const row = sql[key];
+      Object.keys(row).forEach(keyc => {
+        rowObj[keyc] = row[keyc];
+      });
+      arr.push(rowObj);
+    });
+    callback(arr);
+  }
 });
 
 module.exports = router;

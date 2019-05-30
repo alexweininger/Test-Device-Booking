@@ -1,50 +1,48 @@
 import React from "react";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-
+import Checkbox from "./Checkbox";
 class Locations extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      offices: []
-    };
+	constructor(props) {
+		super(props);
 
-    this.getLocationsFromServer();
-  }
+		this.state= {
+			offices: []
+		}
 
-  render() {
-    const offices = this.state.offices || [];
+		this.getLocationsFromServer();
+		}
+	
 
-    return (
-      <div>
-        {offices.map(office => (
-          <FormControlLabel
-            style={{ marginRight: 85 }}
-            control={<Checkbox value="checkedC" />}
-            label={office.city}
-          />
-        ))}
-      </div>
-    );
-  }
+	render(){
+		const { checked } = this.props;
+		return (
+			<div>
+				<form>
+					{this.state.offices.map(office => 
+					(<Checkbox
+					    label={ office.city }
+						isChecked={ checked[office.city] }
+					/>))}
+				</form>
+		</div>
+		)
+	}
 
-  getLocationsFromServer() {
-    const request = new Request("/get_officeLocation", {
-      method: "GET"
-    });
 
-    fetch(request)
-      .then(res => res.json())
-      .then(result => {
-        console.log("result ", result);
-        if (result.success) {
-          this.setState({
-            offices: result.offices
-          });
-        }
-      });
-  }
+	getLocationsFromServer(){
+		const request = new Request('/get_officeLocation', {
+			method : 'GET'
+		});
+
+		fetch(request).then(res => res.json()).then(result => {
+			console.log('locations: ', result);
+			if(result.success){
+				this.setState({
+					offices : result.offices
+				});
+			}
+		});
+	}
 }
 
 export default Locations;
