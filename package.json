@@ -44,7 +44,7 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-alpha.27",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "express-session": "^1.16.1",
     "icons": "^1.0.0",
     "material-table": "^1.30.0",
